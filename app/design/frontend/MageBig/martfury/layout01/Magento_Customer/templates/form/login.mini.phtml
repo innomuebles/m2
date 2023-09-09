@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="field password required">
-                    <!--<label for="pass" class="label"><span><?= /* @escapeNotVerified */ __('Password') ?></span></label>-->
+                    <label for="pass" class="label"><span><?= /* @escapeNotVerified */ __('Password') ?></span></label>
                     <div class="control">
                         <input placeholder="<?= /* @escapeNotVerified */ __('Password') ?>" name="login[password]" type="password" <?php if ($block->isAutocompleteDisabled()) :?> autocomplete="off"<?php endif; ?> class="input-text" id="pass" title="<?= /* @escapeNotVerified */ __('Password') ?>" data-validate="{required:true, 'validate-password':true}">
                     </div>

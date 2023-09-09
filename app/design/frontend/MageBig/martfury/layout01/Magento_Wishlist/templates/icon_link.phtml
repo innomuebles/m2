@@ -8,12 +8,12 @@
 
 /* @var \Magento\Wishlist\Block\Link $block */
 ?>
-<div class="col">
+<div class="col col-wishlist d-none d-md-block">
     <div class="wishlist-topbar" data-bind="scope: 'wishlist'">
-        <a <?= /* @noEscape */
-        $block->getLinkAttributes() ?> class="wishlist-icon link wishlist">
+        <a class="wishlist-icon link wishlist" aria-label="<?= $block->escapeHtmlAttr(__('Wishlist')) ?>"
+            <?= /* @noEscape */ $block->getLinkAttributes() ?>>
             <i class="mbi mbi-heart"></i>
-            <span data-bind="text: wishlist().counter, css: { empty: !!wishlist().counter == false }" class="counter-number qty empty"></span>
+            <span data-bind="html: wishlist().counter ? (wishlist().counter.replace(/[^0-9]/g,'') > 9 ? '&nbsp;9<sup>+</sup>' : wishlist().counter.replace(/[^0-9]/g,'')) : 0, css: { empty: !!wishlist().counter == false }" class="counter-number qty empty"></span>
         </a>
     </div>
 </div>

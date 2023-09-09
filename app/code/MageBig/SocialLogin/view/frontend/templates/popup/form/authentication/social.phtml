@@ -82,6 +82,6 @@
 <?php $authenConfig = $block->getSocialButtonsConfig(); ?>
 <?php if ($block->canShow(\MageBig\SocialLogin\Model\System\Config\Source\Position::PAGE_AUTHEN) && sizeof($availableSocials)): ?>
     <script>
-        window.socialAuthenticationPopup = <?php /* @escapeNotVerified */ echo \Zend_Json::encode($authenConfig); ?>;
+        window.socialAuthenticationPopup = <?= /* @noEscape */ json_encode($authenConfig); ?>;
     </script>
 <?php endif; ?>

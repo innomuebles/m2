@@ -1,17 +1,18 @@
-# Moduł PayU dla Magento 2 w wersji >2.0.6, 2.1, 2.2
-``Moduł jest wydawany na licencji GPL.``
+[**English version**][ext8]
 
-**Jeżeli masz jakiekolwiek pytania lub chcesz zgłosić błąd zapraszamy do kontaktu z naszym [wsparciem technicznym][ext8].**
+# Moduł PayU dla Magento 2 w wersji 2.4
 
-* Jeżeli używasz Magneto w wersji 2.3 proszę skorzystać z [pluginu dla wersji 2.3 ][ext7]
+**Jeżeli masz jakiekolwiek pytania lub chcesz zgłosić błąd zapraszamy do kontaktu z naszym wsparciem pod adresem: tech@payu.pl.**
+
 * Jeżeli używasz Magneto w wersji 1.x proszę skorzystać z [pluginu dla wersji 1.x][ext0]
+* Jeżeli używasz Magneto w wersji >2.0.6, 2.1, 2.2 proszę skorzystać z [pluginu dla wersji >2.0.6, 2.1, 2.2][ext7]
+* Jeżeli używasz Magneto w wersji 2.3 proszę skorzystać z [pluginu dla wersji 2.3][ext9]
 
 ## Spis treści
 
 1. [Cechy](#cechy)
 1. [Wymagania](#wymagania)
 1. [Instalacja](#instalacja)
-1. [Aktualizacja](#aktualizacja)
 1. [Konfiguracja](#konfiguracja)
     * [Parametry](#parametry)
 1. [Informacje o cechach](#informacje-o-cechach)
@@ -22,7 +23,7 @@
 
 
 ## Cechy
-Moduł płatności PayU dodaje do Magento 2 opcję płatności PayU. Moduł współpracuje z Magento 2 w wersjach: >2.0.6, 2.1, 2.2
+Moduł płatności PayU dodaje do Magento 2 opcję płatności PayU. Moduł współpracuje z Magento 2 w wersji 2.4
 
 Możliwe są następujące operacje:
   * Utworzenie płatności w sytemie PayU
@@ -50,7 +51,7 @@ Moduł dodaje dwie metody płatności:
 ## Instalacja
 
 #### Przy użyciu Composer
-`composer require payu/magento2-payment-gateway`
+`composer require payu/magento24-payment-gateway`
 
 #### Kopiując pliki na serwer
 1. Pobierz najnowszą wersję moduł z [repozytorium GitHub][ext4]
@@ -62,9 +63,6 @@ Po instalacji przy użyciu Composer lub kopiując pliki z poziomu konsoli urucho
    * php bin/magento setup:upgrade
    * php bin/magento setup:di:compile
    * php bin/magento setup:static-content:deploy
-
-## Aktualizacja
-Aktualizując plugin z wersji starszej niż 1.2.0 należy po aktualizacji pluginu ponownie podać i zapisać konfigurację POS-ów.
 
 ## Konfiguracja
 
@@ -154,15 +152,16 @@ W celu uruchomienia i konfiguracji usługi należy skontaktować się z opiekune
 
 
 <!--external links:-->
-[ext0]: https://github.com/PayU/plugin_magento_160
+[ext0]: https://github.com/PayU-EMEA/plugin_magento
 [ext1]: https://www.payu.pl/oferta-handlowa
 [ext2]: http://php.net/manual/en/book.curl.php
 [ext3]: http://php.net/manual/en/book.hash.php
-[ext4]: https://github.com/PayU/plugin_magento_2/releases/latest
+[ext4]: https://github.com/PayU-EMEA/plugin_magento_24/releases/latest
 [ext5]: https://secure.snd.payu.com/boarding/?pk_campaign=Plugin-Github&pk_kwd=Magento2#/form
 [ext6]: http://developers.payu.com/pl/overview.html#paymethods
-[ext7]: https://github.com/PayU/plugin_magento_23
-[ext8]: https://www.payu.pl/pomoc
+[ext7]: https://github.com/PayU-EMEA/plugin_magento_2
+[ext8]: README.EN.md
+[ext9]: https://github.com/PayU-EMEA/plugin_magento_23
 
 <!--images:-->
 [img0]: readme_images/methods.png

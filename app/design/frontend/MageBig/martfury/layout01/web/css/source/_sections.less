@@ -15,6 +15,7 @@
         .item.title {
             a {
                 position: relative;
+                color: #999 !important;
                 .lib-icon-font( @_icon-font-content: @icon-down, @_icon-font-size: @font-size__base, @_icon-font-line-height: @icon-font__line-height, @_icon-font-color: @icon-font__color, @_icon-font-color-hover: @icon-font__color-hover, @_icon-font-color-active: @icon-font__color-active, @_icon-font-margin: @icon-font__margin, @_icon-font-vertical-align: @icon-font__vertical-align, @_icon-font-position: after, @_icon-font-display: false);
                 &:after {
                     position: absolute;
@@ -22,8 +23,11 @@
                     top: @accordion-control__padding-top;
                 }
             }
-            &.active a:after {
+            &.opened a:after {
                 content: @icon-up;
+            }
+            &.opened > .switch {
+                color: #000 !important;
             }
         }
         .value p:last-child {
@@ -33,69 +37,66 @@
             margin: 0;
         }
     }
-}
 
-//
-//  Desktop
-//  _____________________________________________
-.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
-    .product.data.items {
-        position: relative;
-        &:before {
-            position: absolute;
-            content: '';
-            height: 1px;
-            background-color: #ccc;
-            top: 51px;
-            left: 0;
-            width: 100%;
-        }
-        .lib-data-tabs();
-        border-bottom: 0;
-        margin-left: 0;
-        margin-right: 0;
-        .item.title {
-            > .switch {
-                position: relative;
-                text-transform: capitalize;
-                &:before, &:after {
-                    content: '';
-                    position: absolute;
-                    bottom: -2px;
-                    top: auto;
-                    right: auto;
-                    left: 50%;
-                    height: 3px;
-                    background: @main_color;
-                    width: 0;
-                    -webkit-transition: all 250ms ease;
-                    transition: all 250ms ease;
+    @media(min-width: 768px) {
+        .product.data.items {
+            position: relative;
+            &:before {
+                position: absolute;
+                content: '';
+                height: 1px;
+                background-color: #ccc;
+                top: 51px;
+                left: 0;
+                width: 100%;
+            }
+            .lib-data-tabs();
+            border-bottom: 0;
+            margin-left: 0;
+            margin-right: 0;
+            .item.title {
+                > .switch {
+                    position: relative;
+                    text-transform: capitalize;
+                    &:before, &:after {
+                        content: '';
+                        position: absolute;
+                        bottom: -2px;
+                        top: auto;
+                        right: auto;
+                        left: 50%;
+                        height: 3px;
+                        background: @main_color;
+                        width: 0;
+                        -webkit-transition: all 250ms ease;
+                        transition: all 250ms ease;
+                    }
+                    &:after {
+                        right: 50%;
+                        left: auto;
+                    }
+                    &:hover:before, &:hover:after {
+                        width: 50%;
+                    }
                 }
-                &:after {
-                    right: 50%;
-                    left: auto;
-                }
-                &:hover:before, &:hover:after {
+                &.opened a:before, &.opened a:after {
                     width: 50%;
                 }
-            }
-            &.active a:before, &.active a:after {
-                width: 50%;
-            }
-            .counter {
-                display: none;
+                .counter {
+                    display: none;
+                }
             }
         }
-    }
-    .product.data.items {
-        text-align: center;
-        > .item.title {
-            display: inline-block;
-            float: none;
-        }
-        .item.content {
-            text-align: initial;
-            padding: 30px 0;
+        .product.data.items {
+            text-align: center;
+            > .item.title {
+                display: inline-block;
+                float: none;
+            }
+            .item.content {
+                text-align: initial;
+                padding: 30px 0;
+            }
         }
     }
 }

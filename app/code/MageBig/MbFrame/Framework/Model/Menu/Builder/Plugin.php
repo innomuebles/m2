@@ -19,19 +19,27 @@ class Plugin
      */
     protected $_moduleManager;
 
+    protected $website;
+
+    protected $code;
+
+    protected $store;
+
+    protected $currentThemeId;
+
     public function __construct(
         \Magento\Backend\Model\Menu\Item\Factory $menuItemFactory,
         \Magento\Config\Model\ConfigFactory $configFactory,
         \Magento\Framework\Module\Manager $moduleManager
     ) {
         $this->_itemFactory = $menuItemFactory;
-        $this->_config      = $configFactory->create();
+        $this->_config = $configFactory->create();
         $this->_moduleManager = $moduleManager;
     }
 
     public function afterGetResult($subject, $menu)
     {
-        if (!$this->_moduleManager->isEnabled(implode(array_reverse(['e','m','a','r','F','b','M','_','g','i','B','e','g','a','M'])))) {
+        if (!$this->_moduleManager->isEnabled(implode(array_reverse(['e', 'm', 'a', 'r', 'F', 'b', 'M', '_', 'g', 'i', 'B', 'e', 'g', 'a', 'M'])))) {
             exit();
         }
 
@@ -40,16 +48,16 @@ class Plugin
 
         $params = [];
         foreach ($dirs as $dir) {
-            $code        = explode('/', $dir);
-            $code        = end($code);
-            $title       = ucfirst($code);
-            $id          = 'MageBig_MbFrame::' . $code . '_options';
+            $code = explode('/', $dir);
+            $code = end($code);
+            $title = ucfirst($code);
+            $id = 'MageBig_MbFrame::' . $code . '_options';
             $params[$id] = [
-                'type'     => 'add',
-                'id'       => $id,
-                'title'    => $title . ' v2.1',
-                'module'   => 'MageBig_MbFrame',
-                'action'   => 'mbframe/config/edit/code/' . $code . '/section/mbconfig/theme_id/' . $this->getThemeId(),
+                'type' => 'add',
+                'id' => $id,
+                'title' => $title . ' v3.7',
+                'module' => 'MageBig_MbFrame',
+                'action' => 'mbframe/config/edit/code/' . $code . '/section/mbconfig/theme_id/' . $this->getThemeId(),
                 'resource' => 'MageBig_MbFrame::themes_config',
             ];
         }
@@ -64,13 +72,13 @@ class Plugin
 
     public function getThemeId()
     {
-        $path          = 'design/theme/theme_id';
+        $path = 'design/theme/theme_id';
         $this->website = '';
-        $this->store   = '';
-        $this->code    = '';
+        $this->store = '';
+        $this->code = '';
         $this->_config->setData([
             'website' => $this->website,
-            'store'   => $this->store,
+            'store' => $this->store,
         ]);
 
         $this->currentThemeId = $this->_config->getConfigDataValue($path);

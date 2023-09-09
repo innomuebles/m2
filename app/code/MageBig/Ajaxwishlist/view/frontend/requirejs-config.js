@@ -1,8 +1,13 @@
-
 var config = {
+    config: {
+        mixins: {
+            'Magento_Wishlist/js/add-to-wishlist': {
+                'MageBig_Ajaxwishlist/js/add-to-wishlist': true
+            }
+        }
+    },
     map: {
         '*': {
-            'magebig/swatchRenderer': 'MageBig_Ajaxwishlist/js/swatch-renderer',
             'magebig/ajaxwishlist'  : 'MageBig_Ajaxwishlist/js/ajax-wishlist'
         }
     }

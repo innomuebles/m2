@@ -6,9 +6,11 @@
 
 namespace MageBig\AjaxFilter\Helper;
 
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\Search\SearchCriteriaBuilder;
+
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    const AVG_RATING_PERCENT = \MageBig\AjaxFilter\Model\Layer\Filter\Rating::AVG_RATING_PERCENT;
     const RATING_CODE = \MageBig\AjaxFilter\Model\Layer\Filter\Rating::RATING_CODE;
     const ENABLE_AJAX = 'magebig_ajaxfilter/general/enable';
     const ENABLE_PRICE_SLIDER = 'magebig_ajaxfilter/general/enable_price_slider';
@@ -16,6 +18,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const ENABLE_FILTER_BY_RATING = 'magebig_ajaxfilter/general/enable_filter_rating';
     const ENABLE_SORT_BY_RATING = 'magebig_ajaxfilter/general/enable_sort_rating';
     const RATING_FILTER_TYPE_PATH = 'magebig_ajaxfilter/general/rating_filter_type';
+    const DISPLAY_SEARCH_BOX = 'magebig_ajaxfilter/general/search_attribute';
 
     protected $filterManager;
 
@@ -31,8 +34,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     protected $ratingFilterType;
 
-    protected $_beforeApply = null;
-
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\View\LayoutInterface $layout,
@@ -42,7 +43,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $this->layout = $layout;
         $this->filterManager = $filterManager;
         $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->_beforeApply = null;
     }
 
     public function getLayout()
@@ -61,6 +61,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getConfig($path)
     {
         return $this->scopeConfig->getValue($path, 'store');
+    }
+
+    public function displaySearchBox()
+    {
+        return (int) $this->getConfig(self::DISPLAY_SEARCH_BOX, 'store');
     }
 
     public function boxMaxHeight()
@@ -90,16 +95,14 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->_filters;
     }
 
-    public function getBeforeApplyFacetedData($collection, $attribute, $currentFilter = null)
+    public function getBeforeApplyFacetedData($collection, $attributeCode)
     {
         $cloneCollection = clone $collection;
-        $cloneFilterBuilder = clone $this->objectManager->get(\Magento\Framework\Api\FilterBuilder::class);
+        $cloneFilterBuilder = clone $this->objectManager->get(FilterBuilder::class);
         $cloneCollection->setFilterBuilder($cloneFilterBuilder);
-
-        $cloneSearchCriteriaBuilder = clone $this->objectManager->get(\Magento\Framework\Api\Search\SearchCriteriaBuilder::class);
+        $cloneSearchCriteriaBuilder = clone $this->objectManager->get(SearchCriteriaBuilder::class);
         $cloneCollection->setSearchCriteriaBuilder($cloneSearchCriteriaBuilder);
 
-        $attributeCode = $attribute->getAttributeCode();
         foreach ($this->getFilters() as $filter) {
             if ($filter->getRequestVar() != $attributeCode) {
                 if (method_exists($filter, 'applyToCollection')) {
@@ -107,27 +110,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
                 }
             }
         }
-        if ($currentFilter) {
-            $currentFilter->setBeforeApplyCollection($cloneCollection);
-            $this->_beforeApply = $currentFilter->getBeforeApplyCollection();
-        }
-        if ($this->_request->getParam(self::RATING_CODE, false)) {
-            $clone2 = clone $cloneCollection;
-            $facetedData = $cloneCollection->getFacetedData($attribute->getAttributeCode());
-            $connection = $clone2->getConnection();
-            foreach ($facetedData as $value => $option) {
-                if ($facetedData[$value]['count'] > 0) {
-                    $clone = clone $clone2;
-                    $facetedData[$value]['count'] = $connection->fetchOne($clone->addFieldToFilter($attributeCode, $value)->getSelectCountSql());
-                }
-            }
-            return $facetedData;
-        }
-        return $cloneCollection->getFacetedData($attribute->getAttributeCode());
-    }
 
-    public function getProduction() {
-        return $this->_beforeApply;
+        return $cloneCollection;
     }
 
     public function enableRatingFilter()
@@ -147,34 +131,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getRatingTypes()
     {
-        return $this->getConfig(self::RATING_FILTER_TYPE_PATH) ? : 'up';
-    }
-
-    public function ratingCollection($productCollection)
-    {
-        if ($productCollection->hasFlag('rating_collection')) {
-            return $productCollection;
-        }
-        $productCollection->setFlag('rating_collection', 1);
-        $connection = $productCollection->getConnection();
-        $storeId = $productCollection->getStoreId();
-        $select = $connection->select()
-            ->from(['product' => $productCollection->getTable('catalog_product_entity')], ['entity_pk_value' => 'entity_id'])
-            ->joinLeft(
-                ['rating' => $connection->select()
-                    ->from(['vote' => $productCollection->getTable('rating_option_vote_aggregated')],
-                        ['entity_pk_value' => 'entity_pk_value', self::AVG_RATING_PERCENT => 'avg(percent_approved)'])
-                    ->where('vote.store_id = ' . $storeId)
-                    ->group('vote.entity_pk_value')],
-                'product.entity_id = rating.entity_pk_value',
-                [self::AVG_RATING_PERCENT]
-            )->group('product.entity_id');
-        $productCollection->getSelect()
-            ->join(
-                ['rating' => $select],
-                'e.entity_id = rating.entity_pk_value',
-                [self::AVG_RATING_PERCENT => self::AVG_RATING_PERCENT]
-            );
-        return $productCollection;
+        return $this->getConfig(self::RATING_FILTER_TYPE_PATH) ?: 'up';
     }
 }

@@ -38,25 +38,41 @@ class Widget
      */
     protected $themeProvider;
 
+    /**
+     * @var \Magento\Framework\App\ResourceConnection
+     */
+    protected $_resource;
+
+    /**
+     * @var \Magento\Framework\App\CacheInterface
+     */
+    protected $cache;
 
     /**
      * Widget constructor.
-     * @param SampleDataContext                                                     $sampleDataContext
-     * @param \Magento\Widget\Model\Widget\InstanceFactory                          $widgetFactory
+     *
+     * @param SampleDataContext $sampleDataContext
+     * @param \Magento\Widget\Model\Widget\InstanceFactory $widgetFactory
      * @param \Magento\Widget\Model\ResourceModel\Widget\Instance\CollectionFactory $widgetCollectionFactory
-     * @param \Magento\Framework\View\Design\Theme\ThemeProviderInterface           $themeProvider
+     * @param \Magento\Framework\View\Design\Theme\ThemeProviderInterface $themeProvider
+     * @param \Magento\Framework\App\ResourceConnection $resource
+     * @param \Magento\Framework\App\CacheInterface $cache
      */
     public function __construct(
         SampleDataContext $sampleDataContext,
         \Magento\Widget\Model\Widget\InstanceFactory $widgetFactory,
         \Magento\Widget\Model\ResourceModel\Widget\Instance\CollectionFactory $widgetCollectionFactory,
-        \Magento\Framework\View\Design\Theme\ThemeProviderInterface $themeProvider
+        \Magento\Framework\View\Design\Theme\ThemeProviderInterface $themeProvider,
+        \Magento\Framework\App\ResourceConnection $resource,
+        \Magento\Framework\App\CacheInterface $cache
     ) {
-        $this->fixtureManager          = $sampleDataContext->getFixtureManager();
-        $this->csvReader               = $sampleDataContext->getCsvReader();
-        $this->widgetFactory           = $widgetFactory;
+        $this->fixtureManager = $sampleDataContext->getFixtureManager();
+        $this->csvReader = $sampleDataContext->getCsvReader();
+        $this->widgetFactory = $widgetFactory;
         $this->widgetCollectionFactory = $widgetCollectionFactory;
-        $this->themeProvider           = $themeProvider;
+        $this->themeProvider = $themeProvider;
+        $this->_resource = $resource;
+        $this->cache = $cache;
     }
 
     protected function _initWidgetInstance($widget)
@@ -82,26 +98,26 @@ class Widget
         $widgetCollection->addFieldToSelect('*');
 
         foreach ($widgetCollection as $widget) {
-            $data                      = [];
-            $theme                     = $this->themeProvider->getThemeById($widget->getData('theme_id'));
-            $data['instance_type']     = $widget->getData('instance_type');
-            $data['theme_path']        = $theme->getFullPath();
-            $data['title']             = $widget->getTitle();
+            $data = [];
+            $theme = $this->themeProvider->getThemeById($widget->getData('theme_id'));
+            $data['instance_type'] = $widget->getData('instance_type');
+            $data['theme_path'] = $theme->getFullPath();
+            $data['title'] = $widget->getTitle();
             $data['widget_parameters'] = serialize($widget->getWidgetParameters());
-            $widget                    = $this->_initWidgetInstance($widget);
-            $pageGroups                = $widget->getPageGroups();
-            $tmpPg                     = [];
+            $widget = $this->_initWidgetInstance($widget);
+            $pageGroups = $widget->getPageGroups();
+            $tmpPg = [];
 
             foreach ($pageGroups as $pageGroup) {
-                $tmp                       = [];
-                $pg                        = $pageGroup['page_group'];
-                $tmp['page_group']         = $pg;
-                $tmp[$pg]                  = [];
-                $tmp[$pg]['page_id']       = '';
+                $tmp = [];
+                $pg = $pageGroup['page_group'];
+                $tmp['page_group'] = $pg;
+                $tmp[$pg] = [];
+                $tmp[$pg]['page_id'] = '';
                 $tmp[$pg]['layout_handle'] = $pageGroup['layout_handle'];
-                $tmp[$pg]['for']           = $pageGroup['page_for'];
-                $tmp[$pg]['block']         = $pageGroup['block_reference'];
-                $tmp[$pg]['template']      = $pageGroup['page_template'];
+                $tmp[$pg]['for'] = $pageGroup['page_for'];
+                $tmp[$pg]['block'] = $pageGroup['block_reference'];
+                $tmp[$pg]['template'] = $pageGroup['page_template'];
 
                 if ($pg == 'anchor_categories') {
                     $tmp[$pg]['is_anchor_only'] = 1;
@@ -127,12 +143,12 @@ class Widget
                 }
 
                 $tmp[$pg]['entities'] = $pageGroup['entities'];
-                $tmpPg[]              = $tmp;
+                $tmpPg[] = $tmp;
             }
 
-            $pageGroups          = $tmpPg;
+            $pageGroups = $tmpPg;
             $data['page_groups'] = serialize($pageGroups);
-            $data['sort_order']  = $widget->getData('sort_order');
+            $data['sort_order'] = $widget->getData('sort_order');
 
             echo 'title: ' . $data['title'] . '</br>';
             $list[] = $data;
@@ -160,34 +176,43 @@ class Widget
             if (!file_exists($fileName)) {
                 return;
             }
-            $rows   = $this->csvReader->getData($fileName);
+            $rows = $this->csvReader->getData($fileName);
             $header = array_shift($rows);
             foreach ($rows as $row) {
                 $data = [];
+
                 foreach ($row as $key => $value) {
                     $data[$header[$key]] = $value;
                 }
+
                 $row = $data;
 
                 if (!class_exists('\\' . $row['instance_type'])) {
                     continue;
                 }
-                $theme = $this->themeProvider->getThemeByFullPath($row['theme_path']);
-                //$logger->info($theme->getId());
-                $themeId = $theme->getId();
+
+                $connection = $this->_resource->getConnection();
+                $theme_table = $this->_resource->getTableName('theme');
+                $theme_path = str_replace('frontend/', '', $row['theme_path']);
+
+                $select = $connection->select()
+                    ->from($theme_table, ['theme_id'])
+                    ->where('theme_path = ?', $theme_path);
+
+                $themeId = $connection->fetchOne($select);
+                //$logger->info($themeId);
+
                 /** @var \Magento\Widget\Model\ResourceModel\Widget\Instance\Collection $instanceCollection */
                 $instanceCollection = $this->widgetCollectionFactory->create();
-                $oldWidgets         = $instanceCollection->addFilter('title', $row['title'])
+                $oldWidgets = $instanceCollection->addFilter('title', $row['title'])
                     ->addFilter('instance_type', $row['instance_type'])
                     ->addFilter('theme_id', $themeId)
                     ->load();
 
-                if ($override && $oldWidgets->count()) {
+                if ($override && $oldWidgets) {
                     foreach ($oldWidgets as $oldWidget) {
                         $oldWidget->delete();
                     }
-                } elseif ($oldWidgets->count() > 0) {
-                    continue;
                 }
 
                 $widgetInstance = $this->widgetFactory->create();
@@ -206,6 +231,7 @@ class Widget
                     ->setPageGroups($pageGroups);
                 $widgetInstance->save();
             }
+            $this->cache->clean();
             //$logger->info('Widget Imported');
         } catch (\Exception $e) {
             //$logger->critical($e->getMessage());

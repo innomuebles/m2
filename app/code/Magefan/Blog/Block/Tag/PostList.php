@@ -1,13 +1,14 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
 
 namespace Magefan\Blog\Block\Tag;
 
+use Magefan\Blog\Block\Post\PostList\Toolbar;
 use Magento\Store\Model\ScopeInterface;
 
 /**
@@ -51,9 +52,10 @@ class PostList extends \Magefan\Blog\Block\Post\PostList
             $this->pageConfig->getTitle()->set($tag->getMetaTitle());
             $this->pageConfig->setKeywords($tag->getMetaKeywords());
             $this->pageConfig->setDescription($tag->getMetaDescription());
-
+            /*
             $page = $this->_request->getParam(\Magefan\Blog\Block\Post\PostList\Toolbar::PAGE_PARM_NAME);
             if ($page < 2) {
+            */
                 $robots = $tag->getData('meta_robots');
                 if ($robots) {
                     $this->pageConfig->setRobots($robots);
@@ -61,17 +63,69 @@ class PostList extends \Magefan\Blog\Block\Post\PostList
                     $robots = $this->config->getTagRobots();
                     $this->pageConfig->setRobots($robots);
                 }
+            /*
             }
 
+            if ($page > 1) {
+                $this->pageConfig->setRobots('NOINDEX,FOLLOW');
+            }
+            */
+
             if ($this->config->getDisplayCanonicalTag(\Magefan\Blog\Model\Config::CANONICAL_PAGE_TYPE_TAG)) {
+
+                $canonicalUrl = $tag->getTagUrl();
+                $page = (int)$this->_request->getParam(Toolbar::PAGE_PARM_NAME);
+                if ($page > 1) {
+                    $canonicalUrl .= ((false === strpos($canonicalUrl, '?')) ? '?' : '&')
+                        . Toolbar::PAGE_PARM_NAME . '=' . $page;
+                }
+
                 $this->pageConfig->addRemotePageAsset(
-                    $tag->getTagUrl(),
+                    $canonicalUrl,
                     'canonical',
                     ['attributes' => ['rel' => 'canonical']]
+                );
+            }
+
+            $pageMainTitle = $this->getLayout()->getBlock('page.main.title');
+            if ($pageMainTitle) {
+                $pageMainTitle->setPageTitle(
+                    $this->escapeHtml($tag->getTitle())
                 );
             }
         }
 
         return parent::_prepareLayout();
+    }
+
+    /**
+     * Get template type
+     *
+     * @return string
+     */
+    public function getPostTemplateType()
+    {
+        $template = (string)$this->getTag()->getData('posts_list_template');
+        if ($template) {
+            return $template;
+        }
+
+        return parent::getPostTemplateType();
+    }
+
+    /**
+     * Retrieve Toolbar Block
+     * @return \Magefan\Blog\Block\Post\PostList\Toolbar
+     */
+    public function getToolbarBlock()
+    {
+        $toolBarBlock = parent::getToolbarBlock();
+        $limit = (int)$this->getTag()->getData('posts_per_page');
+
+        if ($limit) {
+            $toolBarBlock->setData('limit', $limit);
+        }
+
+        return $toolBarBlock;
     }
 }

@@ -24,7 +24,7 @@
         <div class="product-item-details">
             <strong class="product-item-name">
                 <!-- ko if: product_has_url -->
-                <a data-bind="attr: {href: product_url}, text: product_name"></a>
+                <a data-bind="attr: {href: product_url}, html: product_name"></a>
                 <!-- /ko -->
                 <!-- ko ifnot: product_has_url -->
                     <!-- ko text: product_name --><!-- /ko -->
@@ -32,24 +32,23 @@
             </strong>
 
             <!-- ko if: options.length -->
-            <div class="product options" data-mage-init='{"collapsible":{"openedState": "active", "saveState": false}}'>
-                <span data-role="title" class="toggle"><!-- ko i18n: 'See Details' --><!-- /ko --></span>
-
+            <div class="product options">
                 <div data-role="content" class="content">
-                    <strong class="subtitle"><!-- ko i18n: 'Options Details' --><!-- /ko --></strong>
-                    <dl class="product options list">
+                    <ul class="product options list">
                         <!-- ko foreach: { data: options, as: 'option' } -->
-                        <dt class="label"><!-- ko text: option.label --><!-- /ko --></dt>
-                        <dd class="values">
-                            <!-- ko if: Array.isArray(option.value) -->
-                                <span data-bind="html: option.value.join('<br>')"></span>
-                            <!-- /ko -->
-                            <!-- ko ifnot: Array.isArray(option.value) -->
-                                <span data-bind="html: option.value"></span>
-                            <!-- /ko -->
-                        </dd>
+                        <li>
+                            <span class="label"><!-- ko text: option.label --><!-- /ko -->: </span>
+                            <span class="values">
+                                <!-- ko if: Array.isArray(option.value) -->
+                                    <span data-bind="html: option.value.join('<br>')"></span>
+                                <!-- /ko -->
+                                <!-- ko ifnot: Array.isArray(option.value) -->
+                                    <span data-bind="html: option.value"></span>
+                                <!-- /ko -->
+                            </span>
+                        </li>
                         <!-- /ko -->
-                    </dl>
+                    </ul>
                 </div>
             </div>
             <!-- /ko -->
@@ -71,15 +70,26 @@
                 <div class="details-qty qty">
                     <label class="label" data-bind="i18n: 'Qty', attr: {
                            for: 'cart-item-'+item_id+'-qty'}"></label>
-                    <input data-bind="attr: {
-                           id: 'cart-item-'+item_id+'-qty',
-                           'data-cart-item': item_id,
-                           'data-item-qty': qty,
-                           'data-cart-item-id': product_sku
-                           }, value: qty"
-                           type="number"
-                           size="4"
-                           class="item-qty cart-item-qty">
+                    <div class="cart-input-update">
+                        <button type="button"
+                                data-bind="attr: {
+                               'data-cart-item': item_id,
+                               'data-item-qty': qty}"
+                                class="cart-btn-qty minus"><span class="mbi mbi-minus"></span></button>
+                        <input data-bind="attr: {
+                               id: 'cart-item-'+item_id+'-qty',
+                               'data-cart-item': item_id,
+                               'data-item-qty': qty,
+                               'data-cart-item-id': product_sku
+                               }, value: qty"
+                               type="text"
+                               class="item-qty cart-item-qty">
+                        <button type="button"
+                                data-bind="attr: {
+                               'data-cart-item': item_id,
+                               'data-item-qty': qty}"
+                                class="cart-btn-qty plus"><span class="mbi mbi-plus"></span></button>
+                    </div>
                     <button data-bind="attr: {
                            id: 'update-cart-item-'+item_id,
                            'data-cart-item': item_id,
@@ -102,9 +112,7 @@
                 <!-- /ko -->
                 <div class="secondary">
                     <a href="#" data-bind="attr: {'data-cart-item': item_id, title: $t('Remove item')}"
-                       class="action delete">
-                        <span data-bind="i18n: 'Remove'"></span>
-                    </a>
+                       class="action delete"></a>
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -41,7 +41,7 @@ use Magento\Framework\Model\AbstractModel;
 class Comment extends AbstractModel implements \Magento\Framework\DataObject\IdentityInterface
 {
     /**
-     * @var \Magefan\Blog\Model\AuthorFactory
+     * @var PostFactory
      */
     protected $postFactory;
 
@@ -51,7 +51,7 @@ class Comment extends AbstractModel implements \Magento\Framework\DataObject\Ide
     protected $customerFactory;
 
     /**
-     * @var \Magento\User\Model\UserFactory
+     * @var \Magefan\Blog\Api\AuthorInterfaceFactory
      */
     protected $userFactory;
 
@@ -81,7 +81,7 @@ class Comment extends AbstractModel implements \Magento\Framework\DataObject\Ide
      * @param \Magento\Framework\Registry                                  $registry
      * @param \Magefan\Blog\Model\PostFactory                              $postFactory
      * @param \Magento\Customer\Model\CustomerFactory                      $customerFactory,
-     * @param \Magento\User\Model\Useractory                               $userFactory,
+     * @param \Magefan\Blog\Api\AuthorInterfaceFactory                     $userFactory,
      * @param \Magefan\Blog\Model\ResourceModel\Comment\CollectionFactory  $commentCollectionFactory
      * @param \Magento\Framework\Model\ResourceModel\AbstractResource|null $resource
      * @param \Magento\Framework\Data\Collection\AbstractDb|null           $resourceCollection
@@ -92,7 +92,7 @@ class Comment extends AbstractModel implements \Magento\Framework\DataObject\Ide
         \Magento\Framework\Registry $registry,
         \Magefan\Blog\Model\PostFactory $postFactory,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
-        \Magento\User\Model\UserFactory $userFactory,
+        \Magefan\Blog\Api\AuthorInterfaceFactory $userFactory,
         \Magefan\Blog\Model\ResourceModel\Comment\CollectionFactory $commentCollectionFactory,
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
@@ -119,7 +119,6 @@ class Comment extends AbstractModel implements \Magento\Framework\DataObject\Ide
         ];
     }
 
-
     /**
      * Initialize resource model
      *
@@ -127,7 +126,7 @@ class Comment extends AbstractModel implements \Magento\Framework\DataObject\Ide
      */
     protected function _construct()
     {
-        $this->_init('Magefan\Blog\Model\ResourceModel\Comment');
+        $this->_init(\Magefan\Blog\Model\ResourceModel\Comment::class);
     }
 
     /**
@@ -180,30 +179,40 @@ class Comment extends AbstractModel implements \Magento\Framework\DataObject\Ide
                 $this->getAuthorType()
             );
 
+            $guestData = [
+                'nickname' => $this->getAuthorNickname(),
+                'email' => $this->getAuthorEmail(),
+            ];
+
             switch ($this->getAuthorType()) {
                 case \Magefan\Blog\Model\Config\Source\AuthorType::GUEST:
-                    $this->author->setData([
-                        'nickname' => $this->getAuthorNickname(),
-                        'email' => $this->getAuthorEmail(),
-                    ]);
+                    $this->author->setData($guestData);
                     break;
                 case \Magefan\Blog\Model\Config\Source\AuthorType::CUSTOMER:
                     $customer = $this->customerFactory->create();
                     $customer->load($this->getCustomerId());
-                    $this->author->setData([
-                        'nickname' => $customer->getName(),
-                        'email' => $this->getEmail(),
-                        'customer' => $customer,
-                    ]);
+                    if ($customer->getId()) {
+                        $this->author->setData([
+                            'nickname' => $customer->getName(),
+                            'email' => $this->getEmail(),
+                            'customer' => $customer,
+                        ]);
+                    } else {
+                        $this->author->setData($guestData);
+                    }
                     break;
                 case \Magefan\Blog\Model\Config\Source\AuthorType::ADMIN:
                     $admin = $this->userFactory->create();
                     $admin->load($this->getAdminId());
-                    $this->author->setData([
-                        'nickname' => $customer->getName(),
-                        'email' => $this->getEmail(),
-                        'admin' => $admin,
-                    ]);
+                    if ($admin->getId()) {
+                        $this->author->setData([
+                            'nickname' => $admin->getName(),
+                            'email' => $this->getEmail(),
+                            'admin' => $admin,
+                        ]);
+                    } else {
+                        $this->author->setData($guestData);
+                    }
                     break;
             }
         }
@@ -238,7 +247,7 @@ class Comment extends AbstractModel implements \Magento\Framework\DataObject\Ide
      */
     public function getChildComments()
     {
-        if (is_null($this->comments)) {
+        if (null === $this->comments) {
             $this->comments = $this->commentCollectionFactory->create()
                 ->addFieldToFilter('parent_id', $this->getId());
         }
@@ -253,16 +262,6 @@ class Comment extends AbstractModel implements \Magento\Framework\DataObject\Ide
     public function isReply()
     {
         return (bool)$this->getParentId();
-    }
-
-    /**
-     * Save the comment
-     * @return this
-     */
-    public function save()
-    {
-        $this->validate();
-        return parent::save();
     }
 
     /**
@@ -287,5 +286,49 @@ class Comment extends AbstractModel implements \Magento\Framework\DataObject\Ide
             $format,
             $this->getData('creation_time')
         );
+    }
+
+    /**
+     * @return array|ResourceModel\Comment\Collection
+     */
+    public function getRepliesCollection()
+    {
+        $repliesCollection = [];
+        if (!$this->isReply()) {
+            $cId = $this->getId();
+            if (!isset($repliesCollection[$cId])) {
+                $repliesCollection[$cId] = $this->getChildComments()
+                    ->addActiveFilter()
+                    /*->setPageSize($this->getNumberOfReplies())*/
+                    //->setOrder('creation_time', 'DESC'); old sorting
+                    ->setOrder('creation_time', 'ASC');
+            }
+
+            return $repliesCollection[$cId];
+        } else {
+            return [];
+        }
+    }
+
+    /**
+     * @deprecated use getDynamicData method in graphQL data provider
+     * @param null $fields
+     * @return array
+     */
+    public function getDynamicData($fields = null)
+    {
+        $data = $this->getData();
+
+        if (is_array($fields) && array_key_exists('replies', $fields)) {
+            $replies = [];
+            foreach ($this->getRepliesCollection() as $reply) {
+                $replies[] = $reply->getDynamicData(
+                    isset($fields['replies']) ? $fields['replies'] : null
+                );
+            }
+            $data['replies'] = $replies;
+        }
+
+        return $data;
     }
 }

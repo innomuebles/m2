@@ -1,0 +1,18 @@
+{
+  "name": "apptrian/facebook-catalog",
+  "description": "Generates product feed used for Facebook Catalog, Facebook Dynamic Ads, Facebook Shopping, Instagram Shopping, Pinterest Catalog, and Google Shopping. Easy to install and use.",
+  "type": "magento2-module",
+  "version": "1.6.3",
+  "license": [
+    "EULA"
+  ],
+  "require": {
+    "php": "~5.5|~7.0"
+  },
+  "autoload": {
+    "files": [ "registration.php" ],
+    "psr-4": {
+      "Apptrian\\FacebookCatalog\\": ""
+    }
+  }
+}

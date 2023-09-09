@@ -7,7 +7,7 @@
 <?php /** @var $block \Magento\Swatches\Block\Product\Renderer\Configurable */ ?>
 <?php
 $productId = $block->getProduct()->getId();
-$id = $block->getSwatchId().$productId;
+$id = $block->getSwatchId() . $productId;
 ?>
 <div class="swatch-opt-<?= /* @escapeNotVerified */ $id ?>"
      data-role="swatch-option-<?= /* @escapeNotVerified */ $id ?>"></div>
@@ -22,7 +22,9 @@ $id = $block->getSwatchId().$productId;
                 "numberToShow": <?= /* @escapeNotVerified */ $block->getNumberSwatchesPerProduct(); ?>,
                 "jsonConfig": <?= /* @escapeNotVerified */ $block->getJsonConfig(); ?>,
                 "jsonSwatchConfig": <?= /* @escapeNotVerified */ $block->getJsonSwatchConfig(); ?>,
-                "mediaCallback": "<?= /* @escapeNotVerified */ $block->getMediaCallback() ?>"
+                "mediaCallback": "<?= /* @escapeNotVerified */ $block->getMediaCallback() ?>",
+                "jsonSwatchImageSizeConfig": <?= $block->getJsonSwatchSizeConfig() ?: 0 ?>,
+                "showTooltip": 1
             }
         }
     }

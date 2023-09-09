@@ -6,42 +6,7 @@ define([
     'jquery',
     'nanoscroller'
 ], function ($) {
-
-    !function (o) {
-        if (o.support.touch = "ontouchend" in document, o.support.touch) {
-            var t, e = o.ui.mouse.prototype, u = e._mouseInit, n = e._mouseDestroy;
-
-            function c(o, t) {
-                if (!(o.originalEvent.touches.length > 1)) {
-                    o.preventDefault();
-                    var e = o.originalEvent.changedTouches[0], u = document.createEvent("MouseEvents");
-                    u.initMouseEvent(t, !0, !0, window, 1, e.screenX, e.screenY, e.clientX, e.clientY, !1, !1, !1, !1, 0, null), o.target.dispatchEvent(u)
-                }
-            }
-
-            e._touchStart = function (o) {
-                !t && this._mouseCapture(o.originalEvent.changedTouches[0]) && (t = !0, this._touchMoved = !1, c(o, "mouseover"), c(o, "mousemove"), c(o, "mousedown"))
-            }, e._touchMove = function (o) {
-                t && (this._touchMoved = !0, c(o, "mousemove"))
-            }, e._touchEnd = function (o) {
-                t && (c(o, "mouseup"), c(o, "mouseout"), this._touchMoved || c(o, "click"), t = !1)
-            }, e._mouseInit = function () {
-                var t = this;
-                t.element.bind({
-                    touchstart: o.proxy(t, "_touchStart"),
-                    touchmove: o.proxy(t, "_touchMove"),
-                    touchend: o.proxy(t, "_touchEnd")
-                }), u.call(t)
-            }, e._mouseDestroy = function () {
-                var t = this;
-                t.element.unbind({
-                    touchstart: o.proxy(t, "_touchStart"),
-                    touchmove: o.proxy(t, "_touchMove"),
-                    touchend: o.proxy(t, "_touchEnd")
-                }), n.call(t)
-            }
-        }
-    }($);
+    "use strict";
 
     $.widget('magebig.ajaxfilter', {
         options: {
@@ -84,7 +49,7 @@ define([
                 var $select = $(this),
                     actionUrl = $select.val();
                 self.activeCode = $select.data('code');
-                self._ajaxFilter(actionUrl, true);
+                self._ajaxFilter(actionUrl, true, true);
             });
             $('[data-role=mb-filter-checkbox] [type=checkbox]').on('change', function () {
                 var $checkbox = $(this),
@@ -112,58 +77,74 @@ define([
                     actionUrl += code + '=' + value;
                 }
                 self.activeCode = code;
-                self._ajaxFilter(actionUrl, true);
+                self._ajaxFilter(actionUrl, true, true);
             });
         },
 
         _updateToolbar: function () {
             var self = this,
-                currURL = document.URL;
+                currURL = document.URL,
+                currURLVars = this.getUrlVars(currURL),
+                params = '?',
+                $currentUrl = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
 
-            currURL.split('%2C').join(',');
+            $.each(currURLVars, function (index, value) {
+                if (index !== 'p' && index !== 'page') {
+                    params += index + '=' + value + '&';
+                }
+            });
 
             $('.toolbar.toolbar-products .pages-items a').each(function () {
                 var pageUrl = $(this).attr('href'),
-                    varUrl = self.getUrlVars(pageUrl),
-                    url = new URL(currURL),
-                    newUrl;
+                    paging = '',
+                    newUrl,
+                    urlVars;
 
-                url.searchParams.set('p', varUrl['p']);
+                if (pageUrl.indexOf('p=') > -1 || pageUrl.indexOf('page=') > -1) {
+                    urlVars = self.getUrlVars(pageUrl);
 
-                newUrl = url.href;
-                newUrl = newUrl.split('%2C').join(',');
+                    $.each(urlVars, function (index, value) {
+                        if (index === 'p' || index === 'page') {
+                            paging = index + '=' + value;
+                        }
+                    });
 
-                $(this).attr('href', newUrl);
+                    newUrl = $currentUrl + params + paging;
+                    $(this).attr('href', newUrl);
+                }
             });
 
             $('.toolbar.toolbar-products').each(function () {
                 var $toolbar = $(this);
-                var toolbarForm = $toolbar.data('mageProductListToolbarForm');
-                if (toolbarForm) {
-                    toolbarForm.changeUrl = function (paramName, paramValue, defaultValue) {
-                        var decode = window.decodeURIComponent,
-                            urlPaths = this.options.url.split('?'),
-                            baseUrl = urlPaths[0],
-                            urlParams = urlPaths[1] ? urlPaths[1].split('&') : [],
-                            paramData = {},
-                            parameters, i;
 
-                        for (i = 0; i < urlParams.length; i++) {
-                            parameters = urlParams[i].split('=');
-                            paramData[decode(parameters[0])] = parameters[1] !== undefined ?
-                                decode(parameters[1].replace(/\+/g, '%20')) : '';
+                setTimeout(function () {
+                    var toolbarForm = $toolbar.data('mageProductListToolbarForm');
+                    if (toolbarForm) {
+                        toolbarForm.changeUrl = function (paramName, paramValue, defaultValue) {
+                            var decode = window.decodeURIComponent,
+                                urlPaths = this.options.url.split('?'),
+                                baseUrl = urlPaths[0],
+                                urlParams = urlPaths[1] ? urlPaths[1].split('&') : [],
+                                paramData = {},
+                                parameters, i;
+
+                            for (i = 0; i < urlParams.length; i++) {
+                                parameters = urlParams[i].split('=');
+                                paramData[decode(parameters[0])] = parameters[1] !== undefined ?
+                                    decode(parameters[1].replace(/\+/g, '%20')) : '';
+                            }
+                            paramData[paramName] = paramValue;
+
+                            if (paramValue == defaultValue) {
+                                delete paramData[paramName];
+                            }
+                            paramData = $.param(paramData);
+
+                            var actionUrl = baseUrl + (paramData.length ? '?' + paramData : '');
+                            self._ajaxFilter(actionUrl, true, true);
                         }
-                        paramData[paramName] = paramValue;
-
-                        if (paramValue == defaultValue) {
-                            delete paramData[paramName];
-                        }
-                        paramData = $.param(paramData);
-
-                        var actionUrl = baseUrl + (paramData.length ? '?' + paramData : '');
-                        self._ajaxFilter(actionUrl, true);
                     }
-                }
+                }, 500);
             });
         },
         _defaultEvents: function () {
@@ -172,7 +153,7 @@ define([
                 e.preventDefault();
                 var $a = $(this);
                 var actionUrl = $a.attr('href');
-                self._ajaxFilter(actionUrl, true);
+                self._ajaxFilter(actionUrl, true, true);
             });
         },
 
@@ -184,7 +165,7 @@ define([
             return vars;
         },
 
-        _ajaxFilter: function (actionUrl, needSrollTop = false, pushState = true) {
+        _ajaxFilter: function (actionUrl, needSrollTop, pushState) {
             var self = this, conf = this.options;
 
             if ((!actionUrl) || (actionUrl.search('javascript:') == 0) || (actionUrl.search('#') == 0)) {

@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -34,7 +34,7 @@ class Recent extends \Magefan\Blog\Block\Post\PostList\AbstractList
         return parent::_construct();
     }
 
-    /*
+    /**
      * Prepare posts collection
      *
      * @return void
@@ -43,5 +43,34 @@ class Recent extends \Magefan\Blog\Block\Post\PostList\AbstractList
     {
         parent::_preparePostCollection();
         $this->_postCollection->addRecentFilter();
+    }
+
+    /**
+     * Retrieve true if display the post image is enabled in the config
+     * @return bool
+     */
+    public function getDisplayImage()
+    {
+        return (bool)$this->_scopeConfig->getValue(
+            'mfblog/sidebar/'.$this->_widgetKey.'/display_image',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Get relevant path to template
+     *
+     * @return string
+     */
+    public function getTemplate()
+    {
+        $templateName = (string)$this->_scopeConfig->getValue(
+            'mfblog/sidebar/'.$this->_widgetKey.'/template',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+        if ($template = $this->templatePool->getTemplate('blog_post_sidebar_posts', $templateName)) {
+            $this->_template = $template;
+        }
+        return parent::getTemplate();
     }
 }

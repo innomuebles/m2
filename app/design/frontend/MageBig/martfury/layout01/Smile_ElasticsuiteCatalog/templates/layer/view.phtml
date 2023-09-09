@@ -2,14 +2,13 @@
 /**
  * DISCLAIMER
  *
- * Do not edit or add to this file if you wish to upgrade Smile Elastic Suite to newer
+ * Do not edit or add to this file if you wish to upgrade Smile ElasticSuite to newer
  * versions in the future.
- *
  *
  * @category  Smile
  * @package   Smile\ElasticsuiteCatalog
  * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
+ * @copyright 2019 Smile
  * @license   Open Software License ("OSL") v. 3.0
  */
 
@@ -19,20 +18,22 @@
  * @var $block \Smile\ElasticsuiteCatalog\Block\Navigation
  */
 ?>
+
 <?php if ($block->canShowBlock()) : ?>
     <?php $activeFilters = $block->getActiveFilters(); ?>
     <div class="block filter" id="layered-filter-block">
         <?php $filtered = count($block->getLayer()->getState()->getFilters()) ?>
-        <div class="block-title filter-title" data-count="<?= /* @escapeNotVerified */ $filtered ?>">
-            <strong data-role="title"><?php /* @escapeNotVerified */ echo __('Shop By') ?></strong>
+        <div class="block-title filter-title" data-count="<?= /* @noEscape */ $filtered ?>">
+            <strong data-role="title"><?= $block->escapeHtml(__('Shop By')); ?></strong>
         </div>
-
         <div class="block-content filter-content">
-            <?php echo $block->getChildHtml('state') ?>
+            <?= $block->getChildHtml('state') ?>
 
             <?php if ($block->getLayer()->getState()->getFilters()) : ?>
                 <div class="block-actions filter-actions">
-                    <a href="<?php /* @escapeNotVerified */ echo $block->getClearUrl() ?>" class="action clear filter-clear"><span><?php /* @escapeNotVerified */ echo __('Clear All') ?></span> <span class="mbi mbi-trash2"></span></a>
+                    <a href="<?= $block->escapeUrl($block->getClearUrl()) ?>" class="action clear filter-clear">
+                        <span><?= $block->escapeHtml(__('Clear All')) ?></span> <span class="mbi mbi-trash2"></span>
+                    </a>
                 </div>
             <?php endif; ?>
             <?php $wrapOptions = false; ?>
@@ -40,7 +41,7 @@
         <?php if ($filter->getItemsCount()) : ?>
         <?php if (!$wrapOptions) : ?>
             <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?= /* @escapeNotVerified */ __('Shopping Options') ?></strong>
-            <div class="filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": <?= /* @noEscape */ $block->isInline() ? "false" : "true"; ?>}}'>
+            <div class="filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "opened", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "animate": {"duration": 300}, "multipleCollapsible": <?= /* @noEscape */ $block->isInline() ? "false" : "true"; ?>}}'>
                 <?php $wrapOptions = true;?>
                 <?php endif; ?>
                 <div data-role="collapsible" class="filter-options-item">

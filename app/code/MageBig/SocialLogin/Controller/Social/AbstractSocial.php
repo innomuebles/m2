@@ -6,16 +6,22 @@
 
 namespace MageBig\SocialLogin\Controller\Social;
 
-use Magento\Customer\Api\AccountManagementInterface;
-use Magento\Customer\Model\Account\Redirect as AccountRedirect;
+use Exception;
+use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Controller\Result\Raw;
 use Magento\Framework\Controller\Result\RawFactory;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
+use Magento\Framework\Stdlib\Cookie\FailureToSendException;
 use Magento\Framework\Stdlib\Cookie\PhpCookieManager;
+use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use MageBig\SocialLogin\Helper\Social as SocialHelper;
 use MageBig\SocialLogin\Model\Social;
@@ -28,34 +34,24 @@ use MageBig\SocialLogin\Model\Social;
 abstract class AbstractSocial extends Action
 {
     /**
-     * @type \Magento\Customer\Model\Session
+     * @type Session
      */
     protected $session;
 
     /**
-     * @type \Magento\Store\Model\StoreManagerInterface
+     * @type StoreManagerInterface
      */
     protected $storeManager;
 
     /**
-     * @type \Magento\Customer\Api\AccountManagementInterface
-     */
-    protected $accountManager;
-
-    /**
-     * @type \MageBig\SocialLogin\Helper\Social
+     * @type SocialHelper
      */
     protected $apiHelper;
 
     /**
-     * @type \MageBig\SocialLogin\Model\Social
+     * @type Social
      */
     protected $apiObject;
-
-    /**
-     * @var AccountRedirect
-     */
-    protected $accountRedirect;
 
     /**
      * @type
@@ -68,47 +64,43 @@ abstract class AbstractSocial extends Action
     protected $cookieMetadataFactory;
 
     /**
-     * @var \Magento\Framework\Controller\Result\RawFactory
+     * @var RawFactory
      */
     protected $resultRawFactory;
 
     /**
      * Login constructor.
+     *
      * @param Context $context
      * @param StoreManagerInterface $storeManager
-     * @param AccountManagementInterface $accountManager
      * @param SocialHelper $apiHelper
      * @param Social $apiObject
      * @param Session $customerSession
-     * @param AccountRedirect $accountRedirect
      * @param RawFactory $resultRawFactory
      */
     public function __construct(
         Context $context,
         StoreManagerInterface $storeManager,
-        AccountManagementInterface $accountManager,
         SocialHelper $apiHelper,
         Social $apiObject,
         Session $customerSession,
-        AccountRedirect $accountRedirect,
         RawFactory $resultRawFactory
     )
     {
-        parent::__construct($context);
-
-        $this->storeManager     = $storeManager;
-        $this->accountManager   = $accountManager;
-        $this->apiHelper        = $apiHelper;
-        $this->apiObject        = $apiObject;
-        $this->session          = $customerSession;
-        $this->accountRedirect  = $accountRedirect;
+        $this->storeManager = $storeManager;
+        $this->apiHelper = $apiHelper;
+        $this->apiObject = $apiObject;
+        $this->session = $customerSession;
         $this->resultRawFactory = $resultRawFactory;
+
+        parent::__construct($context);
     }
 
     /**
      * Get Store object
      *
-     * @return \Magento\Store\Api\Data\StoreInterface
+     * @return StoreInterface
+     * @throws NoSuchEntityException
      */
     public function getStore()
     {
@@ -118,20 +110,31 @@ abstract class AbstractSocial extends Action
     /**
      * @param $userProfile
      * @param $type
-     * @return bool|\Magento\Customer\Model\Customer|mixed
-     * @throws \Exception
-     * @throws \Magento\Framework\Exception\LocalizedException
+     *
+     * @return bool|Customer|mixed
+     * @throws Exception
+     * @throws LocalizedException
      */
     public function createCustomerProcess($userProfile, $type)
     {
         $name = explode(' ', $userProfile->displayName ?: __('New User'));
-        $user = array_merge([
-            'email'      => $userProfile->email ?: $userProfile->identifier . '@' . strtolower($type) . '.com',
-            'firstname'  => $userProfile->firstName ?: (array_shift($name) ?: $userProfile->identifier),
-            'lastname'   => $userProfile->lastName ?: (array_shift($name) ?: $userProfile->identifier),
-            'identifier' => $userProfile->identifier,
-            'type'       => $type
-        ], $this->getUserData($userProfile));
+
+        if (strtolower($type) === 'steam') {
+            $char = "https://steamcommunity.com/openid/id/";
+            $userProfile->identifier = trim($userProfile->identifier, $char);
+        }
+
+        $user = array_merge(
+            [
+                'email' => $userProfile->email ?: $userProfile->identifier . '@' . strtolower($type) . '.com',
+                'firstname' => $userProfile->firstName ?: (array_shift($name) ?: $userProfile->identifier),
+                'lastname' => $userProfile->lastName ?: (array_shift($name) ?: $userProfile->identifier),
+                'identifier' => $userProfile->identifier,
+                'type' => $type,
+                'password' => $userProfile->password ?? null
+            ],
+            $this->getUserData($userProfile)
+        );
 
         return $this->createCustomer($user, $type);
     }
@@ -141,23 +144,24 @@ abstract class AbstractSocial extends Action
      *
      * @param $user
      * @param $type
-     * @return bool|\Magento\Customer\Model\Customer|mixed
-     * @throws \Exception
-     * @throws \Magento\Framework\Exception\LocalizedException
+     *
+     * @return bool|Customer|mixed
+     * @throws Exception
+     * @throws LocalizedException
      */
     public function createCustomer($user, $type)
     {
         $customer = $this->apiObject->getCustomerByEmail($user['email'], $this->getStore()->getWebsiteId());
-        if (!$customer->getId()) {
+        if ($customer->getId()) {
+            $this->apiObject->setAuthorCustomer($user['identifier'], $customer->getId(), $type);
+        } else {
             try {
                 $customer = $this->apiObject->createCustomerSocial($user, $this->getStore());
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->emailRedirect($e->getMessage(), false);
 
                 return false;
             }
-        } else {
-            $this->apiObject->setAuthorCustomer($user['identifier'], $customer->getId(), $type);
         }
 
         return $customer;
@@ -165,6 +169,7 @@ abstract class AbstractSocial extends Action
 
     /**
      * @param $profile
+     *
      * @return array
      */
     protected function getUserData($profile)
@@ -177,6 +182,7 @@ abstract class AbstractSocial extends Action
      *
      * @param $apiLabel
      * @param bool $needTranslate
+     *
      * @return $this
      */
     public function emailRedirect($apiLabel, $needTranslate = true)
@@ -195,46 +201,57 @@ abstract class AbstractSocial extends Action
      */
     protected function _loginPostRedirect()
     {
-        $url = $this->_url->getUrl('customer/account');
+        $url = '';
+        $isCheckout = $this->session->getData('social_in_checkout');
 
-        if ($this->_request->getParam('authen') == 'popup') {
-            $url = $this->_url->getUrl('checkout');
-        } else {
-            $requestedRedirect = $this->accountRedirect->getRedirectCookie();
-            if (!$this->apiHelper->getConfigValue('customer/startup/redirect_dashboard') && $requestedRedirect) {
-                $url = $this->_redirect->success($requestedRedirect);
-                $this->accountRedirect->clearRedirectCookie();
-            }
+        if ($this->apiHelper->getConfigValue('customer/startup/redirect_dashboard') && !$isCheckout) {
+            $url = $this->_url->getUrl('customer/account');
         }
 
-        $object = ObjectManager::getInstance()->create(DataObject::class, ['url' => $url]);
-        $this->_eventManager->dispatch('social_manager_get_login_redirect', [
-            'object'  => $object,
-            'request' => $this->_request
-        ]);
-        $url = $object->getUrl();
+        $object = new DataObject(
+            [
+                'url' => $url,
+            ]
+        );
 
-        return $url;
+        $this->_eventManager->dispatch(
+            'social_manager_get_login_redirect',
+            [
+                'object' => $object,
+                'request' => $this->_request
+            ]
+        );
+
+        return $object->getUrl();
     }
 
     /**
      * Return javascript to redirect when login success
      *
      * @param null $content
-     * @return \Magento\Framework\Controller\Result\Raw
+     *
+     * @return Raw
      */
     public function _appendJs($content = null)
     {
-        /** @var \Magento\Framework\Controller\Result\Raw $resultRaw */
+        /** @var Raw $resultRaw */
         $resultRaw = $this->resultRawFactory->create();
+        $url = $this->_loginPostRedirect();
+        $raw = $resultRaw->setContents(
+            $content ?: sprintf(
+                "<script>window.opener.socialCallback('%s', window);</script>",
+                $url
+            )
+        );
 
-        return $resultRaw->setContents($content ?: sprintf("<script>window.opener.socialCallback('%s', window);</script>", $this->_loginPostRedirect()));
+        return $raw;
     }
 
     /**
      * @param $customer
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Stdlib\Cookie\FailureToSendException
+     *
+     * @throws InputException
+     * @throws FailureToSendException
      */
     public function refresh($customer)
     {
@@ -253,8 +270,8 @@ abstract class AbstractSocial extends Action
     /**
      * Retrieve cookie manager
      *
+     * @return     PhpCookieManager
      * @deprecated
-     * @return \Magento\Framework\Stdlib\Cookie\PhpCookieManager
      */
     private function getCookieManager()
     {
@@ -270,8 +287,8 @@ abstract class AbstractSocial extends Action
     /**
      * Retrieve cookie metadata factory
      *
+     * @return     CookieMetadataFactory
      * @deprecated
-     * @return \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory
      */
     private function getCookieMetadataFactory()
     {
@@ -282,5 +299,35 @@ abstract class AbstractSocial extends Action
         }
 
         return $this->cookieMetadataFactory;
+    }
+
+    /**
+     * @param $message
+     */
+    protected function setBodyResponse($message)
+    {
+        $content = '<html><head></head><body>';
+        $content .= '<div class="message message-error">' . __("Ooophs, we got an error: %1", $message) . '</div>';
+        $content .= <<<Style
+<style type="text/css">
+    .message{
+        background: #fffbbb;
+        border: none;
+        border-radius: 0;
+        color: #333333;
+        font-size: 1.4rem;
+        margin: 0 0 10px;
+        padding: 1.8rem 4rem 1.8rem 1.8rem;
+        position: relative;
+        text-shadow: none;
+    }
+    .message-error{
+        background:#ffcccc;
+    }
+</style>
+Style;
+        $content .= '</body></html>';
+
+        $this->getResponse()->setBody($content);
     }
 }

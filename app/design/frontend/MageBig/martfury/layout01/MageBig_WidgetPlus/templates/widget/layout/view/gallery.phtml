@@ -24,79 +24,82 @@ if (!empty($images) && empty($mainImage)) {
     $mainImage = $block->getGalleryImages()->getFirstItem();
 }
 
-# 2020-12-08 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
-# «Call to a member function getDefaultPlaceholderUrl() on null»: https://github.com/innomuebles/m2/issues/7
+$helper = $this->helper('Magento\Catalog\Helper\Image');
 $mainImageData = $mainImage ?
     $mainImage->getData('medium_image_url') :
-    df_catalog_image_h()->getDefaultPlaceholderUrl('image');
+    $helper->getDefaultPlaceholderUrl('image');
 
+//$thumbType = $_mbHelper->getConfig('mbconfig/product_view/nav_dir');
+$thumbType = 'vertical';
+$rtl = $_mbHelper->getConfig('mbdesign/general/enable_rtl');
+$imgs = '';
+$pl = '';
+if ($imgCount > 1) {
+    $imgs = 'imgs';
+    $pl = '<span class="thumb-pl"></span>';
+}
+$width = $block->getImageAttribute('product_page_image_medium', 'width');
+$height = $block->getImageAttribute('product_page_image_medium', 'height') ?: $width;
+$thumbWidth = $block->getImageAttribute('product_page_image_small', 'width');
+$thumbHeight = $block->getImageAttribute('product_page_image_small', 'height');
+$ratio = round($height / $width, 4);
+$pad = $ratio * 100 . '%';
+
+$thumbW = 66;
+$thumbH = $thumbW * $ratio;
 ?>
-<div class="gallery-placeholder _block-content-loading gallery-<?= $id; ?> <?php if ($imgCount) echo 'imgs'; ?>">
-    <img
+<div class="gallery-placeholder _block-content-loading gallery-<?= $id; ?> <?= $thumbType ?> <?= $imgs ?>"
+     data-gallery-role="gallery-placeholder"
+     style="--ratio:<?= $ratio ?>;--pad-product:<?= $pad ?>;--pad-thumb:<?= $thumbH ?>px">
+    <div class="gallery-placeholder__image">
+        <img
             alt="main product photo"
-            class="gallery-placeholder__image img-fluid"
+            class="img-fluid"
             src="<?= /* @noEscape */ $mainImageData ?>"
-    />
-    <span class="thumb-pl"></span>
-    <div data-role="loader" class="loading-mask">
-        <div class="loader"></div>
+            width="<?= $width ?>"
+            height="<?= $height ?>"
+        />
+        <?= $pl ?>
     </div>
 </div>
 <script type="text/x-magento-init">
     {
         ".gallery-<?= $id; ?>": {
             "mage/gallery/gallery": {
-                "mixins":["magnifier/magnify"],
-                "magnifierOpts": <?= /* @escapeNotVerified */ $block->getMagnifier() ?>,
-                "data": <?= /* @escapeNotVerified */ $block->getGalleryImagesJson() ?>,
+                "data": <?= $block->getGalleryImagesJson() ?>,
                 "options": {
                     "thumbmargin": 10,
                     "thumbborderwidth": 1,
                     "nav": "thumbs",
                     "loop": 1,
                     "keyboard": 1,
-                    "arrows": 1,
-                    <?php if ($_mbHelper->getConfig('mbconfig/product_view/allowfullscreen')): ?>
-                        "allowfullscreen": <?= /* @escapeNotVerified */ $_mbHelper->getConfig('mbconfig/product_view/allowfullscreen') ?>,
-                    <?php endif; ?>
+                    "arrows": 0,
+                    "allowfullscreen": <?= (int)$_mbHelper->getConfig('mbconfig/product_view/allowfullscreen') ?>,
                     "showCaption": 0,
-                    "width": "<?= /* @escapeNotVerified */ $_mbHelper->getConfig('mbconfig/product_view/base_image_width') ?>",
-                    "thumbwidth": "<?= /* @escapeNotVerified */ $_mbHelper->getConfig('mbconfig/product_view/thumbnail_width') ?>",
-                    <?php if ($_mbHelper->getConfig('mbconfig/product_view/thumbnail_height') || $_mbHelper->getConfig('mbconfig/product_view/thumbnail_width')): ?>
-                    "thumbheight": <?= /* @escapeNotVerified */ $_mbHelper->getConfig('mbconfig/product_view/thumbnail_height') ?: $_mbHelper->getConfig('mbconfig/product_view/thumbnail_width'); ?>,
-                    <?php endif; ?>
-                    <?php if ($_mbHelper->getConfig('mbconfig/product_view/base_image_height') || $_mbHelper->getConfig('mbconfig/product_view/base_image_width')): ?>
-                        "height": <?= /* @escapeNotVerified */ $_mbHelper->getConfig('mbconfig/product_view/base_image_height') ?: $_mbHelper->getConfig('mbconfig/product_view/base_image_width'); ?>,
-                    <?php endif; ?>
-                    "transitionduration": 500,
-                    "transition": "slide",
+                    "width": "<?= $width ?>",
+                    "thumbwidth": <?= $thumbW ?>,
+                    "thumbheight": <?= $thumbH ?>,
+                    "height": <?= $height ?>,
+                    "transitionduration": <?= (int)$_mbHelper->getConfig('mbconfig/product_view/gallery_duration') ?>,
+                    "transition": "<?= $_mbHelper->getConfig('mbconfig/product_view/gallery_effect') ?>",
                     "navarrows": 1,
                     "navtype": "slides",
-                    "navdir": "<?= /* @escapeNotVerified */ $_mbHelper->getConfig('mbconfig/product_view/nav_dir') ?>"
+                    "navdir": "<?= $thumbType ?>",
+                    "direction": "<?= $rtl ? 'rtl' : 'ltr'?>"
                 },
                 "fullscreen": {
                     "nav": "thumbs",
                     "loop": 1,
                     "navdir": "vertical",
+                    "navarrows": 0,
                     "navtype": "slides",
                     "arrows": 1,
                     "showCaption": 1,
-                    "transitionduration": 500,
-                    "transition": "dissolve"
+                    "transitionduration": 600,
+                    "transition": "crossfade"
                 },
-                "breakpoints": {
-                    "mobile":{
-                        "conditions":{"max-width":"767px"},
-                        "options": {
-                            "options": {
-                                "nav":"thumbs",
-                                "navdir":"horizontal"
-                            }
-                        }
-                    }
-                }
+                "breakpoints": {"mobile":{"conditions":{"max-width":"767px"},"options":{"options":{"nav":"thumbs","navdir":"horizontal"}}}}
             }
         }
     }
 </script>
-

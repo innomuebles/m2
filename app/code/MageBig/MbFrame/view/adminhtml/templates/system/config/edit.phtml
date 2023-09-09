@@ -387,7 +387,7 @@
     });
 
 </script>
-<script type="text/javascript">
+<script>
     require(['jquery','minicolors'], function($,minicolors){
         $(function() {
             $('.pick-color').minicolors({
@@ -403,8 +403,8 @@
         });
     });
 </script>
-<script type="text/javascript">
-    require(['jquery'],function($){
+<script>
+    require(['jquery', "domReady!"],function($){
         $('a.bg_image').on('click', function() {
             $('a.bg_image').removeClass('selected');
             $(this).addClass('selected');
@@ -412,7 +412,6 @@
             return false;
         });
         $('.btn-more-pattern').on('click', function() {
-            event.preventDefault();
             $(this).parent('.pattern-wrap').find('.pattern-wrap-inner').css({
                 height: 'auto',
                 margin: '0'
@@ -424,72 +423,91 @@
             for (var i = 0; i < fonts.items.length; i++) {
                 if (fonts.items[i].family == $(idfont).val()) {
                     if (idweight) {
-                        $(idweight).val(fonts.items[i].variants);
+                        idweight.val(fonts.items[i].variants);
                     }
                     if (idsubsets) {
-                        $(idsubsets).val(fonts.items[i].subsets);
+                        idsubsets.val(fonts.items[i].subsets);
                     }
-                    $(idweightsview).text('Font weight: '+fonts.items[i].variants);
-                    $(idsubsview).text('Character sets: '+fonts.items[i].subsets);
+                    idweightsview.text('Font weight: '+fonts.items[i].variants);
+                    idsubsview.text('Character sets: '+fonts.items[i].subsets);
                 }
             }
         }
-        $.getJSON("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyC21FgUe2GvTV4yWd0X6KG9gN_CD4la6RU", function(fonts) {
-            if ($('#mbdesign_font_google_font_1').length) {
-                checkfont(fonts, '#mbdesign_font_google_font_1', false, false, '#note1', '#note1_1');
-                checkfont(fonts, '#mbdesign_font_google_font_2', false, false, '#note2', '#note2_1');
-                checkfont(fonts, '#mbdesign_font_google_font_3', false, false, '#note3', '#note3_1');
+
+        function changeFont(val, id){
+            if (val) {
+                var link = $("<link>", {
+                    type: "text/css",
+                    rel: "stylesheet",
+                    href: "//fonts.googleapis.com/css?family=" + val,
+                }).appendTo("head");
+                $(id).css("font-family", val);
             }
-            $('#mbdesign_font_google_font_1').on('change', function() {
-                checkfont(fonts, '#mbdesign_font_google_font_1', '#mbdesign_font_google_font_weights_1', '#mbdesign_font_google_font_subsets_1', '#note1', '#note1_1');
-                $valf = $('#mbdesign_font_google_font_1').val();
+        }
+
+        var $font1 = $('#mbdesign_font_google_font_1'),
+            $font2 = $('#mbdesign_font_google_font_2'),
+            $font3 = $('#mbdesign_font_google_font_3'),
+            $note1 = $('#note1'),
+            $note2 = $('#note2'),
+            $note3 = $('#note3'),
+            $note1_1 = $('#note1_1'),
+            $note2_1 = $('#note2_1'),
+            $note3_1 = $('#note3_1'),
+            $weight1 = $('#mbdesign_font_google_font_weights_1'),
+            $weight2 = $('#mbdesign_font_google_font_weights_2'),
+            $weight3 = $('#mbdesign_font_google_font_weights_3'),
+            $subset1 = $('#mbdesign_font_google_font_subsets_1'),
+            $subset2 = $('#mbdesign_font_google_font_subsets_2'),
+            $subset3 = $('#mbdesign_font_google_font_subsets_3');
+
+        async function fetchDataAsync() {
+            const response = await fetch('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyC21FgUe2GvTV4yWd0X6KG9gN_CD4la6RU');
+            var fonts = await response.json();
+
+            if ($font1.length) {
+                checkfont(fonts, $font1, false, false, $note1, $note1_1);
+                checkfont(fonts, $font2, false, false, $note2, $note2_1);
+                checkfont(fonts, $font3, false, false, $note3, $note2_1);
+            }
+            $font1.on('change', function() {
+                checkfont(fonts, $font1, $weight1, $subset1, $note1, $note1_1);
+                $valf = $font1.val();
                 $('#mbdesign_font_font_default').val($valf);
             });
-            $('#mbdesign_font_google_font_2').on('change', function() {
-                checkfont(fonts, '#mbdesign_font_google_font_2', '#mbdesign_font_google_font_weights_2', '#mbdesign_font_google_font_subsets_2', '#note2', '#note2_1');
-                $valf = $('#mbdesign_font_google_font_2').val();
+            $font2.on('change', function() {
+                checkfont(fonts, $font2, $weight2, $subset2, $note2, $note2_1);
+                $valf = $font2.val();
                 $('#mbdesign_font_font_h').val($valf);
             });
-            $('#mbdesign_font_google_font_3').on('change', function() {
-                checkfont(fonts, '#mbdesign_font_google_font_3', '#mbdesign_font_google_font_weights_3', '#mbdesign_font_google_font_subsets_3', '#note3', '#note3_1');
-                $valf = $('#mbdesign_font_google_font_3').val();
+            $font3.on('change', function() {
+                checkfont(fonts, $font3, $weight3, $subset3, $note3, $note3_1);
+                $valf = $font3.val();
                 $('#mbdesign_font_font_special').val($valf);
                 $('#mbdesign_font_font_text').val($valf);
             });
-        });
 
-        $(document).ready(function(){
-            function changeFont(val, id){
-                if (val) {
-                    var link = $("<link>", {
-                        type: "text/css",
-                        rel: "stylesheet",
-                        href: "//fonts.googleapis.com/css?family=" + val,
-                    }).appendTo("head");
-                    $(id).css("font-family", val);
-                }
-            }
-
-            var font_g1 = $("#mbdesign_font_google_font_1").val();
+            var font_g1 = $font1.val();
             changeFont(font_g1, "#note1, #note1_1");
-            $("#mbdesign_font_google_font_1").bind("change", function() {
-                value = $("#mbdesign_font_google_font_1").val();
+            $font1.on("change", function() {
+                value = $font1.val();
                 changeFont(value, "#note1, #note1_1");
             });
 
-            var font_g2 = $("#mbdesign_font_google_font_2").val();
+            var font_g2 = $font2.val();
             changeFont(font_g2, "#note2, #note2_1");
-            $("#mbdesign_font_google_font_2").bind("change", function() {
-                value = $("#mbdesign_font_google_font_2").val();
+            $font2.on("change", function() {
+                value = $font2.val();
                 changeFont(value, "#note2, #note2_1");
             });
 
-            var font_g3 = $("#mbdesign_font_google_font_3").val();
+            var font_g3 = $font3.val();
             changeFont(font_g3, "#note3, #note3_1");
-            $("#mbdesign_font_google_font_3").bind("change", function() {
-                value = $("#mbdesign_font_google_font_3").val();
+            $font3.on("change", function() {
+                value = $font3.val();
                 changeFont(value, "#note3, #note3_1");
             });
-        });
+        }
+        fetchDataAsync();
     });
 </script>

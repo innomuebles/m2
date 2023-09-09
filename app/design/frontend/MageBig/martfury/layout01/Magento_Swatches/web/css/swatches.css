@@ -61,15 +61,6 @@
 .swatch-option.text.selected {
     background-color: #FFF !important;
 }
-
-.clearfix:after {
-    content: " "; /* Older browser do not support empty content */
-    visibility: hidden;
-    display: block;
-    height: 0;
-    clear: both;
-}
-
 .swatch-option:not(.disabled):hover {
     border: 1px solid #fcb800 !important;
     outline: none !important;
@@ -134,7 +125,7 @@
 .swatch-option-tooltip-layered .corner:after {
     content: '';
     position: relative;
-    top: 0;
+    top: -1px;
     left: -16px;
     width: 0;
     height: 0;
@@ -194,6 +185,7 @@
     position: relative;
     margin: 0 !important;
     padding: 0 !important;
+    display: inline-block;
 }
 .swatch-option-link-layered .swatch-option:not(.text), .swatch-option-link-layered .swatch-option:not(.text):before {
     border-radius: 50%;
@@ -202,6 +194,7 @@
     height: 30px;
     width: 30px;
     min-width: 30px;
+    margin: 0;
 }
 
 .swatch-option-link-layered:focus > div {

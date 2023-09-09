@@ -179,13 +179,13 @@ jQuery(function()
     });
 
     tree<?= $block->escapeJs($block->getId()) ?> = new Ext.tree.TreePanel.Enhanced('<?= $block->escapeJs($_divId) ?>', {
-        animate:          false,
+        animate:          true,
         loader:           categoryLoader,
         enableDD:         false,
         containerScroll:  true,
-        rootVisible:      '<?= (bool) $block->getRoot()->getIsVisible() ?>',
+        rootVisible:      false,
         useAjax:          true,
-        currentNodeId:    <?= (int) $block->getCategoryId() ?>,
+        currentNodeId:    <?= \Magento\Catalog\Model\Category::TREE_ROOT_ID ?>,
         addNodeTo:        false
     });
 
@@ -200,8 +200,8 @@ jQuery(function()
         text:        'Psw',
         draggable:   false,
         id:          <?= (int) $block->getRoot()->getId() ?>,
-        expanded:    <?= (int) $block->getIsWasExpanded() ?>,
-        category_id: <?= (int) $block->getCategoryId() ?>
+        expanded:    true,
+        category_id: <?= \Magento\Catalog\Model\Category::TREE_ROOT_ID ?>
     };
 
     tree<?= $block->escapeJs($block->getId()) ?>.loadTreePlus({parameters:parameters, data:<?= /* @noEscape */ $block->getTreeJson() ?>},true);

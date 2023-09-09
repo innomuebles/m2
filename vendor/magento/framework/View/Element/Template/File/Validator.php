@@ -74,8 +74,11 @@ class Validator
     private $fileDriver;
 
     /**
-     * Class constructor
-     *
+     * @var array
+     */
+    private $moduleDirs;
+
+    /**
      * @param \Magento\Framework\Filesystem $filesystem
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfigInterface
      * @param ComponentRegistrar $componentRegistrar
@@ -136,12 +139,8 @@ class Validator
             $directories = (array)$directories;
         }
         $realPath = $this->fileDriver->getRealPath($path);
-        # 2020-12-01 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
-		# "How to fix the «Invalid template file» / «require_js.phtml» failure of Magento ≥ 2.3 in Windows?":
-		# https://mage2.pro/t/5774
-		$isWin = 'WIN' === strtoupper(substr(PHP_OS, 0, 3)); /** @var bool $isWin */
-		foreach ($directories as $directory) {
-			if (0 === strpos($realPath, !$isWin ? $directory : str_replace('/', DIRECTORY_SEPARATOR, $directory))) {
+        foreach ($directories as $directory) {
+            if (0 === strpos($realPath, $directory)) {
                 return true;
             }
         }

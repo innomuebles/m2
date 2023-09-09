@@ -4,7 +4,7 @@
 }
 .snm-cm-wrap {
     position: relative;
-    min-height: 10em;
+    min-height: 20em;
 }
 .snm-cm-wrap .ui-icon-gripsmall-diagonal-se:before {
     content: '\e644';
@@ -26,6 +26,13 @@
     height: 16px;
     width: 16px;
     z-index: 9 !important;
+}
+
+.snm-cm-wrap > .note {
+    top: -20px;
+    right: 0;
+    position: absolute;
+    font-size: 12px;
 }
 
 .snm-cm-wrap .CodeMirror-vscrollbar {
@@ -148,4 +155,29 @@
 
 .cm-invalidchar {
     color: #f00;
+}
+
+.mce-panel {
+    overflow: hidden;
+}
+
+.CodeMirror-foldmarker {
+    color: blue;
+    text-shadow: #b9f 1px 1px 2px, #b9f -1px -1px 2px, #b9f 1px -1px 2px, #b9f -1px 1px 2px;
+    font-family: arial;
+    line-height: .3;
+    cursor: pointer;
+}
+.CodeMirror-foldgutter {
+    width: .7em;
+}
+.CodeMirror-foldgutter-open,
+.CodeMirror-foldgutter-folded {
+    cursor: pointer;
+}
+.CodeMirror-foldgutter-open:after {
+    content: "\25BE";
+}
+.CodeMirror-foldgutter-folded:after {
+    content: "\25B8";
 }

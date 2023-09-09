@@ -43,24 +43,26 @@
                 }
             }
         }
+        &.required, &._required {
+            > .label {
+                position: relative;
+                &:after {
+                    content: "*";
+                    display: inline-block;
+                    color: red;
+                    margin: 0 3px;
+                }
+            }
+        }
     }
 
     .opc-wrapper {
         .fieldset {
             > .field {
-                > .label {
+                 .label {
                     font-weight: 500;
                     .font-size(14);
                     margin-bottom: 5px;
-                }
-                &.street .control .label {
-                    display: none;
-                }
-                &.street .control > div {
-                    margin-bottom: 5px;
-                    &:last-child {
-                        margin-bottom: 0;
-                    }
                 }
             }
             .field-tooltip {
@@ -68,34 +70,6 @@
             }
             select {
                 width: 100%;
-            }
-        }
-    }
-}
-
-//
-//  Desktop
-//  _____________________________________________
-
-.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    //  ToDo UI: remove with global blank theme .field.required update
-    .opc-wrapper {
-        .fieldset {
-            > .field {
-                &.required,
-                &._required {
-                    position: relative;
-
-                    > label {
-                        padding-right: 25px;
-
-                        &:after {
-                            margin-left: @indent__s;
-                            position: absolute;
-                            top: 9px;
-                        }
-                    }
-                }
             }
         }
     }

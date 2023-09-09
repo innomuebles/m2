@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -21,7 +21,7 @@ class PostList extends \Magefan\Blog\Block\Post\PostList
      */
     public function getQuery()
     {
-        return urldecode($this->getRequest()->getParam('q'));
+        return (string)urldecode((string)$this->getRequest()->getParam('q'));
     }
 
     /**
@@ -61,11 +61,24 @@ class PostList extends \Magefan\Blog\Block\Post\PostList
         $title = $this->_getTitle();
         $this->_addBreadcrumbs($title, 'blog_search');
         $this->pageConfig->getTitle()->set($title);
-
+        /*
         $page = $this->_request->getParam(\Magefan\Blog\Block\Post\PostList\Toolbar::PAGE_PARM_NAME);
         if ($page < 2) {
+        */
             $robots = $this->config->getSearchRobots();
             $this->pageConfig->setRobots($robots);
+        /*
+        }
+
+        if ($page > 1) {
+            $this->pageConfig->setRobots('NOINDEX,FOLLOW');
+        }
+        */
+        $pageMainTitle = $this->getLayout()->getBlock('page.main.title');
+        if ($pageMainTitle) {
+            $pageMainTitle->setPageTitle(
+                $this->escapeHtml($title)
+            );
         }
 
         return parent::_prepareLayout();

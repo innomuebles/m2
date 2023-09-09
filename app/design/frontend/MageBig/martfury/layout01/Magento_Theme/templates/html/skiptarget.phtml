@@ -1,0 +1,12 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var $block Magento\Framework\View\Element\Template
+ */
+$target_id = $block->getTargetId();
+?>
+<div id="<?= $block->escapeHtmlAttr($target_id) ?>" tabindex="-1"></div>

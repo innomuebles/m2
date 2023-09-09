@@ -94,7 +94,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $currentUrl = $this->_getUrl('', ['_current' => true]);
         $urlRewrite = $this->_getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]);
 
-
         return $currentUrl == $urlRewrite;
     }
     // public function isHomePage()
@@ -269,11 +268,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function isMobile()
     {
         $regex_match = "/(nokia|iphone|android|motorola|^mot\-|softbank|foma|docomo|kddi|up\.browser|up\.link|"
-            .'htc|dopod|blazer|netfront|helio|hosin|huawei|novarra|CoolPad|webos|techfaith|palmsource|'
-            ."blackberry|alcatel|amoi|ktouch|nexian|samsung|^sam\-|s[cg]h|^lge|ericsson|philips|sagem|wellcom|bunjalloo|maui|"
-            ."symbian|smartphone|mmp|midp|wap|phone|windows ce|iemobile|^spice|^bird|^zte\-|longcos|pantech|gionee|^sie\-|portalmmm|"
-            ."jig\s browser|hiptop|^ucweb|^benq|haier|^lct|opera\s*mobi|opera\*mini|320x320|240x320|176x220"
-            .')/i';
+            . 'htc|dopod|blazer|netfront|helio|hosin|huawei|novarra|CoolPad|webos|techfaith|palmsource|'
+            . "blackberry|alcatel|amoi|ktouch|nexian|samsung|^sam\-|s[cg]h|^lge|ericsson|philips|sagem|wellcom|bunjalloo|maui|"
+            . "symbian|smartphone|mmp|midp|wap|phone|windows ce|iemobile|^spice|^bird|^zte\-|longcos|pantech|gionee|^sie\-|portalmmm|"
+            . "jig\s browser|hiptop|^ucweb|^benq|haier|^lct|opera\s*mobi|opera\*mini|320x320|240x320|176x220"
+            . ')/i';
 
         if (preg_match($regex_match, strtolower($_SERVER['HTTP_USER_AGENT']))) {
             return true;
@@ -284,7 +283,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         $mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4));
-        $mobile_agents = array(
+        $mobile_agents = [
             'w3c ', 'acs-', 'alav', 'alca', 'amoi', 'audi', 'avan', 'benq', 'bird', 'blac',
             'blaz', 'brew', 'cell', 'cldc', 'cmd-', 'dang', 'doco', 'eric', 'hipt', 'inno',
             'ipaq', 'java', 'jigs', 'kddi', 'keji', 'leno', 'lg-c', 'lg-d', 'lg-g', 'lge-',
@@ -293,7 +292,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             'qwap', 'sage', 'sams', 'sany', 'sch-', 'sec-', 'send', 'seri', 'sgh-', 'shar',
             'sie-', 'siem', 'smal', 'smar', 'sony', 'sph-', 'symb', 't-mo', 'teli', 'tim-',
             'tosh', 'tsm-', 'upg1', 'upsi', 'vk-v', 'voda', 'wap-', 'wapa', 'wapi', 'wapp',
-            'wapr', 'webc', 'winw', 'winw', 'xda ', 'xda-', );
+            'wapr', 'webc', 'winw', 'winw', 'xda ', 'xda-', ];
 
         if (in_array($mobile_ua, $mobile_agents)) {
             return true;
@@ -304,5 +303,33 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         return false;
+    }
+
+    public function getCategoryStore($product)
+    {
+        $html = '';
+        if ($this->getConfig('mbconfig/product_view/catalog_list')) {
+            $categoryCollection = $product->getCategoryCollection()->addNameToResult()
+                ->addAttributeToFilter('is_active', 1)
+                ->setStore($this->_storeManager->getStore());
+            $catLink = [];
+
+            foreach ($categoryCollection as $category) {
+                $catLink[] = '<a href="' . $category->getUrl() . '">' . $category->getName() . '</a>';
+            }
+            $countCat = count($catLink);
+
+            if ($countCat > 1) {
+                $catLabel = __('Categories');
+            } else {
+                $catLabel = __('Category');
+            }
+
+            if ($countCat) {
+                $html = '<div class="cat-links"><span>' . $catLabel . ': </span><span>' . implode(', ', $catLink) . '</span></div>';
+            }
+        }
+
+        return $html;
     }
 }

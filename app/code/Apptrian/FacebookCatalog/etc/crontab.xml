@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category  Apptrian
+ * @package   Apptrian_FacebookCatalog
+ * @author    Apptrian
+ * @copyright Copyright (c) Apptrian (http://www.apptrian.com)
+ * @license   http://www.apptrian.com/license Proprietary Software License EULA
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="apptrian_facebookcatalog">
+        <job name="apptrian_facebookcatalog_generate" instance="Apptrian\FacebookCatalog\Cron\Generate" method="execute">
+            <config_path>apptrian_facebookcatalog/cron/expression</config_path>
+        </job>
+    </group>
+</config>

@@ -9,7 +9,7 @@
 /**
  * Product view template
  *
- * @see \Magento\Catalog\Block\Product\View\Description
+ * @var $block \Magento\Catalog\Block\Product\View\Description
  */
 ?>
 <?php
@@ -39,14 +39,12 @@ if ($_attributeType && $_attributeType == 'text') {
     $_attributeValue = $_helper->productAttribute($_product, $_product->$_call(), $_code);
 }
 ?>
-<?php if($_className == 'overview' && $_mbHelper->getConfig('mbconfig/product_view/enable_countdown') && $cfHelper->getDate($_product)) : ?>
+<?php if ($_className == 'overview' && $_mbHelper->getConfig('mbconfig/product_view/enable_countdown') && $cfHelper->getDate($_product)) : ?>
     <div class="promo-countdown promo-product promo-<?= $_product->getId() ?>">
         <div class="row">
-            <div class="col-12 col-lg-4">
-                <div class="label-cd"><?= __("Don't Miss Out! This promotion will expires in"); ?></div>
-            </div>
-            <div class="col-12 col-lg-8">
-                <div class="sale-countdown style-box" data-date="<?= $cfHelper->getDate($_product); ?>"></div>
+            <div class="col-12 col-lg-12">
+                <div class="label-cd"><p><?= __("Don't Miss Out! This promotion will expires in"); ?></p></div>
+                <div class="sale-countdown style-box text-center" data-date="<?= $cfHelper->getDate($_product); ?>"></div>
             </div>
         </div>
 
@@ -67,7 +65,7 @@ if ($_attributeType && $_attributeType == 'text') {
                                  style="width: <?= $cfHelper->getSoldPercent($_product); ?>%;"></div>
                         </div>
                         <div class="sold-qty-wrap">
-                            <span class="sold-qty"><?= $sold . '/' .($stockQty+$sold); ?></span><span> <?= __('Sold'); ?></span>
+                            <span class="sold-qty"><?= $sold . '/' . ($stockQty+$sold); ?></span><span> <?= __('Sold'); ?></span>
                         </div>
                     </div>
                 </div>

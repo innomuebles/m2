@@ -6,45 +6,50 @@
 
 namespace MageBig\SocialLogin\Block;
 
-use Magento\Customer\Model\Session as CustomerSession;
+use MageBig\SocialLogin\Helper\Data as HelperData;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use MageBig\SocialLogin\Helper\Data as HelperData;
 
-/**
- * Class Popup
- *
- * @package MageBig\SocialLogin\Block
- */
 class Popup extends Template
 {
     /**
-     * @type \MageBig\SocialLogin\Helper\Data
+     * @var HelperData
      */
     protected $helperData;
 
     /**
-     * @type \Magento\Customer\Model\Session
+     * @var \Magento\Framework\App\Http\Context
      */
-    protected $customerSession;
+    protected $httpContext;
 
     /**
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \MageBig\SocialLogin\Helper\Data $helperData
-     * @param \Magento\Customer\Model\Session $customerSession
+     * Constructor
+     *
+     * @param Context $context
+     * @param HelperData $helperData
+     * @param \Magento\Framework\App\Http\Context $httpContext
      * @param array $data
      */
     public function __construct(
         Context $context,
         HelperData $helperData,
-        CustomerSession $customerSession,
+        \Magento\Framework\App\Http\Context $httpContext,
         array $data = []
-    )
-    {
-        $this->helperData      = $helperData;
-        $this->customerSession = $customerSession;
+    ) {
+        $this->helperData = $helperData;
+        $this->httpContext = $httpContext;
 
         parent::__construct($context, $data);
+    }
+
+    /**
+     * Is customer logged in
+     *
+     * @return bool
+     */
+    public function customerLoggedIn()
+    {
+        return (bool)$this->httpContext->getValue(\Magento\Customer\Model\Context::CONTEXT_AUTH);
     }
 
     /**
@@ -52,9 +57,10 @@ class Popup extends Template
      *
      * @return bool
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
-        return $this->helperData->isEnabled() && !$this->customerSession->isLoggedIn() && $this->helperData->getConfigGeneral('popup_login');
+        return $this->helperData->getConfigGeneral('enabled') && !$this->customerLoggedIn() &&
+            $this->helperData->getConfigGeneral('popup_login');
     }
 
     /**
@@ -62,17 +68,17 @@ class Popup extends Template
      *
      * @return string
      */
-    public function getFormParams()
+    public function getFormParams(): string
     {
         $params = [
-            'headerLink'    => $this->getHeaderLink(),
-            'popupEffect'   => $this->getPopupEffect(),
-            'formLoginUrl'  => $this->getFormLoginUrl(),
+            'headerLink' => $this->getHeaderLink(),
+            'popupEffect' => $this->getPopupEffect(),
+            'formLoginUrl' => $this->getFormLoginUrl(),
             'forgotFormUrl' => $this->getForgotFormUrl(),
             'createFormUrl' => $this->getCreateFormUrl(),
-            'fakeEmailUrl'  => $this->getFakeEmailUrl(),
-            'popupCreate'   => $this->getPopupCreate(),
-            'popupForgot'   => $this->getPopupForgot()
+            'fakeEmailUrl' => $this->getFakeEmailUrl(),
+            'popupCreate' => $this->getPopupCreate(),
+            'popupForgot' => $this->getPopupForgot()
         ];
 
         return json_encode($params);
@@ -83,7 +89,7 @@ class Popup extends Template
      */
     public function getPopupCreate()
     {
-        return (int) $this->helperData->getConfigGeneral('popup_create');
+        return (int)$this->helperData->getConfigGeneral('popup_create');
     }
 
     /**
@@ -91,7 +97,7 @@ class Popup extends Template
      */
     public function getPopupForgot()
     {
-        return (int) $this->helperData->getConfigGeneral('popup_forgot');
+        return (int)$this->helperData->getConfigGeneral('popup_forgot');
     }
 
     /**
@@ -105,6 +111,8 @@ class Popup extends Template
     }
 
     /**
+     * Get popup effect
+     *
      * @return mixed
      */
     public function getPopupEffect()
@@ -113,7 +121,7 @@ class Popup extends Template
     }
 
     /**
-     * get Social Login Form Url
+     * Get Social Login Form Url
      *
      * @return string
      */
@@ -123,6 +131,8 @@ class Popup extends Template
     }
 
     /**
+     * Get fake email
+     *
      * @return string
      */
     public function getFakeEmailUrl()
@@ -131,6 +141,8 @@ class Popup extends Template
     }
 
     /**
+     * Forgot url
+     *
      * @return string
      */
     public function getForgotFormUrl()
@@ -139,7 +151,7 @@ class Popup extends Template
     }
 
     /**
-     *  get Social Login Form Create Url
+     *  Get Social Login Form Create Url
      *
      * @return string
      */
@@ -149,12 +161,12 @@ class Popup extends Template
     }
 
     /**
-     * get is secure url
+     * Get is secure url
      *
      * @return mixed
      */
     public function isSecure()
     {
-        return (bool) $this->helperData->isSecure();
+        return (bool)$this->helperData->isSecure();
     }
 }

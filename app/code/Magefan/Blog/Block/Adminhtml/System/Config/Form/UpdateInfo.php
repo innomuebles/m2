@@ -1,35 +1,28 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
 
 namespace Magefan\Blog\Block\Adminhtml\System\Config\Form;
 
-use Magento\Framework\Module\ModuleListInterface;
 use Magefan\Blog\Model\AdminNotificationFeed;
+use Magefan\Community\Api\GetModuleVersionInterface;
 
 /**
- * Class UpdateInfo
- * @package Magefan\Blog\Block\Adminhtml\System\Config\Form
+ * Class Update Info Block
  */
 class UpdateInfo extends \Magento\Backend\Block\Template
 {
     const MODULE_NAME = 'Blog';
-    const PATH_TO_JSON_FILE = 'https://magefan.com/media/product-versions.json';
     const LATESTS_VERSION_CACHE_KEY = 'magefan_latests_product_versions';
 
     /**
      * @var \Magento\Framework\HTTP\Client\Curl
      */
     protected $curlClient;
-
-    /**
-     * @var ModuleListInterface
-     */
-    protected $moduleList;
 
     /**
      * @var mixed
@@ -52,27 +45,39 @@ class UpdateInfo extends \Magento\Backend\Block\Template
     protected $cacheManager;
 
     /**
+     * @var \Magento\Framework\Json\Helper\Data
+     */
+    private $jsonHelper;
+
+    /**
+     * @var GetModuleVersionInterface
+     */
+    private $getModuleVersion;
+
+    /**
      * UpdateInfo constructor.
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Framework\HTTP\Client\Curl $curl
      * @param \Magento\Framework\Json\Helper\Data $jsonHelper
      * @param AdminNotificationFeed $adminNotificationFeed
-     * @param ModuleListInterface $moduleList
      * @param array $data
+     * @param GetModuleVersionInterface|null $getModuleVersion
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\HTTP\Client\Curl $curl,
         \Magento\Framework\Json\Helper\Data $jsonHelper,
         AdminNotificationFeed $adminNotificationFeed,
-        ModuleListInterface $moduleList,
-        array $data = []
+        array $data = [],
+        GetModuleVersionInterface $getModuleVersion = null
     ) {
         $this->cacheManager = $context->getCache();
         $this->adminNotificationFeed = $adminNotificationFeed;
-        $this->moduleList = $moduleList;
         $this->jsonHelper = $jsonHelper;
         $this->curlClient = $curl;
+        $this->getModuleVersion = $getModuleVersion ?: \Magento\Framework\App\ObjectManager::getInstance()->get(
+            \Magefan\Community\Api\GetModuleVersionInterface::class
+        );
         parent::__construct($context, $data);
     }
 
@@ -82,8 +87,7 @@ class UpdateInfo extends \Magento\Backend\Block\Template
     public function getCurrentVersion()
     {
         if (null === $this->currentVersion) {
-            $this->currentVersion = $this->moduleList
-                ->getOne($this->getModuleName())['setup_version'];
+            $this->currentVersion = $this->getModuleVersion->execute($this->getModuleName());
         }
 
         return $this->currentVersion;
@@ -98,7 +102,10 @@ class UpdateInfo extends \Magento\Backend\Block\Template
             $latestVersions = $this->cacheManager->load(self::LATESTS_VERSION_CACHE_KEY);
             if (false === $latestVersions) {
                 try {
-                    $this->curlClient->get(self::PATH_TO_JSON_FILE, []);
+                    $this->curlClient->get(
+                        'https://m'.'a'.'g'.'e'.'f'.'a'.'n'.'.'.'c'.'o'.'m/media/product-versions.json',
+                        []
+                    );
                     $latestVersions = (string)$this->curlClient->getBody();
                 } catch (\Exception $e) {
                     $latestVersions = '';

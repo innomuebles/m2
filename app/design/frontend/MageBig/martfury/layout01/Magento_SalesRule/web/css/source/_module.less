@@ -13,6 +13,13 @@
             position: relative;
             display: inline-block;
             width: 100%;
+            max-width: 470px;
+            padding-right: 165px;
+            margin-top: 5px;
+            .layout-rtl & {
+                padding-right: 0;
+                padding-left: 165px;
+            }
             .field {
                 .label {
                     &:extend(.abs-visually-hidden all);
@@ -29,9 +36,10 @@
                 button {
                     border: 1px solid @main_color;
                     box-shadow: none;
-                    height: 32px;
+                    height: 42px;
                     background-color: #ffffff;
                     padding: 0 15px;
+                    border-radius: 3px;
                 }
             }
         }

@@ -36,7 +36,7 @@
     $filterItems = $filter->getItems();
     $code = $block->getCode();
     $selectedOption = $block->getRequest()->getParam($code);
-    $selectedOption = explode(',', $selectedOption);
+    $selectedOption = explode(',', (string)$selectedOption);
     ?>
     <div class="filter-container" data-role="mb-filter-checkbox"
          data-action="<?= $block->getActionUrl() ?>" data-code="<?= $code ?>"

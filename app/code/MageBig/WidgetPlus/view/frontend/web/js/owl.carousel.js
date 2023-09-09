@@ -39,6 +39,13 @@
          */
         this.settings = null;
 
+        var runningOnBrowser = typeof window !== "undefined";
+        var isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro)bot|crawl|spider/i.test(navigator.userAgent);
+        var autoP = options.autoplay;
+        if (autoP && isBot) {
+            options.autoplay = false;
+        }
+
         /**
          * Current options set by the caller including defaults.
          * @public
@@ -383,13 +390,13 @@
             var padding = this.settings.stagePadding,
                 coordinates = this._coordinates,
                 css = {
-                    'width': Math.ceil(Math.abs(coordinates[coordinates.length - 1])) + padding,
+                    'width': Math.ceil(Math.abs(coordinates[coordinates.length - 1])) + padding + 1,
                     'padding-right': padding || ''
                 };
             var rtl = this.settings.rtl ? 1 : -1;
             if (rtl == 1) {
                 css = {
-                    'width': Math.ceil(Math.abs(coordinates[coordinates.length - 1])) + padding,
+                    'width': Math.ceil(Math.abs(coordinates[coordinates.length - 1])) + padding + 1,
                     'padding-left': padding || ''
                 };
             }
@@ -831,7 +838,7 @@
                 return;
             }
 
-            event.preventDefault();
+            // event.preventDefault();
 
             this.enter('dragging');
             this.trigger('drag');
@@ -858,7 +865,7 @@
             return;
         }
 
-        event.preventDefault();
+        // event.preventDefault();
 
         if (this.settings.loop) {
             minimum = this.coordinates(this.minimum());
@@ -1999,536 +2006,6 @@
     };
 
     /**
-     * Default options.
-     * @public
-     */
-    Lazy.Defaults = {
-        lazyLoad: false,
-        lazyLoadEager: 0
-    };
-
-    /**
-     * Loads all resources of an item at the specified position.
-     * @param {Number} position - The absolute position of the item.
-     * @protected
-     */
-    Lazy.prototype.load = function (position) {
-        var $item = this._core.$stage.children().eq(position),
-            $elements = $item && $item.find('.owl-lazy');
-
-        if (!$elements || $.inArray($item.get(0), this._loaded) > -1) {
-            return;
-        }
-
-        $elements.each($.proxy(function (index, element) {
-            var $element = $(element), image,
-                url = (window.devicePixelRatio > 1 && $element.attr('data-src-retina')) || $element.attr('data-src') || $element.attr('data-srcset');
-
-            this._core.trigger('load', {element: $element, url: url}, 'lazy');
-
-            if ($element.is('img')) {
-                $element.one('load.owl.lazy', $.proxy(function () {
-                    $element.css('opacity', 1);
-                    this._core.trigger('loaded', {element: $element, url: url}, 'lazy');
-                }, this)).attr('src', url);
-            } else if ($element.is('source')) {
-                $element.one('load.owl.lazy', $.proxy(function () {
-                    this._core.trigger('loaded', {element: $element, url: url}, 'lazy');
-                }, this)).attr('srcset', url);
-            } else {
-                image = new Image();
-                image.onload = $.proxy(function () {
-                    $element.css({
-                        'background-image': 'url("' + url + '")',
-                        'opacity': '1'
-                    });
-                    this._core.trigger('loaded', {element: $element, url: url}, 'lazy');
-                }, this);
-                image.src = url;
-            }
-        }, this));
-
-        this._loaded.push($item.get(0));
-    };
-
-    /**
-     * Destroys the plugin.
-     * @public
-     */
-    Lazy.prototype.destroy = function () {
-        var handler, property;
-
-        for (handler in this.handlers) {
-            this._core.$element.off(handler, this.handlers[handler]);
-        }
-        for (property in Object.getOwnPropertyNames(this)) {
-            typeof this[property] != 'function' && (this[property] = null);
-        }
-    };
-
-    $.fn.owlCarousel.Constructor.Plugins.Lazy = Lazy;
-
-
-    /**
-     * AutoHeight Plugin
-     * @version 2.3.4
-     * @author Bartosz Wojciechowski
-     * @author David Deutsch
-     * @license The MIT License (MIT)
-     */
-
-
-    /**
-     * Creates the auto height plugin.
-     * @class The Auto Height Plugin
-     * @param {Owl} carousel - The Owl Carousel
-     */
-    var AutoHeight = function (carousel) {
-        /**
-         * Reference to the core.
-         * @protected
-         * @type {Owl}
-         */
-        this._core = carousel;
-
-        this._previousHeight = null;
-
-        /**
-         * All event handlers.
-         * @protected
-         * @type {Object}
-         */
-        this._handlers = {
-            'initialized.owl.carousel refreshed.owl.carousel': $.proxy(function (e) {
-                if (e.namespace && this._core.settings.autoHeight) {
-                    this.update();
-                }
-            }, this),
-            'changed.owl.carousel': $.proxy(function (e) {
-                if (e.namespace && this._core.settings.autoHeight && e.property.name === 'position') {
-                    this.update();
-                }
-            }, this),
-            'loaded.owl.lazy': $.proxy(function (e) {
-                if (e.namespace && this._core.settings.autoHeight
-                    && e.element.closest('.' + this._core.settings.itemClass).index() === this._core.current()) {
-                    this.update();
-                }
-            }, this)
-        };
-
-        // set default options
-        this._core.options = $.extend({}, AutoHeight.Defaults, this._core.options);
-
-        // register event handlers
-        this._core.$element.on(this._handlers);
-        this._intervalId = null;
-        var refThis = this;
-
-        // These changes have been taken from a PR by gavrochelegnou proposed in #1575
-        // and have been made compatible with the latest jQuery version
-        $(window).on('load', function () {
-            if (refThis._core.settings.autoHeight) {
-                refThis.update();
-            }
-        });
-
-        // Autoresize the height of the carousel when window is resized
-        // When carousel has images, the height is dependent on the width
-        // and should also change on resize
-        $(window).resize(function () {
-            if (refThis._core.settings.autoHeight) {
-                if (refThis._intervalId != null) {
-                    clearTimeout(refThis._intervalId);
-                }
-
-                refThis._intervalId = setTimeout(function () {
-                    refThis.update();
-                }, 250);
-            }
-        });
-
-    };
-
-    /**
-     * Default options.
-     * @public
-     */
-    AutoHeight.Defaults = {
-        autoHeight: false,
-        autoHeightClass: 'owl-height'
-    };
-
-    /**
-     * Updates the view.
-     */
-    AutoHeight.prototype.update = function () {
-        var start = this._core._current,
-            end = start + this._core.settings.items,
-            lazyLoadEnabled = this._core.settings.lazyLoad,
-            visible = this._core.$stage.children().toArray().slice(start, end),
-            heights = [],
-            maxheight = 0;
-
-        $.each(visible, function (index, item) {
-            heights.push($(item).height());
-        });
-
-        maxheight = Math.max.apply(null, heights);
-
-        if (maxheight <= 1 && lazyLoadEnabled && this._previousHeight) {
-            maxheight = this._previousHeight;
-        }
-
-        this._previousHeight = maxheight;
-
-        this._core.$stage.parent()
-            .height(maxheight)
-            .addClass(this._core.settings.autoHeightClass);
-    };
-
-    AutoHeight.prototype.destroy = function () {
-        var handler, property;
-
-        for (handler in this._handlers) {
-            this._core.$element.off(handler, this._handlers[handler]);
-        }
-        for (property in Object.getOwnPropertyNames(this)) {
-            typeof this[property] !== 'function' && (this[property] = null);
-        }
-    };
-
-    $.fn.owlCarousel.Constructor.Plugins.AutoHeight = AutoHeight;
-
-
-    /**
-     * Video Plugin
-     * @version 2.3.4
-     * @author Bartosz Wojciechowski
-     * @author David Deutsch
-     * @license The MIT License (MIT)
-     */
-
-
-    /**
-     * Creates the video plugin.
-     * @class The Video Plugin
-     * @param {Owl} carousel - The Owl Carousel
-     */
-    var Video = function (carousel) {
-        /**
-         * Reference to the core.
-         * @protected
-         * @type {Owl}
-         */
-        this._core = carousel;
-
-        /**
-         * Cache all video URLs.
-         * @protected
-         * @type {Object}
-         */
-        this._videos = {};
-
-        /**
-         * Current playing item.
-         * @protected
-         * @type {jQuery}
-         */
-        this._playing = null;
-
-        /**
-         * All event handlers.
-         * @todo The cloned content removale is too late
-         * @protected
-         * @type {Object}
-         */
-        this._handlers = {
-            'initialized.owl.carousel': $.proxy(function (e) {
-                if (e.namespace) {
-                    this._core.register({type: 'state', name: 'playing', tags: ['interacting']});
-                }
-            }, this),
-            'resize.owl.carousel': $.proxy(function (e) {
-                if (e.namespace && this._core.settings.video && this.isInFullScreen()) {
-                    e.preventDefault();
-                }
-            }, this),
-            'refreshed.owl.carousel': $.proxy(function (e) {
-                if (e.namespace && this._core.is('resizing')) {
-                    this._core.$stage.find('.cloned .owl-video-frame').remove();
-                }
-            }, this),
-            'changed.owl.carousel': $.proxy(function (e) {
-                if (e.namespace && e.property.name === 'position' && this._playing) {
-                    this.stop();
-                }
-            }, this),
-            'prepared.owl.carousel': $.proxy(function (e) {
-                if (!e.namespace) {
-                    return;
-                }
-
-                var $element = $(e.content).find('.owl-video');
-
-                if ($element.length) {
-                    $element.css('display', 'none');
-                    this.fetch($element, $(e.content));
-                }
-            }, this)
-        };
-
-        // set default options
-        this._core.options = $.extend({}, Video.Defaults, this._core.options);
-
-        // register event handlers
-        this._core.$element.on(this._handlers);
-
-        this._core.$element.on('click.owl.video', '.owl-video-play-icon', $.proxy(function (e) {
-            this.play(e);
-        }, this));
-    };
-
-    /**
-     * Default options.
-     * @public
-     */
-    Video.Defaults = {
-        video: false,
-        videoHeight: false,
-        videoWidth: false
-    };
-
-    /**
-     * Gets the video ID and the type (YouTube/Vimeo/vzaar only).
-     * @protected
-     * @param {jQuery} target - The target containing the video data.
-     * @param {jQuery} item - The item containing the video.
-     */
-    Video.prototype.fetch = function (target, item) {
-        var type = (function () {
-                if (target.attr('data-vimeo-id')) {
-                    return 'vimeo';
-                } else if (target.attr('data-vzaar-id')) {
-                    return 'vzaar'
-                } else {
-                    return 'youtube';
-                }
-            })(),
-            id = target.attr('data-vimeo-id') || target.attr('data-youtube-id') || target.attr('data-vzaar-id'),
-            width = target.attr('data-width') || this._core.settings.videoWidth,
-            height = target.attr('data-height') || this._core.settings.videoHeight,
-            url = target.attr('href');
-
-        if (url) {
-
-            /*
-                    Parses the id's out of the following urls (and probably more):
-                    https://www.youtube.com/watch?v=:id
-                    https://youtu.be/:id
-                    https://vimeo.com/:id
-                    https://vimeo.com/channels/:channel/:id
-                    https://vimeo.com/groups/:group/videos/:id
-                    https://app.vzaar.com/videos/:id
-
-                    Visual example: https://regexper.com/#(http%3A%7Chttps%3A%7C)%5C%2F%5C%2F(player.%7Cwww.%7Capp.)%3F(vimeo%5C.com%7Cyoutu(be%5C.com%7C%5C.be%7Cbe%5C.googleapis%5C.com)%7Cvzaar%5C.com)%5C%2F(video%5C%2F%7Cvideos%5C%2F%7Cembed%5C%2F%7Cchannels%5C%2F.%2B%5C%2F%7Cgroups%5C%2F.%2B%5C%2F%7Cwatch%5C%3Fv%3D%7Cv%5C%2F)%3F(%5BA-Za-z0-9._%25-%5D*)(%5C%26%5CS%2B)%3F
-            */
-
-            id = url.match(/(http:|https:|)\/\/(player.|www.|app.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com|be\-nocookie\.com)|vzaar\.com)\/(video\/|videos\/|embed\/|channels\/.+\/|groups\/.+\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
-
-            if (id[3].indexOf('youtu') > -1) {
-                type = 'youtube';
-            } else if (id[3].indexOf('vimeo') > -1) {
-                type = 'vimeo';
-            } else if (id[3].indexOf('vzaar') > -1) {
-                type = 'vzaar';
-            } else {
-                throw new Error('Video URL not supported.');
-            }
-            id = id[6];
-        } else {
-            throw new Error('Missing video URL.');
-        }
-
-        this._videos[url] = {
-            type: type,
-            id: id,
-            width: width,
-            height: height
-        };
-
-        item.attr('data-video', url);
-
-        this.thumbnail(target, this._videos[url]);
-    };
-
-    /**
-     * Creates video thumbnail.
-     * @protected
-     * @param {jQuery} target - The target containing the video data.
-     * @param {Object} info - The video info object.
-     * @see `fetch`
-     */
-    Video.prototype.thumbnail = function (target, video) {
-        var tnLink,
-            icon,
-            path,
-            dimensions = video.width && video.height ? 'width:' + video.width + 'px;height:' + video.height + 'px;' : '',
-            customTn = target.find('img'),
-            srcType = 'src',
-            lazyClass = '',
-            settings = this._core.settings,
-            create = function (path) {
-                icon = '<div class="owl-video-play-icon"></div>';
-
-                if (settings.lazyLoad) {
-                    tnLink = $('<div/>', {
-                        "class": 'owl-video-tn ' + lazyClass,
-                        "srcType": path
-                    });
-                } else {
-                    tnLink = $('<div/>', {
-                        "class": "owl-video-tn",
-                        "style": 'opacity:1;background-image:url(' + path + ')'
-                    });
-                }
-                target.after(tnLink);
-                target.after(icon);
-            };
-
-        // wrap video content into owl-video-wrapper div
-        target.wrap($('<div/>', {
-            "class": "owl-video-wrapper",
-            "style": dimensions
-        }));
-
-        if (this._core.settings.lazyLoad) {
-            srcType = 'data-src';
-            lazyClass = 'owl-lazy';
-        }
-
-        // custom thumbnail
-        if (customTn.length) {
-            create(customTn.attr(srcType));
-            customTn.remove();
-            return false;
-        }
-
-        if (video.type === 'youtube') {
-            path = "//img.youtube.com/vi/" + video.id + "/hqdefault.jpg";
-            create(path);
-        } else if (video.type === 'vimeo') {
-            $.ajax({
-                type: 'GET',
-                url: '//vimeo.com/api/v2/video/' + video.id + '.json',
-                jsonp: 'callback',
-                dataType: 'jsonp',
-                success: function (data) {
-                    path = data[0].thumbnail_large;
-                    create(path);
-                }
-            });
-        } else if (video.type === 'vzaar') {
-            $.ajax({
-                type: 'GET',
-                url: '//vzaar.com/api/videos/' + video.id + '.json',
-                jsonp: 'callback',
-                dataType: 'jsonp',
-                success: function (data) {
-                    path = data.framegrab_url;
-                    create(path);
-                }
-            });
-        }
-    };
-
-    /**
-     * Stops the current video.
-     * @public
-     */
-    Video.prototype.stop = function () {
-        this._core.trigger('stop', null, 'video');
-        this._playing.find('.owl-video-frame').remove();
-        this._playing.removeClass('owl-video-playing');
-        this._playing = null;
-        this._core.leave('playing');
-        this._core.trigger('stopped', null, 'video');
-    };
-
-    /**
-     * Starts the current video.
-     * @public
-     * @param {Event} event - The event arguments.
-     */
-    Video.prototype.play = function (event) {
-        var target = $(event.target),
-            item = target.closest('.' + this._core.settings.itemClass),
-            video = this._videos[item.attr('data-video')],
-            width = video.width || '100%',
-            height = video.height || this._core.$stage.height(),
-            html,
-            iframe;
-
-        if (this._playing) {
-            return;
-        }
-
-        this._core.enter('playing');
-        this._core.trigger('play', null, 'video');
-
-        item = this._core.items(this._core.relative(item.index()));
-
-        this._core.reset(item.index());
-
-        html = $('<iframe frameborder="0" allowfullscreen mozallowfullscreen webkitAllowFullScreen ></iframe>');
-        html.attr('height', height);
-        html.attr('width', width);
-        if (video.type === 'youtube') {
-            html.attr('src', '//www.youtube.com/embed/' + video.id + '?autoplay=1&rel=0&v=' + video.id);
-        } else if (video.type === 'vimeo') {
-            html.attr('src', '//player.vimeo.com/video/' + video.id + '?autoplay=1');
-        } else if (video.type === 'vzaar') {
-            html.attr('src', '//view.vzaar.com/' + video.id + '/player?autoplay=true');
-        }
-
-        iframe = $(html).wrap('<div class="owl-video-frame" />').insertAfter(item.find('.owl-video'));
-
-        this._playing = item.addClass('owl-video-playing');
-    };
-
-    /**
-     * Checks whether an video is currently in full screen mode or not.
-     * @todo Bad style because looks like a readonly method but changes members.
-     * @protected
-     * @returns {Boolean}
-     */
-    Video.prototype.isInFullScreen = function () {
-        var element = document.fullscreenElement || document.mozFullScreenElement ||
-            document.webkitFullscreenElement;
-
-        return element && $(element).parent().hasClass('owl-video-frame');
-    };
-
-    /**
-     * Destroys the plugin.
-     */
-    Video.prototype.destroy = function () {
-        var handler, property;
-
-        this._core.$element.off('click.owl.video');
-
-        for (handler in this._handlers) {
-            this._core.$element.off(handler, this._handlers[handler]);
-        }
-        for (property in Object.getOwnPropertyNames(this)) {
-            typeof this[property] != 'function' && (this[property] = null);
-        }
-    };
-
-    $.fn.owlCarousel.Constructor.Plugins.Video = Video;
-
-
-    /**
      * Animate Plugin
      * @version 2.3.4
      * @author Bartosz Wojciechowski
@@ -2755,6 +2232,15 @@
                 }
             }, this)
         };
+
+        var eventPassive = ['wheel', 'scroll', 'touchstart', 'touchmove', 'mousewheel'];
+        $.each(eventPassive, function (index, event) {
+            $.event.special[event] = {
+                setup: function (_, ns, handle) {
+                    this.addEventListener(event, handle, {passive: !!ns.indexOf('noPreventDefault')});
+                }
+            };
+        });
 
         // register event handlers
         this._core.$element.on(this._handlers);
@@ -3046,6 +2532,7 @@
 
         this._controls.$previous = $('<' + settings.navElement + '>')
             .addClass(settings.navClass[0])
+            .attr('aria-label', 'previous')
             .html(settings.navText[0])
             .prependTo(this._controls.$relative)
             .on('click', $.proxy(function (e) {
@@ -3053,6 +2540,7 @@
             }, this));
         this._controls.$next = $('<' + settings.navElement + '>')
             .addClass(settings.navClass[1])
+            .attr('aria-label', 'next')
             .html(settings.navText[1])
             .appendTo(this._controls.$relative)
             .on('click', $.proxy(function (e) {
@@ -3061,7 +2549,7 @@
 
         // create DOM structure for absolute navigation
         if (!settings.dotsData) {
-            this._templates = [$('<button role="button">')
+            this._templates = [$('<button type="button" aria-label="dot">')
                 .addClass(settings.dotClass)
                 .append($('<span>'))
                 .prop('outerHTML')];

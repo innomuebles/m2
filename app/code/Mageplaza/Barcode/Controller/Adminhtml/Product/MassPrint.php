@@ -46,6 +46,10 @@ class MassPrint extends AbstractPrint
         if ($this->hasError) {
             return $this->errorMessage($this->errorMessage);
         }
+        $countBarcodeLabel = count($params['productIds']) * $data['qtyPerItem'];
+        if ($countBarcodeLabel > 300) {
+            return $this->errorMessage('Print quantity should not exceed 300 barcode labels');
+        }
 
         $labelData   = $this->getLabelData($data['paper_template'], $data['label_template']);
         $barcodeData = $this->getBarcodeData($data['type'], $data['paper_template'], $data['label_template']);

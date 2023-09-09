@@ -2,42 +2,52 @@
 
 namespace MageBig\WidgetPlus\Block\Adminhtml\Widget;
 
-class ImageChooser extends \Magento\Backend\Block\Template
+use Magento\Backend\Block\Template;
+use Magento\Backend\Block\Template\Context;
+use Magento\Framework\Data\Form\Element\AbstractElement;
+use Magento\Framework\Data\Form\Element\Factory;
+
+class ImageChooser extends Template
 {
     /**
-     * @var \Magento\Framework\Data\Form\Element\Factory
+     * @var Factory
      */
     protected $_elementFactory;
+
     /**
-     * @param \Magento\Backend\Block\Template\Context      $context
-     * @param \Magento\Framework\Data\Form\Element\Factory $elementFactory
-     * @param array                                        $data
+     * @param Context $context
+     * @param Factory $elementFactory
+     * @param array $data
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Data\Form\Element\Factory $elementFactory,
+        Context $context,
+        Factory $elementFactory,
         array $data = []
     ) {
         $this->_elementFactory = $elementFactory;
         parent::__construct($context, $data);
     }
+
     /**
      * Prepare chooser element HTML.
      *
-     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element Form Element
+     * @param AbstractElement $element Form Element
      *
-     * @return \Magento\Framework\Data\Form\Element\AbstractElement
+     * @return AbstractElement
      */
-    public function prepareElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
+    public function prepareElementHtml(AbstractElement $element)
     {
         $config = $this->_getData('config');
-        $sourceUrl = $this->getUrl('cms/wysiwyg_images/index', ['target_element_id' => $element->getId(), 'type' => 'file']);
-        $chooser = $this->getLayout()->createBlock('Magento\Backend\Block\Widget\Button')
+        $sourceUrl = $this->getUrl(
+            'cms/wysiwyg_images/index',
+            ['target_element_id' => $element->getId(), 'type' => 'file']
+        );
+        $chooser = $this->getLayout()->createBlock(\Magento\Backend\Block\Widget\Button::class)
             ->setType('button')
             ->setClass('btn-chooser')
             ->setLabel($config['button']['open'])
-            ->setOnClick('MediabrowserUtility.openDialog(\''.$sourceUrl.'\')');
-            //->setDisabled($element->getReadonly());
+            ->setOnClick('MediabrowserUtility.openDialog(\'' . $sourceUrl . '\')');
+        //->setDisabled($element->getReadonly());
         $input = $this->_elementFactory->create('text', ['data' => $element->getData()]);
         $input->setId($element->getId());
         //$input->setReadonly('readonly');
@@ -46,7 +56,8 @@ class ImageChooser extends \Magento\Backend\Block\Template
         if ($element->getRequired()) {
             $input->addClass('required-entry');
         }
-        $element->setData('after_element_html', $input->getElementHtml().$chooser->toHtml());
+        $script = '<script>require(["mage/adminhtml/browser"], function () {})</script>';
+        $element->setData('after_element_html', $input->getElementHtml() . $chooser->toHtml() . $script);
 
         return $element;
     }

@@ -5,8 +5,10 @@ $pathLogo       = $mbHelper->getBaseMediaUrl() . 'wysiwyg/magebig/logo/';
 $blockLogo      = $block->getLayout()->createBlock('Magento\Theme\Block\Html\Header\Logo');
 $blockWelcome   = $block->getLayout()->createBlock('Magento\Theme\Block\Html\Header');
 $blockCustomer  = $block->getLayout()->createBlock('Magento\Customer\Block\Account\Customer');
-$wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
+//$wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
 $menuLayout     = $mbHelper->getConfig('mbconfig/header/menu_layout');
+$topMenuBtn     = $mbHelper->getConfig('mbconfig/mobile_view/btn_menu');
+$bottomMenu     = $mbHelper->getConfig('mbconfig/mobile_view/bottom_menu');
 ?>
 <div class="header-top-inner">
     <div class="container">
@@ -30,23 +32,34 @@ $menuLayout     = $mbHelper->getConfig('mbconfig/header/menu_layout');
             <div class="row align-items-center header-maininner-row">
                 <div class="col-12 col-md-3 col-lg-3 col-logo">
                     <div class="menu-logo">
-                        <?= $this->getChildHtml('logo') ?>
+                        <?php if ($topMenuBtn) : ?>
+                        <div class="btn-nav-mobile-top d-table-cell d-md-none"><button type="button" class="btn-nav mb-toggle-switch mb-toggle-switch__htx" aria-label="menu"><span></span></button></div>
+                        <?php endif ?>
+                        <div class="logo-top d-table-cell <?php if ($topMenuBtn) echo 'has-btn' ?>"><?= $this->getChildHtml('logo') ?></div>
+                        <div class="icon-top-mobile">
+                            <div class="minicart-action">
+                                <a class="action showcart" href="<?= $block->getUrl('checkout/cart') ?>"
+                                   aria-label="<?= $block->escapeHtml(__('My Cart')) ?>"
+                                   data-bind="scope: 'minicart_content'">
+                                    <i class="mbi mbi-bag2"></i>
+                                    <span class="counter qty empty"
+                                          data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
+                                    <span class="counter-number" data-bind="html: getCartParam('summary_count') > 9 ? '&nbsp;9<sup>+</sup>' : getCartParam('summary_count')"></span>
+                                </span>
+                                </a>
+                            </div>
+                            <div class="user-icon-mobile user-topbar"><i class="mbi mbi-user"></i></div>
+                        </div>
                     </div>
                     <?= $this->getChildHtml('smartmenu.topnav') ?>
                 </div>
                 <div class="col-md-5 col-lg-5 col-xl-6 col-search">
-                    <div class="top-search-wrap">
+                    <div class="top-search-wrap mfp-with-anim">
                         <?= $this->getChildHtml('topSearch') ?>
                     </div>
                 </div>
-                <div class="col-12 col-md-4 col-lg-4 col-xl-3">
+                <div class="col-12 col-md-4 col-lg-4 col-xl-3 col-btn-actions-desktop d-none d-md-block">
                     <div class="header-content-action row no-gutters">
-                        <div class="btn-nav-mobile d-md-none col">
-                            <button class="btn-nav mb-toggle-switch mb-toggle-switch__htx"><span>toggle menu</span></button>
-                        </div>
-                        <div class="d-block d-md-none btn-search-mobile col">
-                            <i class="mbi mbi-magnifier"></i>
-                        </div>
                         <?= $this->getChildHtml('wishlist_icon') ?>
                         <?= $this->getChildHtml('minicart') ?>
                             <?php /* ?>
@@ -92,3 +105,52 @@ $menuLayout     = $mbHelper->getConfig('mbconfig/header/menu_layout');
         </div>
     </div>
 </div>
+<?php if($bottomMenu) : ?>
+<div class="d-block d-md-none col-btn-actions">
+    <div class="header-content-action row no-gutters">
+        <div class="btn-nav-mobile col">
+            <button type="button" class="btn-nav mb-toggle-switch mb-toggle-switch__htx" aria-label="menu"><span></span></button>
+            <div class="menu-btn-text"><?= $block->escapeHtml(__('Menu')) ?></div>
+        </div>
+        <div class="btn-search-mobile col">
+            <i class="mbi mbi-magnifier"></i>
+            <div class="menu-btn-text"><?= __('Search') ?></div>
+        </div>
+        <div class="col col-home">
+            <a href="<?= $block->getBaseUrl() ?>" aria-label="<?= $block->escapeHtml(__('Home')) ?>" class="go-home"><i
+                        class="mbi mbi-home3"></i></a>
+            <div class="menu-btn-text"><?= $block->escapeHtml(__('Home')) ?></div>
+        </div>
+
+        <div class="col col-cart">
+            <div class="minicart-action">
+                <a class="action showcart" href="<?= $block->getUrl('checkout/cart') ?>"
+                   aria-label="<?= $block->escapeHtml(__('My Cart')) ?>"
+                   data-bind="scope: 'minicart_content'">
+                    <i class="mbi mbi-bag2"></i>
+                    <span class="counter qty empty" data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
+                        <span class="counter-number" data-bind="html: getCartParam('summary_count') > 9 ? '&nbsp;9<sup>+</sup>' : getCartParam('summary_count')"></span>
+                    </span>
+                </a>
+            </div>
+            <div class="menu-btn-text"><?= $block->escapeHtml(__('My Cart')) ?></div>
+        </div>
+
+        <div class="user-topbar col">
+            <i class="mbi mbi-user"></i>
+            <div class="menu-btn-text"><?= $block->escapeHtml(__('Me')) ?></div>
+        </div>
+    </div>
+</div>
+<?php endif ?>
+
+
+<style>
+    
+.header-menu-content {
+  background: #ff116b !important;
+}
+.catalog-category-view .page-title {
+    text-align: left;
+}
+</style>

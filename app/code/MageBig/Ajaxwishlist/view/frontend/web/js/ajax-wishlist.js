@@ -1,10 +1,10 @@
 define([
     'jquery',
+    'Magento_Customer/js/customer-data',
     'mage/translate',
-    'jquery/ui',
     'mage/validation/validation',
-    "magnificpopup"
-], function ($) {
+    'magnificpopup'
+], function ($, customerData) {
     'use strict';
 
     $.widget('magebig.ajaxWishlist', {
@@ -15,9 +15,9 @@ define([
         },
 
         _create: function () {
-            if (this.options.enabled == true) {
-                this.initEvents();
-            }
+
+            this.initEvents();
+            this.reloadWl();
         },
 
         initEvents: function () {
@@ -30,12 +30,14 @@ define([
                 if (!self.options.isLogedIn) {
                     var login = $('.authorization-link > a');
                     if ($(self.options.wishlistBtn).parents('.quickview-wrap').length) {
-                        $.magnificPopup.close();
-                        setTimeout(function() {
-                            login.trigger('click');
+                        if ($.magnificPopup.instance.isOpen) {
+                            $.magnificPopup.close();
+                        }
+                        setTimeout(function () {
+                            login[0].click();
                         }, 350);
                     } else {
-                        login.trigger('click');
+                        login[0].click();
                     }
 
                 } else {
@@ -71,7 +73,9 @@ define([
 
         showWishlistPopup: function (params) {
             var self = this;
-            $.magnificPopup.close();
+            if ($.magnificPopup.instance.isOpen) {
+                $.magnificPopup.close();
+            }
             $.ajax({
                 url: self.options.ajaxWishlistUrl,
                 data: params,
@@ -92,24 +96,25 @@ define([
                             removalDelay: 300,
                             mainClass: 'mfp-zoom-in',
                             callbacks: {
-                                open: function() {
-                                    if( this.fixedContentPos ) {
-                                        if(this._hasScrollBar(this.wH)){
+                                open: function () {
+                                    if ( this.fixedContentPos ) {
+                                        if (this._hasScrollBar(this.wH)) {
                                             var s = this._getScrollbarSize();
-                                            if(s) {
+                                            if (s) {
                                                 $('.sticky-menu.active').css('padding-right', s);
                                                 $('#go-top').css('margin-right', s);
                                             }
                                         }
                                     }
                                 },
-                                close: function() {
+                                close: function () {
                                     $('.sticky-menu.active').css('padding-right', '');
                                     $('#go-top').css('margin-right', '');
                                 }
                             }
                         });
-                        $('.wishlist-icon .counter-number').removeClass('empty').html(res.item_count);
+
+                        self.reloadWl();
                     } else {
                         $('body').trigger('processStop');
                         alert('No response from server');
@@ -118,6 +123,18 @@ define([
                 error: function (res) {
                     $('body').trigger('processStop');
                     alert('Error in sending ajax request');
+                }
+            });
+        },
+
+        reloadWl: function () {
+            customerData.getInitCustomerData().done(function () {
+                var wl = customerData.get('wishlist');
+
+                if (wl().counter === undefined) {
+                    var sections = ['wishlist'];
+                    customerData.invalidate(sections);
+                    customerData.reload(sections, false);
                 }
             });
         }

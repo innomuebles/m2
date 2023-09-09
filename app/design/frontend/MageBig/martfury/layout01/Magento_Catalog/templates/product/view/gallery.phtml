@@ -23,23 +23,41 @@ if (!empty($images) && empty($mainImage)) {
     $mainImage = $block->getGalleryImages()->getFirstItem();
 }
 
-# 2020-12-08 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
-# «Call to a member function getDefaultPlaceholderUrl() on null»: https://github.com/innomuebles/m2/issues/7
+$helper = $this->helper('Magento\Catalog\Helper\Image');
 $mainImageData = $mainImage ?
     $mainImage->getData('medium_image_url') :
-    df_catalog_image_h()->getDefaultPlaceholderUrl('image');
+    $helper->getDefaultPlaceholderUrl('image');
 
+$thumbType = $_mbHelper->getConfig('mbconfig/product_view/nav_dir');
+$rtl = $_mbHelper->getConfig('mbdesign/general/enable_rtl');
+$imgs = '';
+$pl = '';
+if ($imgCount > 1) {
+    $imgs = 'imgs';
+    $pl = '<span class="thumb-pl"></span>';
+}
+$width = $block->getImageAttribute('product_page_image_medium', 'width');
+$height = $block->getImageAttribute('product_page_image_medium', 'height') ?: $width;
+$thumbWidth = $block->getImageAttribute('product_page_image_small', 'width');
+$thumbHeight = $block->getImageAttribute('product_page_image_small', 'height');
+$ratio = round($height / $width, 4);
+$pad = $ratio * 100 . '%';
+
+$thumbW = 66;
+$thumbH = $thumbW * $ratio;
 ?>
-
-<div class="gallery-placeholder _block-content-loading <?php if ($imgCount) echo 'imgs'; ?>" data-gallery-role="gallery-placeholder">
-    <img
+<div class="gallery-placeholder _block-content-loading <?= $thumbType ?> <?= $imgs ?>"
+     data-gallery-role="gallery-placeholder"
+     style="--ratio:<?= $ratio ?>;--pad-product:<?= $pad ?>;--pad-thumb:<?= $thumbH ?>px">
+    <div class="gallery-placeholder__image">
+        <img
             alt="main product photo"
-            class="gallery-placeholder__image img-fluid"
+            class="img-fluid"
             src="<?= /* @noEscape */ $mainImageData ?>"
-    />
-    <span class="thumb-pl"></span>
-    <div data-role="loader" class="loading-mask">
-        <div class="loader"></div>
+            width="<?= $width ?>"
+            height="<?= $height ?>"
+        />
+        <?= $pl ?>
     </div>
 </div>
 <script type="text/x-magento-init">
@@ -47,67 +65,43 @@ $mainImageData = $mainImage ?
         "[data-gallery-role=gallery-placeholder]": {
             "mage/gallery/gallery": {
                 "mixins":["magnifier/magnify"],
-                "magnifierOpts": <?= /* @escapeNotVerified */ $block->getMagnifier() ?>,
-                "data": <?= /* @escapeNotVerified */ $block->getGalleryImagesJson() ?>,
+                "magnifierOpts": <?= $block->getMagnifier() ?>,
+                "data": <?= $block->getGalleryImagesJson() ?>,
                 "options": {
-                    "thumbmargin": <?= /* @escapeNotVerified */ $block->getVar("gallery/thumbmargin") ?>,
+                    "thumbmargin": <?= $block->getVar("gallery/thumbmargin") ?>,
                     "thumbborderwidth": 1,
-                    "nav": "<?= /* @escapeNotVerified */ $block->getVar("gallery/nav") ?>",
-                    <?php if (($block->getVar("gallery/loop"))): ?>
-                        "loop": <?= /* @escapeNotVerified */ $block->getVar("gallery/loop") ?>,
-                    <?php endif; ?>
-                    <?php if (($block->getVar("gallery/keyboard"))): ?>
-                        "keyboard": <?= /* @escapeNotVerified */ $block->getVar("gallery/keyboard") ?>,
-                    <?php endif; ?>
-                    <?php if (($block->getVar("gallery/arrows"))): ?>
-                        "arrows": <?= /* @escapeNotVerified */ $block->getVar("gallery/arrows") ?>,
-                    <?php endif; ?>
-                    <?php if ($_mbHelper->getConfig('mbconfig/product_view/allowfullscreen')): ?>
-                        "allowfullscreen": <?= /* @escapeNotVerified */ $_mbHelper->getConfig('mbconfig/product_view/allowfullscreen') ?>,
-                    <?php endif; ?>
-                     "showCaption": 0,
-                    "width": "<?= /* @escapeNotVerified */ $_mbHelper->getConfig('mbconfig/product_view/base_image_width') ?>",
-                    "thumbwidth": "<?= /* @escapeNotVerified */ $_mbHelper->getConfig('mbconfig/product_view/thumbnail_width') ?>",
-                    <?php if ($_mbHelper->getConfig('mbconfig/product_view/thumbnail_height') || $_mbHelper->getConfig('mbconfig/product_view/thumbnail_width')): ?>
-                    "thumbheight": <?= /* @escapeNotVerified */ $_mbHelper->getConfig('mbconfig/product_view/thumbnail_height') ?: $_mbHelper->getConfig('mbconfig/product_view/thumbnail_width'); ?>,
-                    <?php endif; ?>
-                    <?php if ($_mbHelper->getConfig('mbconfig/product_view/base_image_height') || $_mbHelper->getConfig('mbconfig/product_view/base_image_width')): ?>
-                        "height": <?= /* @escapeNotVerified */ $_mbHelper->getConfig('mbconfig/product_view/base_image_height') ?: $_mbHelper->getConfig('mbconfig/product_view/base_image_width'); ?>,
-                    <?php endif; ?>
-                    <?php if ($block->getVar("gallery/transition/duration")): ?>
-                        "transitionduration": <?= /* @escapeNotVerified */ $block->getVar("gallery/transition/duration") ?>,
-                    <?php endif; ?>
-                    "transition": "<?= /* @escapeNotVerified */ $block->getVar("gallery/transition/effect") ?>",
-                    <?php if (($block->getVar("gallery/navarrows"))): ?>
-                        "navarrows": <?= /* @escapeNotVerified */ $block->getVar("gallery/navarrows") ?>,
-                    <?php endif; ?>
-                    "navtype": "<?= /* @escapeNotVerified */ $block->getVar("gallery/navtype") ?>",
-                    "navdir": "<?= /* @escapeNotVerified */ $_mbHelper->getConfig('mbconfig/product_view/nav_dir') ?>"
+                    "autoplay": <?= (int)$_mbHelper->getConfig('mbconfig/product_view/gallery_autoplay') ?>,
+                    "nav": "<?= $block->getVar("gallery/nav") ?>",
+                    "loop": <?= (int)$block->getVar("gallery/loop") ?>,
+                    "keyboard": <?= (int)$block->getVar("gallery/keyboard") ?>,
+                    "arrows": <?= (int)$block->getVar("gallery/arrows") ?>,
+                    "allowfullscreen": <?= (int)$_mbHelper->getConfig('mbconfig/product_view/allowfullscreen') ?>,
+                    "showCaption": <?= (int)$_mbHelper->getConfig('mbconfig/product_view/gallery_caption') ?>,
+                    "width": "<?= $width ?>",
+                    "thumbwidth": <?= $thumbW ?>,
+                    "thumbheight": <?= $thumbH ?>,
+                    "height": <?= $height ?>,
+                    "transitionduration": <?= (int)$_mbHelper->getConfig('mbconfig/product_view/gallery_duration') ?>,
+                    "transition": "<?= $_mbHelper->getConfig('mbconfig/product_view/gallery_effect') ?>",
+                    "navarrows": <?= (int)$block->getVar("gallery/navarrows") ?>,
+                    "navtype": "<?= $block->getVar("gallery/navtype") ?>",
+                    "navdir": "<?= $thumbType ?>",
+                    "direction": "<?= $rtl ? 'rtl' : 'ltr'?>"
                 },
                 "fullscreen": {
-                    "nav": "<?= /* @escapeNotVerified */ $block->getVar("gallery/fullscreen/nav") ?>",
-                    <?php if ($block->getVar("gallery/fullscreen/loop")): ?>
-                        "loop": <?= /* @escapeNotVerified */ $block->getVar("gallery/fullscreen/loop") ?>,
-                    <?php endif; ?>
-                    "navdir": "<?= /* @escapeNotVerified */ $block->getVar("gallery/fullscreen/navdir") ?>",
-                    <?php if ($block->getVar("gallery/transition/navarrows")): ?>
-                        "navarrows": <?= /* @escapeNotVerified */ $block->getVar("gallery/fullscreen/navarrows") ?>,
-                    <?php endif; ?>
-                    "navtype": "<?= /* @escapeNotVerified */ $block->getVar("gallery/fullscreen/navtype") ?>",
-                    <?php if ($block->getVar("gallery/fullscreen/arrows")): ?>
-                        "arrows": <?= /* @escapeNotVerified */ $block->getVar("gallery/fullscreen/arrows") ?>,
-                    <?php endif; ?>
-                    <?php if ($block->getVar("gallery/fullscreen/caption")): ?>
-                        "showCaption": <?= /* @escapeNotVerified */ $block->getVar("gallery/fullscreen/caption") ?>,
-                    <?php endif; ?>
-                    <?php if ($block->getVar("gallery/fullscreen/transition/duration")): ?>
-                        "transitionduration": <?= /* @escapeNotVerified */ $block->getVar("gallery/fullscreen/transition/duration") ?>,
-                    <?php endif; ?>
-                    "transition": "<?= /* @escapeNotVerified */ $block->getVar("gallery/fullscreen/transition/effect") ?>"
+                    "nav": "<?= $block->getVar("gallery/fullscreen/nav") ?>",
+                    "loop": <?= (int)$block->getVar("gallery/fullscreen/loop") ?>,
+                    "navdir": "<?= $_mbHelper->getConfig('mbconfig/product_view/nav_dir') ?>",
+                    "navarrows": <?= (int)$block->getVar("gallery/fullscreen/navarrows") ?>,
+                    "navtype": "<?= $block->getVar("gallery/fullscreen/navtype") ?>",
+                    "arrows": <?= (int)$block->getVar("gallery/fullscreen/arrows") ?>,
+                    "showCaption": <?= (int)$_mbHelper->getConfig('mbconfig/product_view/gallery_caption') ?>,
+                    "transitionduration": <?= (int)$_mbHelper->getConfig('mbconfig/product_view/gallery_duration') ?>,
+                    "transition": "<?= $_mbHelper->getConfig('mbconfig/product_view/gallery_effect') ?>",
+                    "direction": "<?= $rtl ? 'rtl' : 'ltr'?>"
                 },
-                "breakpoints": <?= /* @escapeNotVerified */ $block->getBreakpoints() ?>
+                "breakpoints": <?= $block->getBreakpoints() ?>
             }
         }
     }
 </script>
-

@@ -7,6 +7,7 @@
 namespace MageBig\MbFrame\Controller\Adminhtml\Config;
 
 use Magento\Framework\Filesystem\Glob;
+use Magento\Store\Model\ScopeInterface;
 
 class Save extends \Magento\Config\Controller\Adminhtml\System\AbstractConfig
 {
@@ -205,20 +206,28 @@ class Save extends \Magento\Config\Controller\Adminhtml\System\AbstractConfig
         }
     }
 
-    protected function createCustomStyle($pathDir, $customStyle, $empty = true)
+    protected function createCustomStyle($pathDir, $customStyle, $empty = true, $isStatic = false)
     {
         $pathToCustomFile = $pathDir . '_custom.less';
 
+        if ($isStatic) {
+            $modeDir = 2775;
+            $modeFile = 2664;
+        } else {
+            $modeDir = 0775;
+            $modeFile = 0664;
+        }
+
         if (!is_dir($pathDir)) {
-            mkdir($pathDir, 0755, true);
+            mkdir($pathDir, $modeDir, true);
         }
 
         if (!is_writable($pathDir)) {
-            @chmod($pathDir, '0755');
+            @chmod($pathDir, $modeDir);
         }
 
         if (is_file($pathToCustomFile) && !is_writable($pathToCustomFile)) {
-            @chmod($pathToCustomFile, '0644');
+            @chmod($pathToCustomFile, $modeFile);
         }
 
         $fileCustom = @fopen($pathToCustomFile, 'w') or die('error: Can not open ' . $pathToCustomFile . ' file');
@@ -231,7 +240,7 @@ class Save extends \Magento\Config\Controller\Adminhtml\System\AbstractConfig
         fclose($fileCustom);
     }
 
-    protected function createLess($pathDir)
+    protected function createLess($pathDir, $isStatic = false)
     {
         $section        = $this->getRequest()->getParam('section');
         $pathToLessFile = $pathDir . '_' . $section . '.less';
@@ -239,16 +248,24 @@ class Save extends \Magento\Config\Controller\Adminhtml\System\AbstractConfig
         $store          = $this->getRequest()->getParam('store');
         $website        = $this->getRequest()->getParam('website');
 
+        if ($isStatic) {
+            $modeDir = 0775;
+            $modeFile = 0664;
+        } else {
+            $modeDir = 0755;
+            $modeFile = 0644;
+        }
+
         if (!is_dir($pathDir)) {
-            mkdir($pathDir, 0755, true);
+            mkdir($pathDir, $modeDir, true);
         }
 
         if (!is_writable($pathDir)) {
-            @chmod($pathDir, '0755');
+            @chmod($pathDir, $modeDir);
         }
 
         if (is_file($pathToLessFile) && !is_writable($pathToLessFile)) {
-            @chmod($pathToLessFile, '0644');
+            @chmod($pathToLessFile, $modeFile);
         }
 
         $file = @fopen($pathToLessFile, 'w') or die('error: Can not open ' . $pathToLessFile . ' file');
@@ -260,15 +277,16 @@ class Save extends \Magento\Config\Controller\Adminhtml\System\AbstractConfig
             foreach ($groupData['fields'] as $name => $field) {
                 $value = $this->themeConfig->getValue($section . '/' . $groupId . '/' . $name);
                 if ($store) {
-                    $value = $this->themeConfig->getValue($section . '/' . $groupId . '/' . $name, \Magento\Store\Model\ScopeInterface::SCOPE_STORES, $store);
+                    $value = $this->themeConfig->getValue($section . '/' . $groupId . '/' . $name, ScopeInterface::SCOPE_STORES, $store);
                 }
                 if ($website) {
-                    $value = $this->themeConfig->getValue($section . '/' . $groupId . '/' . $name, \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITES, $website);
+                    $value = $this->themeConfig->getValue($section . '/' . $groupId . '/' . $name, ScopeInterface::SCOPE_WEBSITES, $website);
                 }
                 if ($value == null) {
                     $value = 'inherit';
                 }
                 if ($name != 'custom_css_less') {
+                    $value = str_replace('"', "'", $value);
                     $configs["@{$name}"] = "{$value}";
 
                     if ($value != 'inherit' && !(preg_match('/_file|_pattern/', $name))) {
@@ -339,10 +357,10 @@ class Save extends \Magento\Config\Controller\Adminhtml\System\AbstractConfig
             //$localeCode    = $this->_localeResolver->getLocale();
             $localeCode = $this->themeConfig->getValue('general/locale/code');
             if ($store) {
-                $localeCode = $this->themeConfig->getValue('general/locale/code', \Magento\Store\Model\ScopeInterface::SCOPE_STORES, $store);
+                $localeCode = $this->themeConfig->getValue('general/locale/code', ScopeInterface::SCOPE_STORES, $store);
             }
             if ($website) {
-                $localeCode = $this->themeConfig->getValue('general/locale/code', \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITES, $website);
+                $localeCode = $this->themeConfig->getValue('general/locale/code', ScopeInterface::SCOPE_WEBSITES, $website);
             }
             $themePathLess = str_replace('_', '/', $themePath);
             $staticPath    = $this->_directoryList->getPath('static') . '/frontend/' . $themePath;
@@ -355,42 +373,42 @@ class Save extends \Magento\Config\Controller\Adminhtml\System\AbstractConfig
             if ($section == 'mbdesign') {
                 $this->cleanStyle($staticPath);
                 $this->cleanStyle($viewStatic);
-                $this->createLess($staticView);
-                if ($localeCode == 'en_US') {
+                $this->createLess($staticView, true);
+                if (!$website && !$store) {
                     $this->createLess($localeDefault);
                 }
                 $this->createLess($localeDir);
-                $this->createLess($viewPath);
+                $this->createLess($viewPath, true);
 
                 $enableCustomStyle = $this->themeConfig->getValue('mbdesign/general/enable_custom_style');
                 if ($store) {
-                    $enableCustomStyle = $this->themeConfig->getValue('mbdesign/general/enable_custom_style', \Magento\Store\Model\ScopeInterface::SCOPE_STORES, $store);
+                    $enableCustomStyle = $this->themeConfig->getValue('mbdesign/general/enable_custom_style', ScopeInterface::SCOPE_STORES, $store);
                 }
                 if ($website) {
-                    $enableCustomStyle = $this->themeConfig->getValue('mbdesign/general/enable_custom_style', \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITES, $website);
+                    $enableCustomStyle = $this->themeConfig->getValue('mbdesign/general/enable_custom_style', ScopeInterface::SCOPE_WEBSITES, $website);
                 }
 
                 $customStyle = $this->themeConfig->getValue('mbdesign/general/custom_css_less');
                 if ($store) {
-                    $customStyle = $this->themeConfig->getValue('mbdesign/general/custom_css_less', \Magento\Store\Model\ScopeInterface::SCOPE_STORES, $store);
+                    $customStyle = $this->themeConfig->getValue('mbdesign/general/custom_css_less', ScopeInterface::SCOPE_STORES, $store);
                 }
                 if ($website) {
-                    $customStyle = $this->themeConfig->getValue('mbdesign/general/custom_css_less', \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITES, $website);
+                    $customStyle = $this->themeConfig->getValue('mbdesign/general/custom_css_less', ScopeInterface::SCOPE_WEBSITES, $website);
                 }
                 if ($enableCustomStyle) {
-                    $this->createCustomStyle($staticView, $customStyle, false);
-                    if ($localeCode == 'en_US') {
+                    $this->createCustomStyle($staticView, $customStyle, false, true);
+                    if (!$website && !$store) {
                         $this->createCustomStyle($localeDefault, $customStyle, false);
                     }
                     $this->createCustomStyle($localeDir, $customStyle, false);
-                    $this->createCustomStyle($viewPath, $customStyle, false);
+                    $this->createCustomStyle($viewPath, $customStyle, false, true);
                 } else {
-                    $this->createCustomStyle($staticView, $customStyle, true);
-                    if ($localeCode == 'en_US') {
+                    $this->createCustomStyle($staticView, $customStyle, true, true);
+                    if (!$website && !$store) {
                         $this->createCustomStyle($localeDefault, $customStyle, true);
                     }
                     $this->createCustomStyle($localeDir, $customStyle, true);
-                    $this->createCustomStyle($viewPath, $customStyle, true);
+                    $this->createCustomStyle($viewPath, $customStyle, true, true);
                 }
             }
 

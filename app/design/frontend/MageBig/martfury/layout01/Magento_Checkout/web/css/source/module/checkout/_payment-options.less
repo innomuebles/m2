@@ -118,10 +118,6 @@
             }
 
             .fields {
-                > .year {
-                    padding-left: @indent__xs;
-                }
-
                 .select {
                     padding-left: @indent__xs;
                     padding-right: @indent__xs;
@@ -141,31 +137,25 @@
             }
 
             .number {
+                display: inline-block;
+                vertical-align: top;
                 .input-text {
                     width: 225px;
                 }
             }
-
-            > .field.cvv {
-                > .control {
-                    padding-right: @indent__base;
-                    width: auto;
+            .date {
+                display: inline-block;
+                vertical-align: top;
+                .month, .year {
+                    display: inline-block;
+                    vertical-align: top;
                 }
             }
-
             .cvv {
+                display: inline-block;
+                vertical-align: top;
                 .input-text {
-                    width: 55px;
-                }
-            }
-
-            &.fieldset {
-                > .field {
-                    .fields.group.group-2 {
-                        .field {
-                            width: auto !important;
-                        }
-                    }
+                    width: 70px;
                 }
             }
         }

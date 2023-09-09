@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -82,7 +82,6 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 ['author_id']
             );
         }
-
 
         if (version_compare($version, '2.2.5') < 0) {
             /* Add layout field to posts and category table */
@@ -350,7 +349,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
         }
 
         if (version_compare($version, '2.6.0') < 0) {
-        /**
+            /**
              * Create table 'magefan_blog_comment'
              */
             $table = $setup->getConnection()->newTable(
@@ -419,13 +418,13 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 'creation_time',
                 \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
                 null,
-                ['nullable' => false],
+                [],
                 'Comment Creation Time'
             )->addColumn(
                 'update_time',
                 \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
                 null,
-                ['nullable' => false],
+                [],
                 'Comment Update Time'
             )->addIndex(
                 $installer->getIdxName('magefan_blog_comment', ['parent_id']),
@@ -453,7 +452,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
         }
 
         if (version_compare($version, '2.6.2') < 0) {
-        /* Add include in menu field into categories table */
+            /* Add include in menu field into categories table */
             $connection->addColumn(
                 $setup->getTable('magefan_blog_category'),
                 'include_in_menu',
@@ -474,7 +473,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
         }
 
         if (version_compare($version, '2.6.3') < 0) {
-        /* Add display mode field into category table */
+            /* Add display mode field into category table */
             $connection->addColumn(
                 $setup->getTable('magefan_blog_category'),
                 'display_mode',
@@ -488,7 +487,6 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 ]
             );
         }
-
 
         if (version_compare($version, '2.6.3.1') < 0) {
             /* Add include in recent posts into post table */
@@ -505,7 +503,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 ]
             );
         }
-        
+
         if (version_compare($version, '2.7.2') < 0) {
             /* Add position column into post table */
             $connection->addColumn(
@@ -566,7 +564,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 [
                     'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     'length' => '2M',
-                     [],
+                    [],
                     'comment' =>'Tag Content'
                 ]
             );
@@ -606,7 +604,6 @@ class UpgradeSchema implements UpgradeSchemaInterface
                     'after' => 'title'
                 ]
             );
-
 
             $connection->addColumn(
                 $setup->getTable($table),
@@ -707,10 +704,101 @@ class UpgradeSchema implements UpgradeSchemaInterface
                     'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     'length' => 255,
                     'nullable' => true,
-                    'comment' => 'Tag Degault Robots',
+                    'comment' => 'Tag Default Robots',
                     'after' => 'title'
                 ]
             );
+        }
+
+        if (version_compare($version, '2.9.1') < 0) {
+            $table = $setup->getTable('magefan_blog_post');
+            $connection->addColumn(
+                $setup->getTable($table),
+                'featured_img_alt',
+                [
+                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    'length' => 255,
+                    'nullable' => true,
+                    'comment' => 'Featured Image Alt',
+                    'after' => 'featured_img'
+                ]
+            );
+
+            $connection->addColumn(
+                $setup->getTable($table),
+                'comments_count',
+                [
+                    'type' =>\Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    'length' => null,
+                    'nullable' => true,
+                    'comment' => 'Post Comment Counts'
+
+                ]
+            );
+        }
+
+        if (version_compare($version, '2.9.8') < 0) {
+            /**
+             * Create table 'magefan_blog_tag_store'
+             */
+            $table = $connection->newTable(
+                $setup->getTable('magefan_blog_tag_store')
+            )->addColumn(
+                'tag_id',
+                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                null,
+                ['nullable' => false, 'primary' => true],
+                'Tag ID'
+            )->addColumn(
+                'store_id',
+                \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+                null,
+                ['unsigned' => true, 'nullable' => false, 'primary' => true],
+                'Store ID'
+            )->addIndex(
+                $setup->getIdxName('magefan_blog_tag_store', ['store_id']),
+                ['store_id']
+            )->addForeignKey(
+                $setup->getFkName('magefan_blog_tag_store', 'tag_id', 'magefan_blog_tag', 'tag_id'),
+                'tag_id',
+                $setup->getTable('magefan_blog_tag'),
+                'tag_id',
+                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+            )->addForeignKey(
+                $setup->getFkName('magefan_blog_tag_store', 'store_id', 'store', 'store_id'),
+                'store_id',
+                $setup->getTable('store'),
+                'store_id',
+                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+            )->setComment(
+                'Magefan Blog Tag To Store Linkage Table'
+            );
+            $connection->createTable($table);
+        }
+
+        if (version_compare($version, '2.10.0') < 0) {
+            foreach (['magefan_blog_tag', 'magefan_blog_category'] as $table) {
+                $connection->addColumn(
+                    $setup->getTable($table),
+                    'posts_per_page',
+                    [
+                        'type' => \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                        'nullable' => true,
+                        'comment' => 'Posts Per Page',
+
+                    ]
+                );
+                $connection->addColumn(
+                    $setup->getTable($table),
+                    'posts_list_template',
+                    [
+                        'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                        'length' => 100,
+                        'nullable' => true,
+                        'comment' => 'Posts List Template',
+                    ]
+                );
+            }
         }
 
         $setup->endSetup();

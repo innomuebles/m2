@@ -6,13 +6,13 @@ $i = 0;
     <?php if ($carousel == 1 && $row > 1 && $i == 0): ?>
         <div class="owl-carousel owl-theme">
     <?php endif ?>
-    <?php if ($i % $column == 0 || ($row > 1 && $i % $row == 0)): ?>
+    <?php if (($i % $column == 0 || ($row > 1 && $i % $row == 0)) && $carousel): ?>
         <div class="category-products">
-        <ol class="product-items <?= $type; ?> <?= $carousel && $row == 1 ? ' owl-carousel owl-theme' : '' ?>">
+        <div class="product-items <?= $type; ?> <?= $carousel && $row == 1 ? ' owl-carousel owl-theme' : '' ?>">
     <?php endif ?>
 
     <?php $i++ ?>
-    <li class="product-item product-sidebar">
+    <div class="product-item product-sidebar">
         <div class="product-item-info">
             <div class="product-show">
                 <a href="<?= $block->getProductUrl($_product) ?>" class="product-item-photo">
@@ -39,9 +39,9 @@ $i = 0;
                 </div>
             </div>
         </div>
-    </li>
-    <?php if ($i == $count || $i % $column == 0 || ($row > 1 && $i % $row == 0)): ?>
-        </ol>
+    </div>
+    <?php if (($i == $count || $i % $column == 0 || ($row > 1 && $i % $row == 0)) && $carousel): ?>
+        </div>
         </div>
     <?php endif ?>
     <?php if ($carousel == 1 && $row > 1 && $i == $count): ?>

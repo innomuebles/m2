@@ -1,9 +1,12 @@
 define([
     "jquery",
-    "MageBig_NewsPopup/js/js.cookie",
+    'MageBig_NewsPopup/js/js.cookie',
+    'Magento_Customer/js/customer-data',
+    'MageBig_NewsPopup/js/ajax-newsletter',
+    'mage/validation',
     "domReady!",
     "magnificpopup"
-], function($,Cookies){
+], function ($,Cookies, customerData, ajaxNewsletter) {
     "use strict";
 
     $.widget('custom.mbNewsPopup', {
@@ -14,69 +17,76 @@ define([
             cookieFlag: 'magebig_newsletter_Flag',
             isSuccess: ".messages .message-success",
             notShow: '.not-show-popup input',
-            submitButton: "#magebig_newsletter .input-box button.button"
+            submitButton: ".btn-subscribe",
+            form: '#mb-newsletter-form'
         },
 
-        _create: function() {
+        _create: function () {
             var subscribeFlag = Cookies.get(this.options.cookieFlag);
             var cookieName = this.options.cookieName;
             var cookieFlag = this.options.cookieFlag;
             var cookieLifetime = this.options.cookieLifetime;
             var showhome = this.options.showHome;
             var self = this;
+
+            self.hidePopup(cookieName, cookieLifetime, showhome);
+
+            ajaxNewsletter(self.options, self.options.form);
+
+            if (!(subscribeFlag && this.options.isSuccess.length) && !Cookies.get(cookieName)) {
+                var idPopup = this.options.idPopup;
+                setTimeout(function () {
+                    if ($.magnificPopup.instance.isOpen) {
+                        $.magnificPopup.close();
+                    }
+                    setTimeout(function () {
+                        $.magnificPopup.open({
+                            items: {
+                                src: idPopup,
+                                type: 'inline'
+                            },
+                            overflowY: 'auto',
+                            fixedContentPos: false,
+                            removalDelay: 300,
+                            mainClass: 'mfp-zoom-in',
+                            callbacks: {
+                                open: function () {
+                                    if (this.fixedContentPos) {
+                                        if (this._hasScrollBar(this.wH)) {
+                                            var s = this._getScrollbarSize();
+                                            if (s) {
+                                                $('.sticky-menu.active').css('padding-right', s);
+                                                $('#go-top').css('margin-right', s);
+                                            }
+                                        }
+                                    }
+                                },
+                                close: function () {
+                                    $('.sticky-menu.active').css('padding-right', '');
+                                    $('#go-top').css('margin-right', '');
+                                }
+                            }
+                        });
+                    }, 500);
+                }, 4500);
+            } else {
+                self._subsRemove(cookieFlag, showhome);
+                self._subsSetcookie(cookieName, cookieLifetime, showhome);
+            }
+        },
+
+        hidePopup: function (cookieName, cookieLifetime, showhome) {
+            var self = this;
+
             $(this.options.notShow).on('click', function () {
                 var $elm = $(this);
+
                 if ($elm.is(':checked')) {
                     self._subsSetcookie(cookieName, cookieLifetime, showhome);
                 } else {
                     self._subsRemove(cookieName, showhome);
                 }
             });
-
-            $(this.options.submitButton).on('click', function () {
-                var button = $(this);
-                setTimeout(function () {
-                    if (!button.parents('.input-box').find('input#mb-newsletter').hasClass('mage-error')) {
-                        self._subsSetcookie(cookieFlag, cookieLifetime, showhome);
-                    }
-                }, 200);
-            });
-
-            if (!(subscribeFlag && this.options.isSuccess.length) && !Cookies.get(cookieName)) {
-                var idPopup = this.options.idPopup;
-                setTimeout(function () {
-                    $.magnificPopup.open({
-                        items: {
-                            src: idPopup,
-                            type: 'inline'
-                        },
-                        overflowY: 'auto',
-                        fixedContentPos: false,
-                        removalDelay: 300,
-                        mainClass: 'mfp-zoom-in',
-                        callbacks: {
-                            open: function() {
-                                if( this.fixedContentPos ) {
-                                    if(this._hasScrollBar(this.wH)){
-                                        var s = this._getScrollbarSize();
-                                        if(s) {
-                                            $('.sticky-menu.active').css('padding-right', s);
-                                            $('#go-top').css('margin-right', s);
-                                        }
-                                    }
-                                }
-                            },
-                            close: function() {
-                                $('.sticky-menu.active').css('padding-right', '');
-                                $('#go-top').css('margin-right', '');
-                            }
-                        }
-                    });
-                }, 5000);
-            } else {
-                self._subsRemove(cookieFlag, showhome);
-                self._subsSetcookie(cookieName, cookieLifetime, showhome);
-            }
         },
 
         _subsSetcookie: function (cookieName, cookieLifetime, showhome) {
@@ -97,6 +107,12 @@ define([
             } else {
                 Cookies.remove(cookieName, { path: '/' });
             }
+        },
+
+        validate: function () {
+            var form = this.options.form;
+
+            return $(form).validation() && $(form).validation('isValid');
         }
     });
 

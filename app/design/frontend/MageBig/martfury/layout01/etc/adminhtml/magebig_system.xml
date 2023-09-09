@@ -26,6 +26,11 @@
                         <option label="max-width: 100%">max-100</option>
                     </options>
                 </field>
+                <field id="logo_loading" translate="label comment" type="textarea" showInDefault="1" showInStore="1"
+                       showInWebsite="1">
+                    <label>Critical SVG logo loading</label>
+                    <comment>Use when Critical CSS is enabled. Leave it empty to use default loading animation</comment>
+                </field>
             </group>
             <group id="header" translate="label" type="text" showInDefault="1" showInStore="1" showInWebsite="1">
                 <label>Header</label>
@@ -36,11 +41,29 @@
                         <option label="Horizontal">horizontal</option>
                     </options>
                 </field>
-                <field id="sticky_header" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInStore="1" showInWebsite="1">
+                <field id="sticky_header" translate="label comment" type="select" showInDefault="1" showInStore="1" showInWebsite="1">
                     <label>Enable Sticky Header</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="logo_nav" translate="label comment" type="image" sortOrder="30" showInDefault="1" showInStore="1" showInWebsite="1">
+                <field id="sticky_offset" translate="label comment" type="text" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Sticky Offset</label>
+                    <comment>Start Sticky after 500px</comment>
+                    <depends>
+                        <field id="newsletter_form">1</field>
+                    </depends>
+                </field>
+                <field id="sticky_type" translate="label comment" type="select" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Sticky Type</label>
+                    <options>
+                        <option label="Hide on Scroll Up">0</option>
+                        <option label="Hide on Scroll Down">1</option>
+                        <option label="Always Show">2</option>
+                    </options>
+                    <depends>
+                        <field id="sticky_header">1</field>
+                    </depends>
+                </field>
+                <field id="logo_nav" translate="label comment" type="image" showInDefault="1" showInStore="1" showInWebsite="1">
                     <label>Logo in Navigation Mobile</label>
                     <comment>JPG,PNG,GIF</comment>
                     <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
@@ -50,15 +73,9 @@
             </group>
             <group id="category_view" translate="label" type="text" showInDefault="1" showInStore="1" showInWebsite="1">
                 <label>Category View</label>
-                <field id="keep_image_ratio" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInStore="1" showInWebsite="1">
-                    <label>Keep Image Aspect Ratio</label>
+                <field id="product_image_hover" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Enable product image hover</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="image_width" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInStore="1" showInWebsite="1">
-                    <label>Image Width</label>
-                </field>
-                <field id="image_height" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInStore="1" showInWebsite="1">
-                    <label>Image Height</label>
                 </field>
                 <field id="show_addcart" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInStore="1" showInWebsite="1">
                     <label>Show Add To Cart Button</label>
@@ -140,7 +157,7 @@
                 </group>
                 <group id="category_two_columns" translate="label" type="text" sortOrder="90" showInDefault="1" showInStore="1" showInWebsite="1">
                     <label>Category Layout - Two Columns - Product per row</label>
-                    <field id="viewport_1600up" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <field id="viewport_1600" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInStore="1" showInWebsite="1">
                         <label>Viewport 1600px and up</label>
                         <options>
                             <option label="6">6</option>
@@ -198,7 +215,7 @@
                 </group>
                 <group id="category_three_columns" translate="label" type="text" sortOrder="100" showInDefault="1" showInStore="1" showInWebsite="1">
                     <label>Category Layout - Three Columns - Product per row</label>
-                    <field id="viewport_1600up" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <field id="viewport_1600" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInStore="1" showInWebsite="1">
                         <label>Viewport 1600px and up</label>
                         <options>
                             <option label="6">6</option>
@@ -257,28 +274,50 @@
             </group>
             <group id="product_view" translate="label" type="text" showInDefault="1" showInStore="1" showInWebsite="1">
                 <label>Product View</label>
-                <field id="keep_image_ratio" translate="label comment" type="select" showInDefault="1" showInStore="1" showInWebsite="1">
-                    <label>Keep Image Aspect Ratio</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                <field id="product_layout" translate="label comment" type="select" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Product Layout</label>
+                    <options>
+                        <option label="2 columns">0</option>
+                        <option label="3 columns (sidebar)">1</option>
+                    </options>
                 </field>
-                <field id="base_image_width" translate="label comment" type="text" showInDefault="1" showInStore="1" showInWebsite="1">
-                    <label>Base Image Width</label>
-                </field>
-                <field id="base_image_height" translate="label comment" type="text" showInDefault="1" showInStore="1" showInWebsite="1">
-                    <label>Base Image Height</label>
-                </field>
-                <field id="thumbnail_width" translate="label comment" type="text" showInDefault="1" showInStore="1" showInWebsite="1">
-                    <label>Thumbnail Width</label>
-                </field>
-                <field id="thumbnail_height" translate="label comment" type="text" showInDefault="1" showInStore="1" showInWebsite="1">
-                    <label>Thumbnail Height</label>
+                <field id="media_width" translate="label comment" type="select" showInDefault="1" showInStore="1"
+                       showInWebsite="1">
+                    <label>Product Media Width</label>
+                    <options>
+                        <option label="40%">0</option>
+                        <option label="50%">1</option>
+                        <option label="60%">2</option>
+                    </options>
+                    <depends>
+                        <field id="product_layout">0</field>
+                    </depends>
                 </field>
                 <field id="nav_dir" translate="label comment" type="select" showInDefault="1" showInStore="1" showInWebsite="1">
-                    <label>Thumbnail Style</label>
+                    <label>Gallery Thumbnail Style</label>
                     <source_model>MageBig\MbFrame\Model\Config\Source\Direction</source_model>
                 </field>
+                <field id="gallery_autoplay" translate="label comment" type="select" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Gallery Autoplay</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="gallery_duration" translate="label comment" type="text" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Gallery Transition Duration</label>
+                </field>
+                <field id="gallery_effect" translate="label comment" type="select" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Gallery Transition Effect</label>
+                    <options>
+                        <option label="Slide">slide</option>
+                        <option label="Cross Fade">crossfade</option>
+                        <option label="Dissolve">dissolve</option>
+                    </options>
+                </field>
                 <field id="allowfullscreen" translate="label comment" type="select" showInDefault="1" showInStore="1" showInWebsite="1">
-                    <label>Allow full screen</label>
+                    <label>Gallery Fullscreen</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="gallery_caption" translate="label comment" type="select" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Gallery Caption</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="share_social" translate="label comment" type="select" showInDefault="1" showInStore="1" showInWebsite="1">
@@ -335,6 +374,19 @@
                 <field id="go_top" translate="label comment" type="select" showInDefault="1" showInStore="1" showInWebsite="1">
                     <label>Button Go Top</label>
                     <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                </field>
+            </group>
+            <group id="mobile_view" translate="label" type="text" showInDefault="1" showInStore="1" showInWebsite="1">
+                <label>Mobile View</label>
+                <field id="btn_menu" translate="label comment" type="select" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Top Menu Button</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>Display Button Menu on Top Menu</comment>
+                </field>
+                <field id="bottom_menu" translate="label comment" type="select" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Bottom Menu</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>Display Bottom Menu</comment>
                 </field>
             </group>
         </section>

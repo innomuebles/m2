@@ -2,8 +2,7 @@
 /**
  * OpenPayU Standard Library
  *
- * @copyright  Copyright (c) 2011-2016 PayU
- * @license    http://opensource.org/licenses/LGPL-3.0  Open Software License (LGPL 3.0)
+ * @copyright Copyright (c) PayU
  * http://www.payu.com
  * http://developers.payu.com
  */
@@ -33,13 +32,17 @@ class OpenPayU
     {
         $sign = OpenPayU_Util::parseSignature($incomingSignature);
 
+        if ($sign === null || !array_key_exists('signature', $sign) || !array_key_exists('algorithm', $sign)) {
+            throw new OpenPayU_Exception_Authorization('Signature not found');
+        }
+
         if (false === OpenPayU_Util::verifySignature(
                 $data,
-                $sign->signature,
+                $sign['signature'],
                 OpenPayU_Configuration::getSignatureKey(),
-                $sign->algorithm)
+                $sign['algorithm'])
         ) {
-            throw new OpenPayU_Exception_Authorization('Invalid signature - ' . $sign->signature);
+            throw new OpenPayU_Exception_Authorization('Invalid signature - ' . $sign['signature']);
         }
     }
 

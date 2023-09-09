@@ -32,6 +32,11 @@
     //  ---------------------------------------------
     .old-price, .old.price {
         text-decoration: line-through;
+        color: #999;
+        vertical-align: top;
+        .product-info-price & {
+            vertical-align: text-bottom;
+        }
     }
     .prices-tier {
         .price-container {
@@ -102,6 +107,10 @@
             width: 100%;
         }
     }
+    .product-item-photo img {
+        width: 100%;
+        height: auto;
+    }
     //
     //  Product view
     //  ---------------------------------------------
@@ -128,14 +137,18 @@
             }
         }
     }
+    .product-add-form {
+        position: relative;
+    }
     .product.info.detailed {
         clear: both;
         margin-bottom: 30px;
         margin-top: 30px;
+        overflow: hidden;
         .item.content {
             display: none;
         }
-        .active + .item.content {
+        .opened + .item.content {
             display: block;
         }
     }
@@ -247,7 +260,7 @@
         .price-box {
             .price-wrapper .price {
                 .font-size(24);
-                font-weight: @font-weight__bold;
+                font-weight: 500;
             }
             .price {
                 white-space: nowrap;
@@ -495,7 +508,7 @@
             text-align: center;
             border-radius: 2px;
             text-transform: capitalize;
-            font-weight: bold;
+            font-weight: 500;
             border: 1px solid @main_color;
             background-color: @main_color;
             color: @main3_color;
@@ -685,11 +698,6 @@
         }
     }
     .comparison.headings {
-        .lib-css(background, @page__background-color);
-        left: 0;
-        position: absolute;
-        top: 0;
-        width: auto;
-        z-index: 2;
+        display: none;
     }
 }

@@ -1,13 +1,14 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
 
 namespace Magefan\Blog\Block\Archive;
 
+use Magefan\Blog\Block\Post\PostList\Toolbar;
 use Magento\Store\Model\ScopeInterface;
 
 /**
@@ -58,16 +59,31 @@ class PostList extends \Magefan\Blog\Block\Post\PostList
         $this->pageConfig->getTitle()->set($title);
 
         if ($this->config->getDisplayCanonicalTag(\Magefan\Blog\Model\Config::CANONICAL_PAGE_TYPE_ARCHIVE)) {
+
+            $canonicalUrl = $this->_url->getUrl(
+                $this->getYear() . '-' . str_pad($this->getMonth(), 2, '0', STR_PAD_LEFT),
+                \Magefan\Blog\Model\Url::CONTROLLER_ARCHIVE
+            );
+            $page = (int)$this->_request->getParam(Toolbar::PAGE_PARM_NAME);
+            if ($page > 1) {
+                $canonicalUrl .= ((false === strpos($canonicalUrl, '?')) ? '?' : '&')
+                    . Toolbar::PAGE_PARM_NAME . '=' . $page;
+            }
+
             $this->pageConfig->addRemotePageAsset(
-                $this->_url->getUrl(
-                    $this->getYear() . '-' . str_pad($this->getMonth(), 2, '0', STR_PAD_LEFT),
-                    \Magefan\Blog\Model\Url::CONTROLLER_ARCHIVE
-                ),
+                $canonicalUrl,
                 'canonical',
                 ['attributes' => ['rel' => 'canonical']]
             );
         }
         $this->pageConfig->setRobots('NOINDEX,FOLLOW');
+
+        $pageMainTitle = $this->getLayout()->getBlock('page.main.title');
+        if ($pageMainTitle) {
+            $pageMainTitle->setPageTitle(
+                $this->escapeHtml($title)
+            );
+        }
 
         return parent::_prepareLayout();
     }

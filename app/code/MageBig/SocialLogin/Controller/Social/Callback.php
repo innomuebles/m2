@@ -6,6 +6,11 @@
 
 namespace MageBig\SocialLogin\Controller\Social;
 
+use Hybridauth\Exception\Exception;
+use Hybridauth\Hybridauth;
+use Hybridauth\HttpClient;
+use Hybridauth\Storage\Session;
+
 /**
  * Class Callback
  *
@@ -18,17 +23,46 @@ class Callback extends AbstractSocial
      */
     public function execute()
     {
-        if ($this->checkRequest('hauth_start', false) && (
-                $this->checkRequest('error_reason', 'user_denied')
-                && $this->checkRequest('error', 'access_denied')
-                && $this->checkRequest('error_code', '200')
-                && $this->checkRequest('hauth_done', 'Facebook')
-                || ($this->checkRequest('hauth_done', 'Twitter') && $this->checkRequest('denied'))
-            )) {
-            return $this->_appendJs(sprintf("<script>window.close();</script>"));
+        if ($this->session->isLoggedIn()) {
+            $this->_redirect('customer/account');
+            return;
         }
 
-        \Hybrid_Endpoint::process();
+        $type = $this->session->getData('social_type', true);
+
+        if (!$type) {
+            $this->_forward('noroute');
+
+            return;
+        }
+
+        try {
+            $userProfile = $this->apiObject->getUserProfile($type);
+
+            if (!$userProfile->identifier) {
+                return $this->emailRedirect($type);
+            }
+        } catch (\Exception $e) {
+            $this->setBodyResponse($e->getMessage());
+
+            return;
+        }
+
+        $customer = $this->apiObject->getCustomerBySocial($userProfile->identifier, $type);
+
+        if (!$customer->getId()) {
+            if (!$userProfile->email && $this->apiHelper->requireRealEmail()) {
+                $this->session->setUserProfile($userProfile);
+
+                return $this->_appendJs(sprintf("<script>window.close();window.opener.fakeEmailCallback('%s');</script>", $type));
+            }
+
+            $customer = $this->createCustomerProcess($userProfile, $type);
+        }
+
+        $this->refresh($customer);
+
+        return $this->_appendJs();
     }
 
     /**

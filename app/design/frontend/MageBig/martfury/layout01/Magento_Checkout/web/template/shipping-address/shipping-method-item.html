@@ -19,14 +19,14 @@
         </div>
     </td>
     <td class="table-col col-price">
-        <each args="element.getRegion('price')" render="" />
+        <each args="element.getRegion('price')" render=""></each>
     </td>
     <td class="table-col col-method"
         attr="'id': 'label_method_' + method.method_code + '_' + method.carrier_code"
-        text="method.method_title" />
+        text="method.method_title"></td>
     <td class="table-col col-carrier"
         attr="'id': 'label_carrier_' + method.method_code + '_' + method.carrier_code"
-        text="method.carrier_title" />
+        text="method.carrier_title"></td>
 </tr>
 <tr class="table-row row-error"
     if="method.error_message">

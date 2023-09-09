@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">My Orders</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <container name="order.status.container" htmlTag="div" htmlClass="order-status-wrap" before="-">
+                <block class="Magento\Sales\Block\Order\Info" name="order.status" template="Magento_Sales::order/order-info.phtml" />
+                <block class="Magento\Sales\Block\Order\Info\Buttons" as="buttons" name="sales.order.info.buttons" template="Magento_Sales::order/print.phtml" cacheable="false">
+                    <block class="Magento\Sales\Block\Order\Info\Buttons\Rss" as="buttons.rss" name="sales.order.info.buttons.rss" cacheable="false"/>
+                </block>
+                <block class="Magento\Sales\Block\Order\Info\Buttons" name="sales.order.info.reorder" template="Magento_Sales::order/reorder.phtml" cacheable="false" after="sales.order.view" />
+            </container>
+        </referenceContainer>
+        <referenceContainer name="order.date" remove="true" />
+    </body>
+</page>

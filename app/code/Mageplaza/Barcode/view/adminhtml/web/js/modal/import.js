@@ -102,7 +102,7 @@ define([
                     self.options.printDiv.show();
                 },
                 error: function (error) {
-                    barcodeHelper.alertError($t('Request Error'), error.status + ' ' + error.statusText);
+                    barcodeHelper.alertError($t('Request Error'), 'Can\'t check with edited cvs file, please choose another csv file or reload the page');
                 }
             });
         },

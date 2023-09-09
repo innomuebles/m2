@@ -1,0 +1,344 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category  Apptrian
+ * @package   Apptrian_FacebookCatalog
+ * @author    Apptrian
+ * @copyright Copyright (c) Apptrian (http://www.apptrian.com)
+ * @license   http://www.apptrian.com/license Proprietary Software License EULA
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="apptrian_extensions" translate="label" sortOrder="1000000">
+            <label>Apptrian Extensions</label>
+        </tab>
+        <section id="apptrian_facebookcatalog" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Facebook Catalog Product Feed</label>
+            <tab>apptrian_extensions</tab>
+            <resource>Apptrian_FacebookCatalog::config_system</resource>
+            <group id="about" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>About</label>
+                <frontend_model>Apptrian\FacebookCatalog\Block\Adminhtml\About</frontend_model>
+            </group>
+            <group id="general" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="heading_links" translate="label" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Facebook Catalog Product Feed Links</label>
+                    <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model>
+                    <attribute type="shared">1</attribute>
+                </field>
+                <field id="links" translate="label tooltip" type="button" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Click "Generate Product Feed" button below. After the process is done every store you have in Magento will have one product feed. You can change the product feed file name on store scope level. See tooltip for more information.</label>
+                    <tooltip><![CDATA[You can change the product feed file name on store scope level. The option is called "Product Feed File Name" you can set it to whatever you want as long as it is unique. Two or multiple stores must not have the same file name.]]></tooltip>
+                    <frontend_model>Apptrian\FacebookCatalog\Block\Adminhtml\Links</frontend_model>
+                </field>
+                <field id="heading_options" translate="label" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Facebook Catalog Product Feed Options</label>
+                    <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model>
+                    <attribute type="shared">1</attribute>
+                </field>
+                <field id="feed_enabled" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Product Feed</label>
+                    <comment>Enables or disables product feed.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="filename" translate="label comment tooltip" type="text" sortOrder="5" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <label>Product Feed File Name</label>
+                    <comment>Your product feed file name (without extension). The file name must be unique.</comment>
+                    <tooltip><![CDATA[The file name must be unique. Two or multiple stores must not have the same file name.<br />Example: If you type "yourfeed" in this field your product feed will be located at http://www.example.com/pub/media/yourfeed.csv]]></tooltip>
+                    <validate>validate-no-html-tags validate-alphanum</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\Filename</backend_model>
+                </field>
+                <field id="format" translate="label comment tooltip" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Feed Format</label>
+                    <comment>See tooltip for more information.</comment>
+                    <tooltip><![CDATA[CSV (Comma-separated values) extension .csv<br />TSV (Tab-separated values) extension .tsv<br />XML-RSS (Really Simple Syndication) extension .xml]]></tooltip>
+                    <source_model>Apptrian\FacebookCatalog\Model\Config\Format</source_model>
+                </field>
+                <field id="pnvi_allowed" translate="label comment tooltip" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Products That Are Not Visible Individually</label>
+                    <comment>If you want to allow products that are not visible individually in product feed set this option to "Yes".</comment>
+                    <tooltip><![CDATA[Some products in Magento are not visible individually, instead, they are part of other products. Examples of this are bundle products, configurable products, and grouped products. For example, the configurable product looks like a single product with drop-down lists of options for each variation. Each option is actually a separate simple product with a unique sku, which makes it possible to track inventory for each product variation. So if you want to have these simple products inside your product feed enable this option. Same or similar applies to bundle and grouped products.]]></tooltip>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="exclude_product_type" translate="label comment tooltip" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Exclude Product Type</label>
+                    <comment><![CDATA[If you want to exclude one or more product types. Please read the tooltip.]]></comment>
+                    <tooltip><![CDATA[This is useful if you want to exclude Magento product type from the feed. For example, if you want to exclude all configurable products and only have variant products in the feed. In this case you would type <strong>configurable</strong> in this option. Another example would be if you want to exclude bundle, configurable, and grouped products. It this case you would type <strong>bundle,configurable,grouped</strong> in this option.]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\ExcludeProductType</backend_model>
+                </field>
+                <field id="exclude_discontinued" translate="label comment tooltip" type="select" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Exclude discontinued Products</label>
+                    <comment><![CDATA[If you want to exclude <strong>discontinued</strong> products from the product feed set this option to "Yes".]]></comment>
+                    <tooltip><![CDATA[For evaluation of this condition <strong>availability</strong> field value is used.]]></tooltip>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="exclude_out_of_stock" translate="label comment tooltip" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Exclude out of stock Products</label>
+                    <comment><![CDATA[If you want to exclude <strong>out of stock</strong> products from the product feed set this option to "Yes".]]></comment>
+                    <tooltip><![CDATA[For evaluation of this condition <strong>availability</strong> field value is used.]]></tooltip>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="check_attr" translate="label comment tooltip" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Exclude/Include Attribute to Check</label>
+                    <comment>Type Magento product attribute code you want to check for product to be included in the feed.</comment>
+                    <tooltip><![CDATA[Example 1<br /> If you want to check <strong>custom_attrib</strong> attribute and include product in the feed if a value of this attribute is <strong>Some value</strong><br />Example 2<br /> If you want to check <strong>include_in_feed</strong> attribute and include product in the feed if a value of this attribute is <strong>Yes</strong><br />Example 3<br /> If you want to check <strong>exclude_from_feed</strong> attribute and include product in the feed if a value of this attribute is <strong>0</strong>]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\CheckAttr</backend_model>
+                </field>
+                <field id="check_value" translate="label comment tooltip" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Exclude/Include Attribute Value to Match</label>
+                    <comment>Type Magento product attribute value you want to match for product to be included in the feed.</comment>
+                    <tooltip><![CDATA[Example 1<br /> If you want to check <strong>custom_attrib</strong> attribute and include product in the feed if a value of this attribute is <strong>Some value</strong><br />Example 2<br /> If you want to check <strong>include_in_feed</strong> attribute and include product in the feed if a value of this attribute is <strong>Yes</strong><br />Example 3<br /> If you want to check <strong>exclude_from_feed</strong> attribute and include product in the feed if a value of this attribute is <strong>0</strong>]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\CheckValue</backend_model>
+                </field>
+                <field id="remove_pub" translate="label comment tooltip" type="select" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Remove /pub/ from media URL</label>
+                    <comment>Force remove /pub/ from product image URL.</comment>
+                    <tooltip><![CDATA[Some Magento versions have a bug "Cron gets wrong base media URL #9111". We can not fix this because this is in the Magento core but we offer you a way to fix this in our extension feed files. Do not enable this option unless you are affected by the bug or you know what you are doing.]]></tooltip>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="heading_generate" translate="label" sortOrder="14" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Facebook Catalog Product Feed Generation</label>
+                    <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model>
+                    <attribute type="shared">1</attribute>
+                </field>
+                <field id="generate" translate="label" type="button" sortOrder="15" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Start Product Feed Generation Process</label>
+                    <frontend_model>Apptrian\FacebookCatalog\Block\Adminhtml\Button\Generate</frontend_model>
+                </field>
+            </group>
+            <group id="field_options" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Field Options</label>
+                <field id="heading_required_fields" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Required Fields</label>
+                    <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model>
+                    <attribute type="shared">1</attribute>
+                </field>
+                <field id="id_attr" translate="label comment tooltip" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>For id Use</label>
+                    <comment><![CDATA[WARNING! This option should be set to <strong>sku</strong>. Please read the tooltip.]]></comment>
+                    <tooltip><![CDATA[Magento <strong>sku</strong> product attribute is the perfect match for Facebook feed <strong>id</strong> field. You should not change this option. If for some reason you want to change it you can. Just make sure all of your products have this attribute, all of your products have non-empty value for this attribute, and attribute values are unique.]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\Id</backend_model>
+                </field>
+                <field id="availability_attr" translate="label comment tooltip" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>For availability Use</label>
+                    <comment>WARNING! This option should be empty. Please read the tooltip.</comment>
+                    <tooltip><![CDATA[In the Magento system availability of a product is determined by complex logic and depends on multiple factors. Our extension will provide your feed with this information and format it properly. If for some reason you want to use custom product attribute for feed availability field you can. Make sure all of your products have this attribute and all of your products have non-empty value for this attribute.]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\Availability</backend_model>
+                </field>
+                <field id="availability_map" translate="label comment tooltip" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>availability Map</label>
+                    <comment><![CDATA[Match your availability values to Facebook defined ones: <strong>in stock</strong>, <strong>out of stock</strong>, <strong>preorder</strong>, <strong>available for order</strong>, and <strong>discontinued</strong>. Order is significant.]]></comment>
+                    <tooltip><![CDATA[Facebook specification only allows following values: <strong>in stock</strong>, <strong>out of stock</strong>, <strong>preorder</strong>, <strong>available for order</strong>, and <strong>discontinued</strong>. If your store is using other language than English or you use different text for your availability values you need to map your availability values. <strong>WARNING! You need to map all Facebook values even if you are not using them.</strong>]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\AvailabilityMap</backend_model>
+                </field>
+                <field id="condition_attr" translate="label comment tooltip" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>For condition Use</label>
+                    <comment>Type Magento product attribute code you want to use for product feed condition field.</comment>
+                    <tooltip><![CDATA[Example: condition<br />Make sure all of your products have this attribute and all of your products have non-empty value for this attribute.]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\Condition</backend_model>
+                </field>
+                <field id="condition_map" translate="label comment tooltip" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>condition Map</label>
+                    <comment><![CDATA[Match your condition values to Facebook defined ones:  <strong>new</strong>, <strong>refurbished</strong>, and <strong>used</strong>. Order is significant.]]></comment>
+                    <tooltip><![CDATA[Facebook specification only allows following values:  <strong>new</strong>, <strong>refurbished</strong>, and <strong>used</strong>. If your store is using other language than English or you use different text for your condition values you need to map your condition values. <strong>WARNING! You need to map all Facebook values even if you are not using them.</strong>]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\ConditionMap</backend_model>
+                </field>
+                <field id="description_attr" translate="label comment tooltip" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>For description Use</label>
+                    <comment>Type Magento product attribute code you want to use for product feed description field.</comment>
+                    <tooltip><![CDATA[Example: meta_description<br />Be aware that in product feed description field is required so if particular Magento attribute you selected is empty automatic alternative will be assigned with following priority:<br />Meta Description > Short Description > Description > Product Name.]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\Description</backend_model>
+                </field>
+                <field id="image_link_text" translate="label" type="button" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>image_link Field</label>
+                    <frontend_model>Apptrian\FacebookCatalog\Block\Adminhtml\Text</frontend_model>
+                </field>
+                <field id="link_text" translate="label" type="button" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>link Field</label>
+                    <frontend_model>Apptrian\FacebookCatalog\Block\Adminhtml\Text</frontend_model>
+                </field>
+                <field id="title_attr" translate="label comment tooltip" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>For title Use</label>
+                    <comment>Type Magento product attribute code you want to use for product feed title field.</comment>
+                    <tooltip><![CDATA[Example: name<br />Be aware that in product feed title field is required so if particular Magento attribute you selected is empty automatic alternative will be assigned and that is product name.]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\Title</backend_model>
+                </field>
+                <field id="price_text" translate="label" type="button" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>price Field</label>
+                    <frontend_model>Apptrian\FacebookCatalog\Block\Adminhtml\Text</frontend_model>
+                </field>
+                <field id="gtin_attr" translate="label comment tooltip" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>For gtin Use</label>
+                    <comment>Type Magento product attribute code you want to use for product feed gtin field.</comment>
+                    <tooltip><![CDATA[Example: upc<br />Global Trade Item Number (GTIN) can include UPC, EAN, JAN, and ISBN. Make sure all of your products have this attribute and all of your products have non-empty value for this attribute. <strong>Either gtin, mpn, or brand required.</strong>]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\Gtin</backend_model>
+                </field>
+                <field id="mpn_attr" translate="label comment tooltip" type="text" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>For mpn Use</label>
+                    <comment>Type Magento product attribute code you want to use for product feed mpn field.</comment>
+                    <tooltip><![CDATA[Example: mpn<br />MPN (Manufacturer Part Number)<br />Make sure all of your products have this attribute and all of your products have non-empty value for this attribute. <strong>Either gtin, mpn, or brand required.</strong>]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\Mpn</backend_model>
+                </field>
+                <field id="brand_attr" translate="label comment tooltip" type="text" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>For brand Use</label>
+                    <comment>Type Magento product attribute code you want to use for product feed brand field.</comment>
+                    <tooltip><![CDATA[Example: brand<br />Make sure all of your products have this attribute and all of your products have non-empty value for this attribute. If some of your products do not have this attribute or have an empty value for it, below "Default Brand" will be used as an alternative. <strong>Either gtin, mpn, or brand required.</strong>]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\Brand</backend_model>
+                </field>
+                <field id="default_brand" translate="label comment tooltip" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default brand</label>
+                    <comment>Default brand text.</comment>
+                    <tooltip><![CDATA[Brand field is required in product feed so the priority for retrieving brand is:<br />1. Product brand attribute<br />2. Default brand (this field).<br />3. Store Name<br />4. Domain Name]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\DefaultBrand</backend_model>
+                </field>
+                <field id="identifier_exists" translate="label comment tooltip" type="select" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable identifier_exists Field</label>
+                    <comment>Enables or disables identifier_exists field in product feed.</comment>
+                    <tooltip><![CDATA[Required only for new products that do not have <strong>gtin</strong> and <strong>brand</strong> or <strong>mpn</strong> and <strong>brand</strong>. This is a useful option if you sell:<br />- Custom goods or one-of-a-kind items, like custom T-shirts, art, or handmade goods<br />- Products produced before GTINs were introduced, like vintage products, antiques, books published before 1970, and other special items<br />- Products that still do not have gtin and mpn identifiers set.]]></tooltip>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="override" translate="label comment tooltip" type="select" sortOrder="17" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable override Field</label>
+                    <comment>Enables or disables override field in product feed.</comment>
+                    <tooltip><![CDATA[Required only if you attach multiple product feeds to one Facebook Catalog. This field holds locale string so you can override data for the specific locale (language).]]></tooltip>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="heading_optional_fields" translate="label" sortOrder="18" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Optional Fields</label>
+                    <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model>
+                    <attribute type="shared">1</attribute>
+                </field>
+                <field id="inventory" translate="label comment tooltip" type="select" sortOrder="19" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable inventory Field</label>
+                    <comment>Enables or disables inventory field in product feed.</comment>
+                    <tooltip><![CDATA[Salable Product Quantity]]></tooltip>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="additional_image_link" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>additional_image_link Field Limit</label>
+                    <comment>Enables or disables additional_image_link field in product feed and sets the limit.</comment>
+                    <tooltip><![CDATA[Empty or 0 (zero) means disabled.<br />Any number from 1 to 10 means enabled. The number represents a limit for the additional images.]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\AdditionalImageLink</backend_model>
+                </field>
+                <field id="age_group_attr" translate="label comment tooltip" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>For age_group Use</label>
+                    <comment>Type Magento product attribute code you want to use for product feed age_group field.</comment>
+                    <tooltip><![CDATA[Example: age_group<br />Make sure all of your products have this attribute and all of your products have non-empty value for this attribute.]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\AgeGroup</backend_model>
+                </field>
+                <field id="age_group_map" translate="label comment tooltip" type="text" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>age_group Map</label>
+                    <comment><![CDATA[Match your age_group values to Facebook defined ones:  <strong>newborn</strong>, <strong>infant</strong>, <strong>toddler</strong>, <strong>kids</strong>, and <strong>adult</strong>. Order is significant.]]></comment>
+                    <tooltip><![CDATA[Facebook specification only allows following values:  <strong>newborn</strong>, <strong>infant</strong>, <strong>toddler</strong>, <strong>kids</strong>, and <strong>adult</strong>. If your store is using other language than English or you use different text for your age_group values you need to map your age_group values. <strong>WARNING! You need to map all Facebook values even if you are not using them.</strong>]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\AgeGroupMap</backend_model>
+                </field>
+                <field id="expiration_date_attr" translate="label comment tooltip" type="text" sortOrder="23" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>For expiration_date Use</label>
+                    <comment>Type Magento product attribute code you want to use for product feed expiration_date field.</comment>
+                    <tooltip><![CDATA[Example: expiration_date<br />Make sure all of your products have this attribute and all of your products have non-empty value for this attribute.]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\ExpirationDate</backend_model>
+                </field>
+                <field id="gender_attr" translate="label comment tooltip" type="text" sortOrder="24" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>For gender Use</label>
+                    <comment>Type Magento product attribute code you want to use for product feed gender field.</comment>
+                    <tooltip><![CDATA[Example: gender<br />Make sure all of your products have this attribute and all of your products have non-empty value for this attribute.]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\Gender</backend_model>
+                </field>
+                <field id="gender_map" translate="label comment tooltip" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>gender Map</label>
+                    <comment><![CDATA[Match your gender values to Facebook defined ones: <strong>male</strong>, <strong>female</strong>, and <strong>unisex</strong>. Order is significant.]]></comment>
+                    <tooltip><![CDATA[Facebook specification only allows following values: <strong>male</strong>, <strong>female</strong>, and <strong>unisex</strong>. If your store is using other language than English or you use different text for your gender values you need to map your gender values. <strong>WARNING! You need to map all Facebook values even if you are not using them.</strong>]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\GenderMap</backend_model>
+                </field>
+                <field id="item_group_id_attr" translate="label comment tooltip" type="text" sortOrder="26" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>For item_group_id Use</label>
+                    <comment><![CDATA[WARNING! This should be set to <strong>sku</strong>.]]></comment>
+                    <tooltip><![CDATA[By default, it is the parent product sku attribute. You can type Magento product attribute code you want to use for product feed item_group_id field.]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\ItemGroupId</backend_model>
+                </field>
+                <field id="gpc_attr" translate="label comment tooltip" type="text" sortOrder="27" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>For google_product_category Use</label>
+                    <comment>Type Magento product attribute code you want to use for product feed google_product_category field.</comment>
+                    <tooltip><![CDATA[Example: google_product_category<br />Make sure all of your products have this attribute and all of your products have non-empty value for this attribute.]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\GoogleProductCategory</backend_model>
+                </field>
+                <field id="default_gpc" translate="label comment tooltip" type="text" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default google_product_category</label>
+                    <comment>Default google_product_category field value.</comment>
+                    <tooltip><![CDATA[The google_product_category field is required in product feed so the priority for retrieving google_product_category is:<br />1. Product google_product_category attribute (above option can be used to change product attribute code.)<br />2. Default google_product_category (this field).]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\DefaultGpc</backend_model>
+                </field>
+                <field id="sale_price" translate="label comment tooltip" type="select" sortOrder="29" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable sale_price Field</label>
+                    <comment>Enables or disables sale_price field in product feed.</comment>
+                    <tooltip><![CDATA[<strong>If this option is enabled</strong>, feed "price" field will be mapped to Magento "regular_price" and feed "sale_price" field will be mapped to Magento "special_price" or the lowest price possible for particular product.<br /><strong>If this option is disabled</strong>, your feed will only have "price" field and that field will have the lowest price possible for the particular product.]]></tooltip>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="sale_price_effect_date" translate="label comment tooltip" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable sale_price_effective_date Field</label>
+                    <comment>Enables or disables sale_price_effective_date field in product feed.</comment>
+                    <tooltip><![CDATA[This option is valid only if a sale_price field is enabled.]]></tooltip>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="sale_price">1</field>
+                    </depends>
+                </field>
+                <field id="additional_mapping" translate="label comment tooltip" type="textarea" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Additional Fields to Attributes Mapping</label>
+                    <comment>If an option for certain field is not present above you can map it here. Please see the tooltip.</comment>
+                    <tooltip><![CDATA[Example: color=color|pattern=pattern<br />As you can see the format is simple<br /><strong>field1=attribute1|field2=attribute2</strong><br /> Facebook feed field and Magento product attribute are connected by = sign and pairs are separated by | sign.]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\Mapping</backend_model>
+                </field>
+            </group>
+            <group id="cron" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Cron</label>
+                <field id="heading_cron" translate="label" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Facebook Catalog Product Feed Generation Cron Job</label>
+                    <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model>
+                    <attribute type="shared">1</attribute>
+                </field>
+                <field id="enabled" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Product Feed Generation Cron Job</label>
+                    <comment>Enables or disables product feed generation cron job.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="expression" translate="label comment tooltip" type="text" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cron Expression for Product Feed Generation</label>
+                    <comment><![CDATA[Cron expression used to trigger product feed generation process. Example: 15 2 * * * (once a day at 2:15 AM)]]></comment>
+                    <tooltip><![CDATA[Examples:<br />*/5 * * * * (every 5 minutes)<br />0,30 * * * * (twice an hour)<br />0 * * * * (once an hour)<br />0 0,12 * * * (twice a day)<br />0 0 * * * (once a day)<br />0 0 * * 0 (once a week)<br />0 0 1,15 * * (1st and 15th)<br />0 0 1 * * (once a month)<br />0 0 1 1 * (once a year)]]></tooltip>
+                    <validate>validate-no-html-tags</validate>
+                    <backend_model>Apptrian\FacebookCatalog\Model\Config\Cron</backend_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

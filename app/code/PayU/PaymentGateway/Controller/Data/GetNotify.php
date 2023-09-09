@@ -4,6 +4,9 @@ namespace PayU\PaymentGateway\Controller\Data;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Webapi\Exception;
 use PayU\PaymentGateway\Api\PayUConfigInterface;
@@ -14,7 +17,7 @@ use PayU\PaymentGateway\Model\Ui\ConfigProvider;
  * Class GetNotify
  * @package PayU\PaymentGateway\Controller\Data
  */
-class GetNotify extends Action
+class GetNotify extends Action implements CsrfAwareActionInterface
 {
     /**
      * @var \OpenPayU_Order
@@ -98,7 +101,7 @@ class GetNotify extends Action
      */
     private function getPaymentId($response)
     {
-        if (isset($response->properties)) {
+        if (property_exists($response, 'properties') && is_array($response->properties)) {
             foreach ($response->properties as $property) {
                 if ($property->name === 'PAYMENT_ID') {
                     return $property->value;
@@ -139,4 +142,33 @@ class GetNotify extends Action
         }
         $this->payUConfig->setDefaultConfig($configType, $store);
     }
+
+    /**
+     * Create exception in case CSRF validation failed.
+     * Return null if default exception will suffice.
+     *
+     * @param RequestInterface $request
+     *
+     * @return InvalidRequestException|null
+     * @SuppressWarnings(PMD.UnusedFormalParameter)
+     */
+    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
+    {
+        return null;
+    }
+
+    /**
+     * Perform custom request validation.
+     * Return null if default validation is needed.
+     *
+     * @param RequestInterface $request
+     *
+     * @return bool|null
+     * @SuppressWarnings(PMD.UnusedFormalParameter)
+     */
+    public function validateForCsrf(RequestInterface $request): ?bool
+    {
+        return true;
+    }
+
 }

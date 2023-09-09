@@ -1,6 +1,5 @@
 define([
     'jquery',
-    'jquery/ui',
     'MageBig_WidgetPlus/js/jcountdown'
 ], function ($) {
     'use strict';
@@ -18,7 +17,14 @@ define([
             if (elm.data('day-loop') == true) {
                 var today = new Date();
                 today.setDate(today.getDate() + 1);
-                var dateString = (today.getMonth()+1) + " " + today.getDate() + "," + today.getFullYear();
+
+                var monthNames = [
+                    "January", "February", "March",
+                    "April", "May", "June", "July",
+                    "August", "September", "October",
+                    "November", "December"
+                ];
+                var dateString = monthNames[today.getMonth()] + " " + today.getDate() + ", " + today.getFullYear();
             }
 
             if (elm.data('hours-only') == true) {

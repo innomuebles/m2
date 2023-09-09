@@ -75,6 +75,7 @@
             text-transform: uppercase;
             font-weight: 500;
             position: relative;
+            cursor: pointer;
         }
         .filter-options-content {
             .font-size(14);
@@ -96,6 +97,19 @@
             &:after {
                 content: ')';
             }
+        }
+    }
+    .filter-options-item[data-collapsible="true"] {
+        .filter-options-title:after {
+            .abs-iconfont(@mbi-ios-arrow-down, 14px);
+            position: absolute;
+            right: 0;
+            top: 50%;
+            margin-top: -7px;
+            line-height: inherit;
+        }
+        .filter-options-title[aria-expanded="true"]:after {
+            content: @mbi-ios-arrow-up;
         }
     }
     .filtered {

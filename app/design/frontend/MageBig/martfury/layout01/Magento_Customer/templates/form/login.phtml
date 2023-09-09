@@ -9,7 +9,7 @@
 /** @var \Magento\Customer\Block\Form\Login $block */
 ?>
 <div class="block block-customer-login">
-    <div class="block-content" aria-labelledby="block-customer-login-heading">
+    <div class="block-content">
         <form class="form form-login"
               action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>"
               method="post"
@@ -22,12 +22,23 @@
             <fieldset class="fieldset login" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>">
                 <div class="field email required">
                     <div class="control">
-                        <input name="login[username]" value="<?= $block->escapeHtmlAttr($block->getUsername()) ?>" <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> id="email" type="email" class="input-text" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" data-validate="{required:true, 'validate-email':true}" placeholder="<?= $block->escapeHtml(__('Email')) ?>">
+                        <input name="login[username]" value="<?= $block->escapeHtmlAttr($block->getUsername()) ?>"
+                            <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?>
+                               id="email" type="email" class="input-text"
+                               title="<?= $block->escapeHtmlAttr(__('Email')) ?>"
+                               data-mage-init='{"mage/trim-input":{}}'
+                               data-validate="{required:true, 'validate-email':true}"
+                               placeholder="<?= $block->escapeHtml(__('Email')) ?>">
                     </div>
                 </div>
                 <div class="field password required">
                     <div class="control">
-                        <input name="login[password]" type="password" <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> class="input-text" id="pass" title="<?= $block->escapeHtmlAttr(__('Password')) ?>" data-validate="{required:true}" placeholder="<?= $block->escapeHtml(__('Password')) ?>">
+                        <input name="login[password]" type="password"
+                            <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?>
+                               class="input-text" id="pass"
+                               title="<?= $block->escapeHtmlAttr(__('Password')) ?>"
+                               data-validate="{required:true}"
+                               placeholder="<?= $block->escapeHtml(__('Password')) ?>">
                         <a class="action remind" href="<?= $block->escapeUrl($block->getForgotPasswordUrl()) ?>"><span><?= $block->escapeHtml(__('Forgot?')) ?></span></a>
                     </div>
                 </div>
@@ -39,3 +50,13 @@
         </form>
     </div>
 </div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Customer/js/block-submit-on-send": {
+                "formId": "login-form"
+            }
+        }
+    }
+</script>

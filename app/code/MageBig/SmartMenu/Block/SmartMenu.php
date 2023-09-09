@@ -6,42 +6,50 @@
 
 namespace MageBig\SmartMenu\Block;
 
+use Exception;
+use Magento\Catalog\Helper\Category as HelperCategory;
+use Magento\Catalog\Model\Category;
+use Magento\Catalog\Model\Indexer\Category\Flat\State;
+use Magento\Catalog\Model\Layer;
+use Magento\Catalog\Model\Layer\Resolver;
+use Magento\Cms\Model\Template\FilterProvider;
 use Magento\Customer\Model\Context;
+use Magento\Framework\App\Http\Context as HttpContext;
+use Magento\Framework\DataObject;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Registry;
+use Magento\Framework\UrlInterface;
+use Magento\Framework\View\Element\Template;
+use Magento\Store\Model\Group;
+use Magento\Store\Model\StoreManagerInterface;
 
-class SmartMenu extends \Magento\Framework\View\Element\Template
+class SmartMenu extends Template
 {
 
     /**
-     * @var \Magento\Cms\Model\Template\FilterProvider
+     * @var FilterProvider
      */
     protected $_cmsFilter;
 
     /**
-     * @var \Magento\Catalog\Model\CategoryFactory
-     */
-    protected $_categoryFactory;
-
-    /**
-     * @var \Magento\Catalog\Helper\Category
+     * @var HelperCategory
      */
     protected $_helperCategory;
 
     /**
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     protected $_registry;
 
     /**
      * Customer session
      *
-     * @var \Magento\Framework\App\Http\Context
+     * @var HttpContext
      */
     protected $httpContext;
 
     /**
-     * Catalog layer
-     *
-     * @var \Magento\Catalog\Model\Layer
+     * @var Layer
      */
     protected $_catalogLayer;
 
@@ -58,7 +66,7 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
     protected $_catPosLevel = [];
 
     /**
-     * @var \Magento\Catalog\Model\Indexer\Category\Flat\State
+     * @var State
      */
     protected $flatState;
 
@@ -67,44 +75,65 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
      */
     protected $_isTouch;
 
+    protected $_isFlat;
+
+    protected $_baseUrl;
+
+    protected $_mediaUrl;
+
+    const MAGEBIG_SMARTMENU = 'MAGEBIG_SMARTMENU';
+
     /**
      * SmartMenu constructor.
-     *
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Catalog\Model\CategoryFactory $categoryFactory
-     * @param \Magento\Catalog\Helper\Category $helperCategory
-     * @param \Magento\Cms\Model\Template\FilterProvider $cmsFilter
-     * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Catalog\Model\Indexer\Category\Flat\State $flatState
-     * @param \Magento\Framework\App\Http\Context $httpContext
-     * @param \Magento\Catalog\Model\Layer\Resolver $layerResolver
+     * @param Template\Context $context
+     * @param HelperCategory $helperCategory
+     * @param FilterProvider $cmsFilter
+     * @param Registry $registry
+     * @param State $flatState
+     * @param HttpContext $httpContext
+     * @param Resolver $layerResolver
+     * @param StoreManagerInterface $storeManager
      * @param array $data
+     * @throws NoSuchEntityException
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Catalog\Model\CategoryFactory $categoryFactory,
-        \Magento\Catalog\Helper\Category $helperCategory,
-        \Magento\Cms\Model\Template\FilterProvider $cmsFilter,
-        \Magento\Framework\Registry $registry,
-        \Magento\Catalog\Model\Indexer\Category\Flat\State $flatState,
-        \Magento\Framework\App\Http\Context $httpContext,
-        \Magento\Catalog\Model\Layer\Resolver $layerResolver,
+        Template\Context $context,
+        HelperCategory $helperCategory,
+        FilterProvider $cmsFilter,
+        Registry $registry,
+        State $flatState,
+        HttpContext $httpContext,
+        Resolver $layerResolver,
+        StoreManagerInterface $storeManager,
         array $data = []
     ) {
         $this->_helperCategory = $helperCategory;
         $this->_cmsFilter = $cmsFilter;
-        $this->_categoryFactory = $categoryFactory;
         $this->_registry = $registry;
         $this->flatState = $flatState;
         $this->httpContext = $httpContext;
         $this->_catalogLayer = $layerResolver->get();
+        $this->_storeManager = $storeManager;
+        $this->_isFlat = $this->flatState->isFlatEnabled();
+        $this->_baseUrl = $this->_storeManager->getStore()->getBaseUrl();
+        $this->_mediaUrl = $this->getMediaUrl();
         parent::__construct($context, $data);
+
+        $this->addData([
+            'cache_lifetime' => 86400,
+            'cache_tags' => [Category::CACHE_TAG, Group::CACHE_TAG]
+        ]);
+    }
+
+    public function getMediaUrl()
+    {
+        return $this->_storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
     }
 
     public function getCacheKeyInfo()
     {
         $shortCacheId = [
-            'MAGEBIG_SMARTMENU',
+            self::MAGEBIG_SMARTMENU,
             $this->_storeManager->getStore()->getId(),
             $this->_design->getDesignTheme()->getId(),
             $this->httpContext->getValue(Context::CONTEXT_GROUP),
@@ -126,7 +155,7 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getCurrentCategoryKey()
     {
@@ -145,7 +174,7 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
     /**
      * Checkin activity of category
      *
-     * @param   \Magento\Framework\DataObject $category
+     * @param DataObject $category
      * @return  bool
      */
     public function isCategoryActive($category)
@@ -157,7 +186,7 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @return \Magento\Catalog\Model\Category
+     * @return Category
      */
     public function getCurrentCategory()
     {
@@ -165,26 +194,18 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param $catId
-     *
-     * @return \Magento\Catalog\Model\Category
-     */
-    protected function _getCatData($catId)
-    {
-        $catModel = $this->_categoryFactory->create();
-
-        return $catModel->load($catId);
-    }
-
-    /**
      * @param $block
      *
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     protected function _getStatic($block)
     {
-        return $this->_cmsFilter->getBlockFilter()->filter(trim($block));
+        if ($block) {
+            return $this->_cmsFilter->getBlockFilter()->filter($block);
+        }
+
+        return '';
     }
 
     public function getHtml($catLevel = 0, $outerClass = '', $childWrapClass = '', $vertical = false)
@@ -194,35 +215,27 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         } else {
             $this->_isTouch = false;
         }
-        $catActive = [];
+        $html = '';
         $catHelper = $this->_helperCategory;
         foreach ($catHelper->getStoreCategories() as $child) {
             if ($child->getIsActive()) {
-                $catActive[] = $child;
-            }
-        }
-        $catActiveCount = count($catActive);
-        $hascatActiveCount = ($catActiveCount > 0);
-
-        if (!$hascatActiveCount) {
-            return '';
-        }
-
-        $html = '';
-        foreach ($catActive as $catInfo) {
-            if ($this->_isTouch) {
-                $html .= $this->_catSimpleHtml($catInfo, $catLevel, $outerClass, $childWrapClass, $vertical);
-            } else {
-                $catData = $this->_getCatData($catInfo->getId());
-                $catStyle = $catData->getData('smartmenu_cat_style');
-
-                if ($catStyle == 'dropdown_mega' || $catStyle == 'dropdown_group') {
-                    $html .= $this->_catMegaHtml($catInfo, $catLevel, $outerClass, $childWrapClass, $vertical);
-                } elseif ($catStyle == 'dropdown_simple') {
-                    $html .= $this->_catSimpleHtml($catInfo, $catLevel, $outerClass, $childWrapClass);
+                if ($this->_isTouch) {
+                    $html .= $this->_catSimpleHtml($child, $catLevel, $outerClass, $childWrapClass, $vertical);
                 } else {
-                    $html .= $this->_catSimpleHtml($catInfo, $catLevel, $outerClass,
-                        'simple-dropdown ' . $childWrapClass);
+                    $catStyle = $child->getData('smartmenu_cat_style');
+
+                    if ($catStyle == 'dropdown_mega' || $catStyle == 'dropdown_group') {
+                        $html .= $this->_catMegaHtml($child, $catLevel, $outerClass, $childWrapClass);
+                    } elseif ($catStyle == 'dropdown_simple') {
+                        $html .= $this->_catSimpleHtml($child, $catLevel, $outerClass, $childWrapClass);
+                    } else {
+                        $html .= $this->_catSimpleHtml(
+                            $child,
+                            $catLevel,
+                            $outerClass,
+                            'simple-dropdown ' . $childWrapClass
+                        );
+                    }
                 }
             }
         }
@@ -232,16 +245,15 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
 
     protected function _catMegaHtml($catInfo, $catLevel = 0, $outerClass = '', $childWrapClass = '')
     {
-        $catData = $this->_getCatData($catInfo->getId());
-        if (!$catInfo->getIsActive() || $catData->getData('include_in_menu') == 0) {
+        if (!$catInfo->getIsActive() || $catInfo->getData('include_in_menu') == 0) {
             return '';
         }
         $html = '';
 
-        if ($this->flatState->isFlatEnabled() && $catInfo->getUseFlatResource()) {
-            $children      = (array)$catInfo->getChildrenNodes();
+        if ($this->_isFlat && $catInfo->getUseFlatResource()) {
+            $children = (array)$catInfo->getChildrenNodes();
         } else {
-            $children      = $catInfo->getChildren();
+            $children = $catInfo->getChildren();
         }
 
         $activeChildren = [];
@@ -252,24 +264,24 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         }
         $activeChildrenCount = count($activeChildren);
         $hasActiveChildren = ($activeChildrenCount > 0);
-        $catStyle = $catData->getData('smartmenu_cat_style');
-        if ($catData->getData('smartmenu_cat_position') == 'fullwidth') {
+        $catStyle = $catInfo->getData('smartmenu_cat_style');
+        if ($catInfo->getData('smartmenu_cat_position') == 'fullwidth') {
             $subwidth = '100%';
         } else {
-            $subwidth = $catData->getData('smartmenu_cat_dropdown_width') ? $catData->getData('smartmenu_cat_dropdown_width') : '270px';
+            $subwidth = $catInfo->getData('smartmenu_cat_dropdown_width') ? $catInfo->getData('smartmenu_cat_dropdown_width') : '270px';
         }
 
         $showblock = $hasActiveChildren;
 
         if ($catLevel == 1) {
-            if ($catData->getData('smartmenu_static_top') || $catData->getData('smartmenu_static_left') || $catData->getData('smartmenu_static_right') || $catData->getData('smartmenu_static_bottom')) {
+            if ($catInfo->getData('smartmenu_static_top') || $catInfo->getData('smartmenu_static_left') || $catInfo->getData('smartmenu_static_right') || $catInfo->getData('smartmenu_static_bottom')) {
                 $showblock = true;
             }
         }
 
         // Custom URL
         $noclick = '';
-        if ($custom_url = $catData->getData('smartmenu_cat_target')) {
+        if ($custom_url = $catInfo->getData('smartmenu_cat_target')) {
             if ($custom_url === '#') {
                 $cat_link = '#';
                 $classes[] = 'no-click';
@@ -278,22 +290,22 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
                 if (strpos($custom_url, 'http') === 0) {
                     $cat_link = $custom_url;
                 } else {
-                    $cat_link = $this->_storeManager->getStore()->getBaseUrl() . $custom_url;
+                    $cat_link = $this->_baseUrl . $custom_url;
                 }
             } else {
-                $cat_link = $catData->getUrl();
+                $cat_link = $this->_getUrl($catInfo);
             }
         } else {
-            $cat_link = $catData->getUrl();
+            $cat_link = $this->_getUrl($catInfo);
         }
 
-        $classes = [];
+        $classes = ['category-item'];
         $classes[] = 'level' . $catLevel;
         if ($catLevel == 1) {
             $classes[] = 'groups item';
         }
         $classes[] = 'nav-' . $this->_getCatPosition($catLevel);
-        if ($this->isCategoryActive($catInfo) || ($custom_url && $this->getRequest()->getRouteName() === $custom_url)) {
+        if ($this->isCategoryActive($catInfo)) {
             $classes[] = 'active';
         }
         $linkClass = '';
@@ -303,11 +315,11 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         }
 
         if ($hasActiveChildren && $catLevel >= 1) {
-            $classes[] = 'mega_' . $catData->getData('smartmenu_cat_position');
+            $classes[] = 'mega_' . $catInfo->getData('smartmenu_cat_position');
             $classes[] = 'parent';
         }
         if ($hasActiveChildren && $catLevel == 0 && $showblock) {
-            $classes[] = 'mega_' . $catData->getData('smartmenu_cat_position');
+            $classes[] = 'mega_' . $catInfo->getData('smartmenu_cat_position');
             $classes[] = 'parent';
         }
 
@@ -323,23 +335,29 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         $htmlLi .= '>';
         $html .= $htmlLi;
         if ($catLevel == 1 && $showblock) {
-            if ($catData->getData('smartmenu_static_top')) {
+            if ($catInfo->getData('smartmenu_static_top')) {
                 $html .= '<div class="mbmenu-block mbmenu-block-level1-top std">';
-                $html .= $this->_getStatic($catData->getData('smartmenu_static_top'));
+                $html .= $this->_getStatic($catInfo->getData('smartmenu_static_top'));
                 $html .= '</div>';
             }
         }
         $html .= '<a href="' . $cat_link . '"' . $linkClass . $noclick . '>';
 
-        $iconHtml = $catData->getData('smartmenu_cat_icon');
-        if (empty($iconHtml)) {
-            $iconImage = $catData->getData('smartmenu_cat_imgicon');
-            if (!empty($iconImage)) {
-                $iconHtml = '<img alt="' . $catData->getData('name') . '" src="' . $this->_storeManager->getStore()->getBaseUrl() . 'pub/media/catalog/category/' . $iconImage . '">';
+        if ($iconHtml = $catInfo->getData('smartmenu_cat_icon')) {
+            $iconHtml = $this->escapeHtml($iconHtml, ['i', 'span']);
+            $html .= $iconHtml;
+        } elseif ($iconImage = $catInfo->getData('smartmenu_cat_imgicon')) {
+            $iconImage = str_replace('catalog/tmp/', 'catalog/', $iconImage);
+            if (strpos($iconImage, '/catalog/')) {
+                $iconHtml = '<img width="20" height="20" alt="' . $catInfo->getData('name') . '" src="' . $this->_baseUrl . $iconImage . '">';
+            } else {
+                $iconHtml = '<img width="20" height="20" alt="' . $catInfo->getData('name') . '" src="' . $this->_mediaUrl . 'catalog/category/' . $iconImage . '">';
             }
+
+            $html .= $iconHtml;
         }
-        $html .= $iconHtml;
-        $labelCategory = $this->_getCatLabel($catData, $catLevel);
+
+        $labelCategory = $this->_getCatLabel($catInfo, $catLevel);
         if ($catLevel == 1) {
             $html .= '<span class="title_group">' . __($this->escapeHtml($catInfo->getName())) . $labelCategory . '</span>';
         } else {
@@ -351,17 +369,17 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         }
 
         if ($catLevel == 0) {
-            $catStaticRight = $this->_getStatic($catData->getData('smartmenu_static_right'));
-            $catStaticLeft = $this->_getStatic($catData->getData('smartmenu_static_left'));
-            if ($catData->getData('smartmenu_block_right') || $catData->getData('smartmenu_block_left')) {
-                $columns = $catData->getData('smartmenu_cat_column');
-                $widthRight = $catData->getData('smartmenu_block_right');
-                $widthLeft = $catData->getData('smartmenu_block_left');
+            $catStaticRight = $this->_getStatic($catInfo->getData('smartmenu_static_right'));
+            $catStaticLeft = $this->_getStatic($catInfo->getData('smartmenu_static_left'));
+            if ($catInfo->getData('smartmenu_block_right') || $catInfo->getData('smartmenu_block_left')) {
+                $columns = $catInfo->getData('smartmenu_cat_column');
+                $widthRight = $catInfo->getData('smartmenu_block_right');
+                $widthLeft = $catInfo->getData('smartmenu_block_left');
             } else {
-                if ($catData->getData('smartmenu_cat_column') == '') {
+                if ($catInfo->getData('smartmenu_cat_column') == '') {
                     $columns = 3;
                 } else {
-                    $columns = $catData->getData('smartmenu_cat_column');
+                    $columns = $catInfo->getData('smartmenu_cat_column');
                 }
                 $widthRight = 1;
                 $widthLeft = 1;
@@ -388,7 +406,6 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
                 $gridCountRight = 'col12-' . ($widthRight);
                 $gridCountLeft = 'col12-' . ($widthLeft);
             }
-            $goups = $widthRight + $widthLeft;
         }
 
         $li = '';
@@ -416,15 +433,15 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
             }
         }
         if ($catLevel == 0 && $showblock) {
-            if ($catData->getData('smartmenu_static_top')) {
+            if ($catInfo->getData('smartmenu_static_top')) {
                 $html .= '<div class="mbmenu-block mbmenu-block-top grid-full std">';
-                $html .= $this->_getStatic($catData->getData('smartmenu_static_top'));
+                $html .= $this->_getStatic($catInfo->getData('smartmenu_static_top'));
                 $html .= '</div>';
             }
             if ($catStyle != 'dropdown_group') {
-                if ($catData->getData('smartmenu_static_left') && $widthLeft) {
+                if ($catInfo->getData('smartmenu_static_left') && $widthLeft) {
                     $html .= '<div class="menu-static-blocks mbmenu-block mbmenu-block-left ' . $gridCountLeft . '">';
-                    $html .= $this->_getStatic($catData->getData('smartmenu_static_left'));
+                    $html .= $this->_getStatic($catInfo->getData('smartmenu_static_left'));
                     $html .= '</div>';
                 }
             }
@@ -444,15 +461,15 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
 
         if ($catLevel == 0 && $showblock) {
             if ($catStyle != 'dropdown_group') {
-                if ($catData->getData('smartmenu_static_right') && $widthRight) {
+                if ($catInfo->getData('smartmenu_static_right') && $widthRight) {
                     $html .= '<div class="menu-static-blocks mbmenu-block mbmenu-block-right ' . $gridCountRight . '">';
-                    $html .= $this->_getStatic($catData->getData('smartmenu_static_right'));
+                    $html .= $this->_getStatic($catInfo->getData('smartmenu_static_right'));
                     $html .= '</div>';
                 }
             }
-            if ($catData->getData('smartmenu_static_bottom')) {
+            if ($catInfo->getData('smartmenu_static_bottom')) {
                 $html .= '<div class="mbmenu-block mbmenu-block-bottom grid-full std">';
-                $html .= $this->_getStatic($catData->getData('smartmenu_static_bottom'));
+                $html .= $this->_getStatic($catInfo->getData('smartmenu_static_bottom'));
                 $html .= '</div>';
             }
         }
@@ -462,9 +479,9 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         }
 
         if ($catLevel == 1 && $showblock) {
-            if ($catData->getData('smartmenu_static_bottom')) {
+            if ($catInfo->getData('smartmenu_static_bottom')) {
                 $html .= '<div class="mbmenu-block mbmenu-block-level1-top std">';
-                $html .= $this->_getStatic($catData->getData('smartmenu_static_bottom'));
+                $html .= $this->_getStatic($catInfo->getData('smartmenu_static_bottom'));
                 $html .= '</div>';
             }
         }
@@ -483,19 +500,18 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         if (!$catInfo->getIsActive()) {
             return '';
         }
-        $catData = $this->_getCatData($catInfo->getId());
-        if ($catData->getData('include_in_menu') == 0) {
+        if ($catInfo->getData('include_in_menu') == 0) {
             return '';
         }
-        if ($vertical == true && $catData->getData('smartmenu_show_on_cat') == 0) {
+        if ($vertical == true && $catInfo->getData('smartmenu_show_on_cat') == 0) {
             return '';
         }
         $html = '';
 
-        if ($this->flatState->isFlatEnabled() && $catInfo->getUseFlatResource()) {
-            $children      = (array)$catInfo->getChildrenNodes();
+        if ($this->_isFlat && $catInfo->getUseFlatResource()) {
+            $children = (array)$catInfo->getChildrenNodes();
         } else {
-            $children      = $catInfo->getChildren();
+            $children = $catInfo->getChildren();
         }
 
         $activeChildren = [];
@@ -506,18 +522,18 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         }
         $activeChildrenCount = count($activeChildren);
         $hasActiveChildren = ($activeChildrenCount > 0);
-        $catStyle = $catData->getData('smartmenu_cat_style');
-        if ($catData->getData('smartmenu_cat_position') == 'fullwidth') {
+        $catStyle = $catInfo->getData('smartmenu_cat_style');
+        if ($catInfo->getData('smartmenu_cat_position') == 'fullwidth') {
             $subwidth = '100%';
         } else {
-            $subwidth = $catData->getData('smartmenu_cat_dropdown_width') ? $catData->getData('smartmenu_cat_dropdown_width') : '270px';
+            $subwidth = $catInfo->getData('smartmenu_cat_dropdown_width') ? $catInfo->getData('smartmenu_cat_dropdown_width') : '270px';
         }
 
         $showblock = $hasActiveChildren;
 
         // Custom URL
         $noclick = '';
-        if ($custom_url = $catData->getData('smartmenu_cat_target')) {
+        if ($custom_url = $catInfo->getData('smartmenu_cat_target')) {
             if ($custom_url === '#') {
                 $cat_link = '#';
                 $classes[] = 'no-click';
@@ -526,13 +542,13 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
                 if (strpos($custom_url, 'http') === 0) {
                     $cat_link = $custom_url;
                 } else {
-                    $cat_link = $this->_storeManager->getStore()->getBaseUrl() . $custom_url;
+                    $cat_link = $this->_baseUrl . $custom_url;
                 }
             } else {
-                $cat_link = $catData->getUrl();
+                $cat_link = $this->_getUrl($catInfo);
             }
         } else {
-            $cat_link = $catData->getUrl();
+            $cat_link = $this->_getUrl($catInfo);
         }
 
         $classes = [];
@@ -541,8 +557,8 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
             $classes[] = 'item';
         }
         $classes[] = 'nav-' . $this->_getCatPosition($catLevel);
-        // if ($this->isCategoryActive($catInfo) || ($custom_url && Mage::app()->getFrontController()->getRequest()->getRouteName() === $custom_url) || ($custom_url && Mage::getSingleton('cms/page')->getIdentifier() === $custom_url)) {
-        if ($this->isCategoryActive($catInfo) || ($custom_url && $this->getRequest()->getRouteName() === $custom_url)) {
+
+        if ($this->isCategoryActive($catInfo)) {
             $classes[] = 'active';
         }
         $linkClass = '';
@@ -552,11 +568,11 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         }
 
         if ($hasActiveChildren && $catLevel >= 1) {
-            $classes[] = 'mega_' . $catData->getData('smartmenu_cat_position');
+            $classes[] = 'mega_' . $catInfo->getData('smartmenu_cat_position');
             $classes[] = 'parent';
         }
         if ($hasActiveChildren && $catLevel == 0 && $showblock && $this->_isTouch == false) {
-            $classes[] = 'mega_' . $catData->getData('smartmenu_cat_position');
+            $classes[] = 'mega_' . $catInfo->getData('smartmenu_cat_position');
             $classes[] = 'parent';
         }
 
@@ -572,15 +588,29 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         $htmlLi .= '>';
         $html .= $htmlLi;
         if ($catLevel == 1 && $showblock && $this->_isTouch == false) {
-            if ($catData->getData('smartmenu_static_top')) {
+            if ($catInfo->getData('smartmenu_static_top')) {
                 $html .= '<div class="mbmenu-block mbmenu-block-level1-top std">';
-                $html .= $this->_getStatic($catData->getData('smartmenu_static_top'));
+                $html .= $this->_getStatic($catInfo->getData('smartmenu_static_top'));
                 $html .= '</div>';
             }
         }
-        $labelCategory = $this->_getCatLabel($catData, $catLevel);
+        $labelCategory = $this->_getCatLabel($catInfo, $catLevel);
         $html .= '<a href="' . $cat_link . '"' . $linkClass . $noclick . '>';
-        $html .= $catData->getData('smartmenu_cat_icon');
+
+        if ($iconHtml = $catInfo->getData('smartmenu_cat_icon')) {
+            $iconHtml = $this->escapeHtml($iconHtml, ['i', 'span']);
+            $html .= $iconHtml;
+        } elseif ($iconImage = $catInfo->getData('smartmenu_cat_imgicon')) {
+            $iconImage = str_replace('catalog/tmp/', 'catalog/', $iconImage);
+            if (strpos($iconImage, '/catalog/')) {
+                $iconHtml = '<img width="20" height="20" alt="' . $catInfo->getData('name') . '" src="' . $this->_baseUrl . $iconImage . '">';
+            } else {
+                $iconHtml = '<img width="20" height="20" alt="' . $catInfo->getData('name') . '" src="' . $this->_mediaUrl . 'catalog/category/' . $iconImage . '">';
+            }
+
+            $html .= $iconHtml;
+        }
+
         $html .= '<span>' . __($this->escapeHtml($catInfo->getName())) . $labelCategory . '</span>';
         $html .= '</a>';
         if ($hasActiveChildren && $catLevel == 0 && $childWrapClass != 'nav-mobile') {
@@ -588,17 +618,17 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         }
 
         if ($catLevel == 0 && $this->_isTouch == false) {
-            $catStaticRight = $this->_getStatic($catData->getData('smartmenu_static_right'));
-            $catStaticLeft = $this->_getStatic($catData->getData('smartmenu_static_left'));
-            if ($catData->getData('smartmenu_block_right') || $catData->getData('smartmenu_block_left')) {
-                $columns = $catData->getData('smartmenu_cat_column');
-                $widthRight = $catData->getData('smartmenu_block_right');
-                $widthLeft = $catData->getData('smartmenu_block_left');
+            $catStaticRight = $this->_getStatic($catInfo->getData('smartmenu_static_right'));
+            $catStaticLeft = $this->_getStatic($catInfo->getData('smartmenu_static_left'));
+            if ($catInfo->getData('smartmenu_block_right') || $catInfo->getData('smartmenu_block_left')) {
+                $columns = $catInfo->getData('smartmenu_cat_column');
+                $widthRight = $catInfo->getData('smartmenu_block_right');
+                $widthLeft = $catInfo->getData('smartmenu_block_left');
             } else {
-                if ($catData->getData('smartmenu_cat_column') == '') {
+                if ($catInfo->getData('smartmenu_cat_column') == '') {
                     $columns = 4;
                 } else {
-                    $columns = $catData->getData('smartmenu_cat_column');
+                    $columns = $catInfo->getData('smartmenu_cat_column');
                 }
                 $widthRight = 1;
                 $widthLeft = 1;
@@ -625,7 +655,6 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
                 $gridCountRight = 'col12-' . ($widthRight);
                 $gridCountLeft = 'col12-' . ($widthLeft);
             }
-            $goups = $widthRight + $widthLeft;
         }
 
         $li = '';
@@ -644,15 +673,15 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         }
 
         if ($catLevel == 0 && $showblock && $this->_isTouch == false) {
-            if ($catData->getData('smartmenu_static_top')) {
+            if ($catInfo->getData('smartmenu_static_top')) {
                 $html .= '<div class="mbmenu-block mbmenu-block-top grid-full std">';
-                $html .= $this->_getStatic($catData->getData('smartmenu_static_top'));
+                $html .= $this->_getStatic($catInfo->getData('smartmenu_static_top'));
                 $html .= '</div>';
             }
             if ($catStyle != 'dropdown_simple') {
-                if ($catData->getData('smartmenu_static_left') && $widthLeft) {
+                if ($catInfo->getData('smartmenu_static_left') && $widthLeft) {
                     $html .= '<div class="menu-static-blocks mbmenu-block mbmenu-block-left ' . $gridCountLeft . '">';
-                    $html .= $this->_getStatic($catData->getData('smartmenu_static_left'));
+                    $html .= $this->_getStatic($catInfo->getData('smartmenu_static_left'));
                     $html .= '</div>';
                 }
             }
@@ -671,15 +700,15 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         }
         if ($catLevel == 0 && $showblock && $this->_isTouch == false) {
             if ($catStyle != 'dropdown_simple') {
-                if ($catData->getData('smartmenu_static_right') && $widthRight) {
+                if ($catInfo->getData('smartmenu_static_right') && $widthRight) {
                     $html .= '<div class="menu-static-blocks mbmenu-block mbmenu-block-right ' . $gridCountRight . '">';
-                    $html .= $this->_getStatic($catData->getData('smartmenu_static_right'));
+                    $html .= $this->_getStatic($catInfo->getData('smartmenu_static_right'));
                     $html .= '</div>';
                 }
             }
-            if ($catData->getData('smartmenu_static_bottom')) {
+            if ($catInfo->getData('smartmenu_static_bottom')) {
                 $html .= '<div class="mbmenu-block mbmenu-block-bottom grid-full std">';
-                $html .= $this->_getStatic($catData->getData('smartmenu_static_bottom'));
+                $html .= $this->_getStatic($catInfo->getData('smartmenu_static_bottom'));
                 $html .= '</div>';
             }
         }
@@ -690,9 +719,9 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         }
 
         if ($catLevel == 1 && $showblock && $this->_isTouch == false) {
-            if ($catData->getData('smartmenu_static_bottom') && $catStyle != 'dropdown_simple') {
+            if ($catInfo->getData('smartmenu_static_bottom') && $catStyle != 'dropdown_simple') {
                 $html .= '<div class="mbmenu-block mbmenu-block-level1-top std">';
-                $html .= $this->_getStatic($catData->getData('smartmenu_static_bottom'));
+                $html .= $this->_getStatic($catInfo->getData('smartmenu_static_bottom'));
                 $html .= '</div>';
             }
         }
@@ -740,5 +769,24 @@ class SmartMenu extends \Magento\Framework\View\Element\Template
         }
 
         return implode('-', $position);
+    }
+
+    /**
+     * @param $catInfo
+     * @return string
+     */
+    protected function _getUrl($catInfo)
+    {
+        if (!$this->_isFlat && !$catInfo->getUseFlatResource()) {
+            if ($catInfo->getRequestPath()) {
+                $catUrl = $this->_baseUrl . $catInfo->getRequestPath();
+            } else {
+                $catUrl = $this->_helperCategory->getCategoryUrl($catInfo);
+            }
+        } else {
+            $catUrl = $catInfo->getUrl();
+        }
+
+        return $catUrl;
     }
 }

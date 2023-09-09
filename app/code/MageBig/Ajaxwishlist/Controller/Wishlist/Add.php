@@ -101,11 +101,9 @@ class Add extends \Magento\Framework\App\Action\Action
 
                 $wishlistHelper = $this->_objectManager->get(\Magento\Wishlist\Helper\Data::class);
                 $wishlistHelper->calculate();
-                $itemCount = $wishlistHelper->getItemCount();
 
                 $htmlPopup            = $this->_wishlistHelper->getSuccessHtml();
                 $result['success']    = true;
-                $result['item_count'] = $itemCount;
                 $result['html_popup'] = $htmlPopup;
             } catch (\Exception $e) {
                 //$this->messageManager->addExceptionMessage($e, __('You can\'t login right now.'));

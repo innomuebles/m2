@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -16,6 +16,8 @@ use Magento\Store\Model\ScopeInterface;
  */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    const XML_PATH_MFLAZYLOAD_ENABLED = 'mflazyzoad/general/enabled';
+
     /**
      * Retrieve translated & formated date
      * @param  string $format
@@ -53,5 +55,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isOriginMfLazyLoadEnable()
+    {
+        return $this->getConfig(self::XML_PATH_MFLAZYLOAD_ENABLED);
     }
 }

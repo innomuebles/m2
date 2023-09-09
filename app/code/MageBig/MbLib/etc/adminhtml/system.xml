@@ -5,10 +5,26 @@
  * See LICENSE.txt for license details.
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <tab id="magebig_extensions" translate="label" sortOrder="110">
             <label>MageBig Extensions</label>
         </tab>
+        <section id="mb_extensions" type="text" sortOrder="500" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Extension Store</label>
+            <tab>magebig_extensions</tab>
+            <resource>MageBig_MbLib::config_extensions</resource>
+            <group id="mb_extensions" translate="label" type="text" showInDefault="1" showInWebsite="0"
+                   showInStore="0">
+                <label>Magebig Themes - Extensions</label>
+                <attribute type="expanded">1</attribute>
+                <field id="extensions_info" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Extensions Info</label>
+                    <frontend_model>MageBig\MbLib\Block\Adminhtml\System\Config\Form\ExtensionsInfo</frontend_model>
+                </field>
+            </group>
+        </section>
     </system>
 </config>

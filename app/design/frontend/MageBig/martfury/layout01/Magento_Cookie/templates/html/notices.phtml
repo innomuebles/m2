@@ -14,11 +14,10 @@
     $cookiePosition = $mbHelper->getConfig('mbconfig/footer/cookie_position');
     ?>
     <div role="alertdialog"
-         tabindex="-1"
          class="message global cookie <?= $cookiePosition; ?>"
          id="notice-cookie-block"
          style="display: none;">
-        <div role="document" class="content" tabindex="0">
+        <div role="document" class="content">
             <p>
                 <?= $block->escapeHtml(__('We use cookies to make your experience better.')) ?><br/>
                 <span><?= $block->escapeHtml(__('To comply with the new e-Privacy directive, you agree to <a href="%1">the privacy policy and our use of cookies</a>.', $block->getPrivacyPolicyLink()), ['a']) ?></span>

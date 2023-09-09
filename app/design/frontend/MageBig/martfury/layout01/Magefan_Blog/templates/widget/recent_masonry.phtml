@@ -19,7 +19,7 @@
 ?>
 <?php if ($_postCollection->count()) { ?>
 <div class="post-list-wrapper blog-widget-recent blog-widget-recent-masonry">
-    <div class="title"><?php echo $block->escapeHtml($block->getTitle(), 'h2|h3|h4|h5|div|span|i|br|a') ?></div>
+    <div class="title"><?php echo $block->escapeHtml($block->getTitle(), ['h2', 'h3', 'h4', 'h5', 'div', 'span', 'i', 'br', 'a']) ?></div>
     <ul class="post-list clearfix">
         <?php foreach ($_postCollection as $_post) { ?>
             <?php

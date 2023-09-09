@@ -5,6 +5,7 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
+
 namespace MageBig\MbFrame\Framework\App\Config\Initial;
 
 use Magento\Framework\Filesystem\Directory\ReadFactory;
@@ -54,17 +55,47 @@ class Reader extends \Magento\Framework\App\Config\Initial\Reader
     protected $_schemaFile;
 
     /**
+     * @var \Magento\Theme\Model\Theme
+     */
+    protected $theme;
+
+    /**
+     * @var \MageBig\MbFrame\Framework\App\Config\ThemeId
+     */
+    protected $themeId;
+
+    /**
+     * @var \Magento\Framework\Config\FileIteratorFactory
+     */
+    protected $iteratorFactory;
+
+    /**
+     * @var \Magento\Framework\Component\ComponentRegistrar
+     */
+    protected $componentRegistrar;
+
+    /**
+     * @var ReadFactory
+     */
+    protected $readFactory;
+
+    /**
+     * @var \Magento\Framework\Config\DomFactory
+     */
+    private $domFactory;
+
+    /**
      * Reader constructor.
-     * @param \Magento\Theme\Model\Theme                          $theme
-     * @param \MageBig\MbFrame\Framework\App\Config\ThemeId       $themeId
-     * @param \Magento\Framework\Component\ComponentRegistrar     $componentRegistrar
-     * @param \Magento\Framework\Config\FileIteratorFactory       $iteratorFactory
-     * @param ReadFactory                                         $readFactory
-     * @param \Magento\Framework\Config\FileResolverInterface     $fileResolver
-     * @param \Magento\Framework\Config\ConverterInterface        $converter
+     * @param \Magento\Theme\Model\Theme $theme
+     * @param \MageBig\MbFrame\Framework\App\Config\ThemeId $themeId
+     * @param \Magento\Framework\Component\ComponentRegistrar $componentRegistrar
+     * @param \Magento\Framework\Config\FileIteratorFactory $iteratorFactory
+     * @param ReadFactory $readFactory
+     * @param \Magento\Framework\Config\FileResolverInterface $fileResolver
+     * @param \Magento\Framework\Config\ConverterInterface $converter
      * @param \Magento\Framework\App\Config\Initial\SchemaLocator $schemaLocator
-     * @param \Magento\Framework\Config\DomFactory                $domFactory
-     * @param string                                              $fileName
+     * @param \Magento\Framework\Config\DomFactory $domFactory
+     * @param string $fileName
      */
     public function __construct(
         \Magento\Theme\Model\Theme $theme,
@@ -84,9 +115,9 @@ class Reader extends \Magento\Framework\App\Config\Initial\Reader
         $this->domFactory = $domFactory;
         $this->_fileName = $fileName;
         $this->iteratorFactory = $iteratorFactory;
-        $this->theme               = $theme;
-        $this->componentRegistrar  = $componentRegistrar;
-        $this->readFactory =$readFactory;
+        $this->theme = $theme;
+        $this->componentRegistrar = $componentRegistrar;
+        $this->readFactory = $readFactory;
         $this->themeId = $themeId;
     }
 
@@ -107,9 +138,13 @@ class Reader extends \Magento\Framework\App\Config\Initial\Reader
             }
         }
 
-        $directories2 = $this->getConfigurationFiles($this->_fileName);
-        foreach ($directories2 as $key2 => $directory2) {
-            $fileList[$key2] = $directory2;
+        $code = $this->themeId->getThemeId();
+
+        if ($code !== null) {
+            $directories2 = $this->getConfigurationFiles($this->_fileName);
+            foreach ($directories2 as $key2 => $directory2) {
+                $fileList[$key2] = $directory2;
+            }
         }
 
         if (!count($fileList)) {
@@ -158,11 +193,11 @@ class Reader extends \Magento\Framework\App\Config\Initial\Reader
      */
     private function getFilesTheme($filename, $theme = '')
     {
-        $result        = [];
-        $themeEtcDir   = $this->getThemeDir($theme) . '/etc';
-        $file          = $themeEtcDir . '/' . $filename;
+        $result = [];
+        $themeEtcDir = $this->getThemeDir($theme) . '/etc';
+        $file = $themeEtcDir . '/' . $filename;
         $directoryRead = $this->readFactory->create($themeEtcDir);
-        $path          = $directoryRead->getRelativePath($file);
+        $path = $directoryRead->getRelativePath($file);
         if ($directoryRead->isExist($path)) {
             $result[] = $file;
         }

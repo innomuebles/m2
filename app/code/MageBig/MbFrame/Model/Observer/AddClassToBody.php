@@ -2,8 +2,8 @@
 
 namespace MageBig\MbFrame\Model\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\View\Page\Config;
 
 class AddClassToBody implements ObserverInterface

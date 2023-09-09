@@ -25,7 +25,7 @@ class Config implements PayUConfigInterface
     /**
      * Current Plugin Version
      */
-    const PLUGIN_VERSION = '1.2.10';
+    const PLUGIN_VERSION = '1.0.11';
 
     /**
      * @var \OpenPayU_Configuration
@@ -98,13 +98,13 @@ class Config implements PayUConfigInterface
      */
     public function setDefaultConfig($code, $storeId = null)
     {
+        if ($storeId !== null) {
+            $this->storeId = $storeId;
+        }
         if (!$this->isActive($code)) {
             $this->setMerchantPosId('');
 
             return $this;
-        }
-        if ($storeId !== null) {
-            $this->storeId = $storeId;
         }
         try {
             $environment = $this->getGatewayConfig('main_parameters', 'environment');
@@ -159,7 +159,7 @@ class Config implements PayUConfigInterface
             str_replace(
                 ' ',
                 '',
-                $this->gatewayConfig->getValue('main_parameters/payment_methods_order', $this->storeId)
+                $this->gatewayConfig->getValue('main_parameters/payment_methods_order', $this->storeId) ?? ''
             )
         );
     }

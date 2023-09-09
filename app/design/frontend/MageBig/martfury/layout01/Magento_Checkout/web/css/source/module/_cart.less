@@ -31,7 +31,9 @@
         vertical-align: top;
         width: 100%;
         .form-cart {
-            &:extend(.abs-shopping-cart-items all);
+            .main.actions {
+                margin-bottom: 18px;
+            }
         }
     }
 
@@ -221,7 +223,7 @@
                         height: 26px;
                         margin-top: -7px;
                         text-align: center;
-                        width: 45px;
+                        width: 60px;
                         padding: 0;
                     }
                 }
@@ -353,10 +355,6 @@
                 }
             }
 
-            .product-image-wrapper {
-                &:extend(.abs-reset-image-wrapper all);
-            }
-
             .action.configure {
                 display: inline-block;
                 margin: @indent__s 0 0;
@@ -396,6 +394,12 @@
         padding-left: @layout__width-xs-indent;
         padding-right: @layout__width-xs-indent;
     }
+    .no-item-cart {
+        max-width: 320px;
+        margin: 0 auto;
+        width: 100%;
+        margin-bottom: 10px;
+    }
 
     .cart-tax-info,
     .cart .cart-tax-info {
@@ -423,7 +427,7 @@
             right: 0;
             top: 0;
             button {
-                height: 32px;
+                height: 42px;
                 padding: 0 10px;
                 min-width: 100px;
                 text-align: center;
@@ -672,7 +676,7 @@
 
             .item {
                 .col.item {
-                    padding: @cart-item-cell-padding-top 8px @indent__base 0;
+                    padding: 10px 8px 10px 0;
                 }
             }
 
@@ -685,13 +689,13 @@
                     display: table-cell;
                     padding-right: 15px;
                     position: static;
-                    vertical-align: top;
+                    vertical-align: middle;
                     width: 1%;
                 }
 
                 &-item-details {
                     display: table-cell;
-                    vertical-align: top;
+                    vertical-align: middle;
                     white-space: normal;
                     width: 99%;
                 }

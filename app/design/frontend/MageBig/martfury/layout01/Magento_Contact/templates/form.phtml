@@ -4,7 +4,9 @@
  * See COPYING.txt for license details.
  */
 
-// @codingStandardsIgnoreFile
+// phpcs:disable Magento2.Templates.ThisInTemplate
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 /** @var \Magento\Contact\Block\ContactForm $block */
 ?>
 <form class="form contact"
@@ -19,14 +21,18 @@
             <div class="col-12 col-md-6 field name required">
                 <div class="control">
                     <input name="name" id="name-contact" title="<?= $block->escapeHtmlAttr(__('Name')) ?>" placeholder="<?= $block->escapeHtmlAttr(__('Name')) ?>"
-                           value="<?= $block->escapeHtmlAttr($this->helper('Magento\Contact\Helper\Data')->getPostValue('name') ?: $this->helper('Magento\Contact\Helper\Data')->getUserName()) ?>"
+                           value="<?= $block->escapeHtmlAttr($this->helper(\Magento\Contact\Helper\Data::class)
+                               ->getPostValue('name')
+                               ?: $this->helper(\Magento\Contact\Helper\Data::class)->getUserName()) ?>"
                            class="input-text" type="text" data-validate="{required:true}"/>
                 </div>
             </div>
             <div class="col-12 col-md-6 field email required">
                 <div class="control">
                     <input name="email" id="email-contact" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" placeholder="<?= $block->escapeHtmlAttr(__('Email')) ?>"
-                           value="<?= $block->escapeHtmlAttr($this->helper('Magento\Contact\Helper\Data')->getPostValue('email') ?: $this->helper('Magento\Contact\Helper\Data')->getUserEmail()) ?>"
+                           value="<?= $block->escapeHtmlAttr($this->helper(\Magento\Contact\Helper\Data::class)
+                               ->getPostValue('email')
+                               ?: $this->helper(\Magento\Contact\Helper\Data::class)->getUserEmail()) ?>"
                            class="input-text" type="email" data-validate="{required:true, 'validate-email':true}"/>
                 </div>
             </div>
@@ -35,7 +41,8 @@
                     <input name="telephone" id="telephone-contact"
                            title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>"
                            placeholder="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>"
-                           value="<?= $block->escapeHtmlAttr($this->helper('Magento\Contact\Helper\Data')->getPostValue('telephone')) ?>"
+                           value="<?= $block->escapeHtmlAttr($this->helper(\Magento\Contact\Helper\Data::class)
+                               ->getPostValue('telephone')) ?>"
                            class="input-text" type="text"/>
                 </div>
             </div>
@@ -44,7 +51,7 @@
                     <textarea name="comment" id="comment-contact"
                               title="<?= $block->escapeHtmlAttr(__('Message')) ?>" placeholder="<?= $block->escapeHtmlAttr(__('Message')) ?>" class="input-text"
                               style="width: 100%;" rows="10"
-                              data-validate="{required:true}"><?= $block->escapeHtml($this->helper('Magento\Contact\Helper\Data')->getPostValue('comment')) ?></textarea>
+                              data-validate="{required:true}"><?= $block->escapeHtml($this->helper(\Magento\Contact\Helper\Data::class)->getPostValue('comment')) ?></textarea>
                 </div>
             </div>
         </div>
@@ -59,8 +66,12 @@
         </div>
     </fieldset>
 </form>
-<div class="google-map"><!--    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;key=AIzaSyCbeYth3ZUsoq3B0xsD3b7BmukI2Mgl6Wo" type="text/javascript" xml="space"></script>
-  <div id="gmap_canvas" style="height: 600px; width: 100%;"></div>
-  <script type="text/javascript" xml="space">// <![CDATA[
-    function init_map(){var myOptions = {zoom:14,center:new google.maps.LatLng(52.342811, 4.815897),mapTypeId: google.maps.MapTypeId.TERRAIN};map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(52.342811, 4.815897)});infowindow = new google.maps.InfoWindow({content:'<h2>Martfury</h2><p>Bastenakenstraat 58, 1066 JD Amsterdam,<br>Netherlands</p><strong><a href="https://www.google.com/maps/dir/?api=1&origin=your+location&destination=52.342811,4.815897">Get Direction</a></strong>'});google.maps.event.addListener(marker, 'click', function(){infowindow.open(map,marker);});infowindow.open(map,marker);}google.maps.event.addDomListener(window, 'load', init_map);
-    // ]]></script> --> <iframe style="height: 405px; width: 100%;" src="https://www.google.com/maps/d/embed?mid=1QmHHaGvHYkmvpydfto3q5RAUYBs" width="300" height="150"></iframe></div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Customer/js/block-submit-on-send": {
+                "formId": "contact-form"
+            }
+        }
+    }
+</script>

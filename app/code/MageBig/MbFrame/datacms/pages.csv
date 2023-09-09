@@ -1625,18 +1625,38 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
     font-size: 20px;
   }
 --></style>",1,0,,,,,,
-"Martfury 05 - Market",1column,"multi-vendor, multiple store, high performance magento 2 theme","Most powerful Magento theme for your store online",home-05,,"<!-- Start Block top -->
-<div class=""banner-slider-top"">
+"Martfury 05 - Market",1column,"multi-vendor, multiple store, high performance magento 2 theme","Most powerful Magento theme for your store online",home-05,,"<div class=""banner-slider-top"">
 <div class=""row"">
 <div class=""d-none d-md-block col-md-3""></div>
 <div class=""col-12 col-xl-9"">
-<div class=""row no-gutters"">
+<div class=""row no-gutters bn-inner"">
 <div class=""col-12 col-sm-12 col-md-7"">
-<div class=""item-bn-slider-05 slider-2"">
+<div class=""item-bn-slider-05 slider-2 lazyload"">
 <div class=""owl-carousel owl-theme"">
-<div class=""item-slider""><a href=""#""><span class=""item"" style=""background-image: url('/pub/media/wysiwyg/magebig/layout05/slider01.jpg');""></span></a></div>
-<div class=""item-slider""><a href=""#""><span class=""item"" style=""background-image: url('/pub/media/wysiwyg/magebig/layout05/slider02.jpg');""></span></a></div>
-<div class=""item-slider""><a href=""#""><span class=""item"" style=""background-image: url('/pub/media/wysiwyg/magebig/layout05/slider03.jpg');""></span></a></div>
+<div class=""item-slider"">
+<div class=""img-slide""><span class=""item object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 70.566%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/slider01.jpg'}}"" alt="""" width=""530"" height=""374"" loading=""lazy""></span></span></div>
+<div class=""block-center"">
+<p class=""text-small animated fadeInDownSlide"">LIMITED EDITION</p>
+<h2 class=""text-large animated fadeInDownSlide delay-0s5"">Experionce<br>Virtual Reality Now!<br>Version 2.0</h2>
+<div class=""text-normal animated fadeInDownSlide delay-1s"">
+<div>Discount</div>
+<p>40% Off</p>
+</div>
+<div class=""btn-wrap animated fadeInDownSlide delay-1s5""><a class=""btn-shopnow action primary"" href=""#""><span>Shop now</span></a></div>
+</div>
+</div>
+<div class=""item-slider"">
+<div class=""img-slide""><span class=""item object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 70.566%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/slider02.jpg'}}"" alt="""" width=""530"" height=""374"" loading=""lazy""></span></span></div>
+<div class=""block-center"">
+<p class=""text-small animated fadeInDownSlide"">Discount</p>
+<h2 class=""text-large animated fadeInDownSlide delay-0s5"">Wooden<br>Minimalist<br>Chair</h2>
+<div class=""text-normal animated fadeInDownSlide delay-1s"">
+<div>Price just</div>
+<p>$159.99</p>
+</div>
+<div class=""btn-wrap animated fadeInDownSlide delay-1s5""><a class=""btn-shopnow action primary"" href=""#""><span>Shop now</span></a></div>
+</div>
+</div>
 </div>
 </div>
 <script type=""text/javascript"" xml=""space"">// <![CDATA[
@@ -1645,6 +1665,7 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
                 $('.item-bn-slider-05').owlWidget({
                   autoplay: true,
                   items: 1,
+                  autoplayTimeout: 8000,
                   dots: true,
                   nav: true,
                   loop: true,
@@ -1652,33 +1673,33 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
                 });
               });
             });
-// ]]></script>
+            // ]]></script>
 </div>
 <div class=""col-12 col-sm-12 col-md-5"">
 <div class=""row no-gutters"">
 <div class=""col-6 col-sm-6"">
-<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01"" style=""background-image: url('/pub/media/wysiwyg/magebig/layout05/bgbn-01.jpg');""></span></a></div>
+<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01 object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 101.075%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/bgbn-01.jpg'}}"" alt="""" width=""186"" height=""188"" loading=""lazy""></span></span><span class=""text"">Xbox Controller White Color<br><span style=""color: #999999;"">Discount</span> <span style=""color: #ff0000;"">30%</span></span></a></div>
 </div>
 <div class=""col-6 col-sm-6"">
-<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01"" style=""background-image: url('/pub/media/wysiwyg/magebig/layout05/bgbn-02.jpg');""></span></a></div>
+<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01 object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 101.075%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/bgbn-02.jpg'}}"" alt="""" width=""186"" height=""188"" loading=""lazy""></span></span><span class=""text"">Apple<br>Iphone 9<br><span style=""color: #ff0000;"">$599</span><br><span style=""text-decoration: line-through; color: #999999;"">$699</span></span></a></div>
 </div>
 <div class=""col-12 col-sm-12"">
-<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01"" style=""background-image: url('/pub/media/wysiwyg/magebig/layout05/bgbn-03.jpg');""></span></a></div>
+<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01 object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 50.674%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/bgbn-03.jpg'}}"" alt="""" width=""371"" height=""188"" loading=""lazy""></span></span><span class=""text"">Combo 5x<br>Giordano Packs<br>T-shirt<br><br><br><br><span style=""color: #999999;"">Discount</span> <span style=""color: #ff0000;"">20%</span></span></a></div>
 </div>
 </div>
 </div>
 <div class=""col-12 col-sm-12"">
 <div class=""row no-gutters"">
 <div class=""col-12 col-sm-12 col-md-7"">
-<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01"" style=""background-image: url('/pub/media/wysiwyg/magebig/layout05/bgbn-04.jpg');""></span></a></div>
+<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01 object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 35.405%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/bgbn-04.jpg'}}"" alt="""" width=""531"" height=""188"" loading=""lazy""></span></span><span class=""text""><strong>Fluence</strong> Minimal<br>Speaker<br><br><br><br><span style=""color: #999999;"">Price just</span> <br><span style=""color: #ff0000;""><span style=""color: #339966;"">$159.99</span></span></span></a></div>
 </div>
 <div class=""col-12 col-sm-12 col-md-5"">
 <div class=""row no-gutters"">
 <div class=""col-6 col-sm-6"">
-<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01"" style=""background-image: url('/pub/media/wysiwyg/magebig/layout05/bgbn-05.jpg');""></span></a></div>
+<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01 object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 101.075%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/bgbn-05.jpg'}}"" alt="""" width=""186"" height=""188"" loading=""lazy""></span></span><span class=""text"">Magic<br>Blender<br>Mixed<br><span style=""color: #ff0000;"">$49</span><br><span style=""text-decoration: line-through; color: #999999;"">$59</span></span></a></div>
 </div>
 <div class=""col-6 col-sm-6"">
-<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01"" style=""background-image: url('/pub/media/wysiwyg/magebig/layout05/bgbn-06.jpg');""></span></a></div>
+<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01 object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 101.075%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/bgbn-06.jpg'}}"" alt="""" width=""186"" height=""188"" loading=""lazy""></span></span><span class=""text"">Voucher Body Care<br>at Bratus Spa<br><span style=""color: #ff0000;"">20%</span> <span style=""color: #999999;"">Off</span></span></a></div>
 </div>
 </div>
 </div>
@@ -1738,67 +1759,67 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 </div>
 <div id=""search-trend"" class=""search-trend"">
 <div class=""trend-tabs owl-carousel owl-theme"">
-<div id=""tab-label-trend-01"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-01-title"" class=""data switch"" tabindex=""-1"" href=""#trend-01"" data-toggle=""switch""> <i class=""mbi mbi-star"">&nbsp;</i><span>Hot Trending</span> </a></div>
-<div id=""tab-label-trend-02"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-02-title"" class=""data switch"" tabindex=""-1"" href=""#trend-02"" data-toggle=""switch""> <i class=""mbi mbi-tablet"">&nbsp;</i><span>Cell Phones</span> </a></div>
-<div id=""tab-label-trend-03"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-03-title"" class=""data switch"" tabindex=""-1"" href=""#trend-03"" data-toggle=""switch""> <i class=""mbi mbi-laptop"">&nbsp;</i><span>Computers</span> </a></div>
-<div id=""tab-label-trend-04"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-04-title"" class=""data switch"" tabindex=""-1"" href=""#trend-04"" data-toggle=""switch""> <i class=""mbi mbi-lampshade"">&nbsp;</i><span>Furnitures</span> </a></div>
-<div id=""tab-label-trend-05"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-05-title"" class=""data switch"" tabindex=""-1"" href=""#trend-05"" data-toggle=""switch""> <i class=""mbi mbi-shirt"">&nbsp;</i><span>T-Shirts</span> </a></div>
-<div id=""tab-label-trend-06"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-06-title"" class=""data switch"" tabindex=""-1"" href=""#trend-06"" data-toggle=""switch""> <i class=""mbi mbi-baby-bottle"">&nbsp;</i><span>Baby &amp; Mom</span> </a></div>
-<div id=""tab-label-trend-07"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-07-title"" class=""data switch"" tabindex=""-1"" href=""#trend-07"" data-toggle=""switch""> <i class=""mbi mbi-baseball"">&nbsp;</i><span>Sports</span> </a></div>
-<div id=""tab-label-trend-08"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-08-title"" class=""data switch"" tabindex=""-1"" href=""#trend-08"" data-toggle=""switch""> <i class=""mbi mbi-library"">&nbsp;</i><span>Books &amp; Office</span> </a></div>
-<div id=""tab-label-trend-09"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-08-title"" class=""data switch"" tabindex=""-1"" href=""#trend-08"" data-toggle=""switch""> <i class=""mbi mbi-car"">&nbsp;</i><span>Cars</span> </a></div>
+<div id=""tab-label-trend-01"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-01-title"" class=""data switch"" href=""#trend-01"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-star"">&nbsp;</i><span>Hot Trending</span> </a></div>
+<div id=""tab-label-trend-02"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-02-title"" class=""data switch"" href=""#trend-02"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-tablet"">&nbsp;</i><span>Cell Phones</span> </a></div>
+<div id=""tab-label-trend-03"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-03-title"" class=""data switch"" href=""#trend-03"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-laptop"">&nbsp;</i><span>Computers</span> </a></div>
+<div id=""tab-label-trend-04"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-04-title"" class=""data switch"" href=""#trend-04"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-lampshade"">&nbsp;</i><span>Furnitures</span> </a></div>
+<div id=""tab-label-trend-05"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-05-title"" class=""data switch"" href=""#trend-05"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-shirt"">&nbsp;</i><span>T-Shirts</span> </a></div>
+<div id=""tab-label-trend-06"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-06-title"" class=""data switch"" href=""#trend-06"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-baby-bottle"">&nbsp;</i><span>Baby &amp; Mom</span> </a></div>
+<div id=""tab-label-trend-07"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-07-title"" class=""data switch"" href=""#trend-07"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-baseball"">&nbsp;</i><span>Sports</span> </a></div>
+<div id=""tab-label-trend-08"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-08-title"" class=""data switch"" href=""#trend-08"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-library"">&nbsp;</i><span>Books &amp; Office</span> </a></div>
+<div id=""tab-label-trend-09"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-08-title"" class=""data switch"" href=""#trend-08"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-car"">&nbsp;</i><span>Cars</span> </a></div>
 </div>
 <div class=""tab-content-wrap tab-content-fadein"">
 <div id=""trend-01"" class=""data item content"" data-role=""content"">
 <div class=""trend-content"">
 <div class=""row no-gutters"">
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=camera""><img src=""{{media url='wysiwyg/magebig/layout05/s01.jpg'}}"" alt="""" /><span>#camera</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=camera""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s01.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#camera</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=tivi""><img src=""{{media url='wysiwyg/magebig/layout05/s02.jpg'}}"" alt="""" /><span>#televison</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=tivi""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s02.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#televison</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=watch""><img src=""{{media url='wysiwyg/magebig/layout05/s03.jpg'}}"" alt="""" /><span>#watch</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=watch""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s03.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#watch</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=chair""><img src=""{{media url='wysiwyg/magebig/layout05/s04.jpg'}}"" alt="""" /><span>#chair</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=chair""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s04.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#chair</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=sneaker""><img src=""{{media url='wysiwyg/magebig/layout05/s05.jpg'}}"" alt="""" /><span>#sneaker</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=sneaker""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s05.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#sneaker</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=xbox""><img src=""{{media url='wysiwyg/magebig/layout05/s06.jpg'}}"" alt="""" /><span>#xbox</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=xbox""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s06.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#xbox</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=gopro""><img src=""{{media url='wysiwyg/magebig/layout05/s07.jpg'}}"" alt="""" /><span>#gopro</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=gopro""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s07.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#gopro</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=lipstick""><img src=""{{media url='wysiwyg/magebig/layout05/s08.jpg'}}"" alt="""" /><span>#lipstick</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=lipstick""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s08.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#lipstick</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=phone""><img src=""{{media url='wysiwyg/magebig/layout05/s09.jpg'}}"" alt="""" /><span>#phone</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=phone""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s09.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#phone</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=laptop""><img src=""{{media url='wysiwyg/magebig/layout05/s10.jpg'}}"" alt="""" /><span>#laptop</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=laptop""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s10.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#laptop</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=speaker""><img src=""{{media url='wysiwyg/magebig/layout05/s11.jpg'}}"" alt="""" /><span>#speaker</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=speaker""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s11.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#speaker</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=book""><img src=""{{media url='wysiwyg/magebig/layout05/s12.jpg'}}"" alt="""" /><span>#book</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=book""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s12.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#book</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=blender""><img src=""{{media url='wysiwyg/magebig/layout05/s13.jpg'}}"" alt="""" /><span>#blender</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=blender""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s13.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#blender</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=bag""><img src=""{{media url='wysiwyg/magebig/layout05/s14.jpg'}}"" alt="""" /><span>#bag</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=bag""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s14.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#bag</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=headphone""><img src=""{{media url='wysiwyg/magebig/layout05/s15.jpg'}}"" alt="""" /><span>#headphone</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=headphone""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s15.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#headphone</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=camping""><img src=""{{media url='wysiwyg/magebig/layout05/s16.jpg'}}"" alt="""" /><span>#camping</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=camping""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s16.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#camping</span></a></div>
 </div>
 </div>
 </div>
@@ -1807,28 +1828,28 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 <div class=""trend-content"">
 <div class=""row no-gutters"">
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=phone""><img src=""{{media url='wysiwyg/magebig/layout05/s09.jpg'}}"" alt="""" /><span>#phone</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=phone""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s09.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#phone</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=camera""><img src=""{{media url='wysiwyg/magebig/layout05/s01.jpg'}}"" alt="""" /><span>#camera</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=camera""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s01.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#camera</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=tivi""><img src=""{{media url='wysiwyg/magebig/layout05/s02.jpg'}}"" alt="""" /><span>#televison</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=tivi""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s02.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#televison</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=watch""><img src=""{{media url='wysiwyg/magebig/layout05/s03.jpg'}}"" alt="""" /><span>#watch</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=watch""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s03.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#watch</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=xbox""><img src=""{{media url='wysiwyg/magebig/layout05/s06.jpg'}}"" alt="""" /><span>#xbox</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=xbox""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s06.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#xbox</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=gopro""><img src=""{{media url='wysiwyg/magebig/layout05/s07.jpg'}}"" alt="""" /><span>#gopro</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=gopro""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s07.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#gopro</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=laptop""><img src=""{{media url='wysiwyg/magebig/layout05/s10.jpg'}}"" alt="""" /><span>#laptop</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=laptop""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s10.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#laptop</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=headphone""><img src=""{{media url='wysiwyg/magebig/layout05/s15.jpg'}}"" alt="""" /><span>#headphone</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=headphone""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s15.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#headphone</span></a></div>
 </div>
 </div>
 </div>
@@ -1837,28 +1858,28 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 <div class=""trend-content"">
 <div class=""row no-gutters"">
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=laptop""><img src=""{{media url='wysiwyg/magebig/layout05/s10.jpg'}}"" alt="""" /><span>#laptop</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=laptop""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s10.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#laptop</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=phone""><img src=""{{media url='wysiwyg/magebig/layout05/s09.jpg'}}"" alt="""" /><span>#phone</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=phone""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s09.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#phone</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=camera""><img src=""{{media url='wysiwyg/magebig/layout05/s01.jpg'}}"" alt="""" /><span>#camera</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=camera""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s01.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#camera</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=tivi""><img src=""{{media url='wysiwyg/magebig/layout05/s02.jpg'}}"" alt="""" /><span>#televison</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=tivi""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s02.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#televison</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=watch""><img src=""{{media url='wysiwyg/magebig/layout05/s03.jpg'}}"" alt="""" /><span>#watch</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=watch""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s03.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#watch</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=xbox""><img src=""{{media url='wysiwyg/magebig/layout05/s06.jpg'}}"" alt="""" /><span>#xbox</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=xbox""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s06.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#xbox</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=gopro""><img src=""{{media url='wysiwyg/magebig/layout05/s07.jpg'}}"" alt="""" /><span>#gopro</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=gopro""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s07.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#gopro</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=headphone""><img src=""{{media url='wysiwyg/magebig/layout05/s15.jpg'}}"" alt="""" /><span>#headphone</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=headphone""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s15.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#headphone</span></a></div>
 </div>
 </div>
 </div>
@@ -1867,10 +1888,10 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 <div class=""trend-content"">
 <div class=""row no-gutters"">
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=chair""><img src=""{{media url='wysiwyg/magebig/layout05/s04.jpg'}}"" alt="""" /><span>#chair</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=chair""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s04.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#chair</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=speaker""><img src=""{{media url='wysiwyg/magebig/layout05/s11.jpg'}}"" alt="""" /><span>#speaker</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=speaker""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s11.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#speaker</span></a></div>
 </div>
 </div>
 </div>
@@ -1879,10 +1900,10 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 <div class=""trend-content"">
 <div class=""row no-gutters"">
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=speaker""><img src=""{{media url='wysiwyg/magebig/layout05/s11.jpg'}}"" alt="""" /><span>#speaker</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=speaker""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s11.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#speaker</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=camping""><img src=""{{media url='wysiwyg/magebig/layout05/s16.jpg'}}"" alt="""" /><span>#camping</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=camping""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s16.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#camping</span></a></div>
 </div>
 </div>
 </div>
@@ -1891,10 +1912,10 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 <div class=""trend-content"">
 <div class=""row no-gutters"">
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=blender""><img src=""{{media url='wysiwyg/magebig/layout05/s13.jpg'}}"" alt="""" /><span>#blender</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=blender""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s13.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#blender</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=bag""><img src=""{{media url='wysiwyg/magebig/layout05/s14.jpg'}}"" alt="""" /><span>#bag</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=bag""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s14.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#bag</span></a></div>
 </div>
 </div>
 </div>
@@ -1903,10 +1924,10 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 <div class=""trend-content"">
 <div class=""row no-gutters"">
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=lipstick""><img src=""{{media url='wysiwyg/magebig/layout05/s08.jpg'}}"" alt="""" /><span>#lipstick</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=lipstick""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s08.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#lipstick</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=phone""><img src=""{{media url='wysiwyg/magebig/layout05/s09.jpg'}}"" alt="""" /><span>#phone</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=phone""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s09.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#phone</span></a></div>
 </div>
 </div>
 </div>
@@ -1915,10 +1936,10 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 <div class=""trend-content"">
 <div class=""row no-gutters"">
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=book""><img src=""{{media url='wysiwyg/magebig/layout05/s12.jpg'}}"" alt="""" /><span>#book</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=book""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s12.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#book</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=gopro""><img src=""{{media url='wysiwyg/magebig/layout05/s07.jpg'}}"" alt="""" /><span>#gopro</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=gopro""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s07.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#gopro</span></a></div>
 </div>
 </div>
 </div>
@@ -1927,10 +1948,10 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 <div class=""trend-content"">
 <div class=""row"">
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=speaker""><img src=""{{media url='wysiwyg/magebig/layout05/s11.jpg'}}"" alt="""" /><span>#speaker</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=speaker""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s11.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#speaker</span></a></div>
 </div>
 <div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
-<div class=""item-trend""><a href=""/catalogsearch/result/?q=headphone""><img src=""{{media url='wysiwyg/magebig/layout05/s15.jpg'}}"" alt="""" /><span>#headphone</span></a></div>
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=headphone""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/s15.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#headphone</span></a></div>
 </div>
 </div>
 </div>
@@ -1941,7 +1962,7 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
     require([
       'jquery',
       'tabs'], function ($) {
-      $(""#search-trend"").tabs({""openedState"":""active""});
+      $(""#search-trend"").tabs({""openedState"":""opened""});
     });
     require(['jquery', 'owlWidget'], function ($) {
       $(function() {
@@ -1955,14 +1976,26 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
         });
       });
     });
-// ]]></script>
+    // ]]></script>
 </div>
 <!-- End Block Search Trending --> <!-- Start Block Deal of the day -->
 <div class=""deal-block-top-wrap"">{{widget type=""MageBig\WidgetPlus\Block\StaticPlus"" block_id=""deal-block-top-v05"" countdown=""1"" slider=""0"" background_type=""0"" template=""widget/static_block.phtml""}}</div>
 <!-- End Block Deal of the day --> <!-- Start Block banner middle -->
 <div class=""block-banner block-banner-05"">
+<div class=""bn-item-promo object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 20.94%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout05/promo01.jpg&quot;}}"" alt="""" width=""1170"" height=""245"" loading=""lazy""></span>
+<div class=""bn-item-content"">
 <div class=""row"">
-<div class=""col-12""><a class=""banner hover-effect01"" href=""#""><img class=""img-fluid"" src=""{{media url=""wysiwyg/magebig/layout05/promo01.jpg""}}"" alt="""" /></a></div>
+<div class=""col-12 col-md-5"">
+<div class=""bn-text"">
+<div class=""title"">Unero Classical Simple Backpack</div>
+<div class=""text d-none d-md-block"">Crisp powerful sound from the best sounding wireless</div>
+</div>
+</div>
+<div class=""col-12 col-md-7"">
+<div class=""bn-btn""><span style=""text-decoration: line-through; color: #666666;"">$230</span><br><span style=""font-size: 24pt; color: #339966;"">$219.05</span><br><br><a class=""btn-shopnow action primary"" href=""#""><span>Shop now</span></a></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <!-- End Block banner middle --> <!-- Start Block Consumer Electronic -->
@@ -1982,8 +2015,36 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 <div class=""block-product-layout-inner"">
 <div class=""block-product-bn block-product-bn-01"">
 <div class=""owl-carousel owl-theme"">
-<div class=""item-slider""><a href=""#""><img src=""{{media url='wysiwyg/magebig/layout05/b1.jpg'}}"" alt="""" /></a></div>
-<div class=""item-slider""><a href=""#""><img src=""{{media url='wysiwyg/magebig/layout05/b2.jpg'}}"" alt="""" /></a></div>
+<div class=""bn-item-promo object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 29.071%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/b1.jpg'}}"" alt="""" width=""829"" height=""241"" loading=""lazy""></span>
+<div class=""bn-item-content"">
+<div class=""row"">
+<div class=""col-12 col-xl-5"">
+<div class=""bn-text"">
+<div class=""title"">Samsung 4K Television 2020</div>
+<div class=""text d-none d-xl-block"">Bask in the Black, clutter<br>free and 360° Design</div>
+</div>
+</div>
+<div class=""col-12 col-xl-7"">
+<div class=""bn-btn""><span style=""text-decoration: line-through; color: #666666;"">$2,560</span><br><span style=""font-size: 24pt; color: #339966;"">$2,219</span><br><br><a class=""btn-shopnow action primary"" href=""#""><span>Shop now</span></a></div>
+</div>
+</div>
+</div>
+</div>
+<div class=""bn-item-promo object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 29.071%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/b2.jpg'}}"" alt="""" width=""829"" height=""241"" loading=""lazy""></span>
+<div class=""bn-item-content"">
+<div class=""row"">
+<div class=""col-12 col-xl-5"">
+<div class=""bn-text"">
+<div class=""title"">Big Promotions In Summer</div>
+<div class=""text d-none d-xl-block"">Big promotion from<br>12/6 - 12/7/2020. Hurry up!</div>
+</div>
+</div>
+<div class=""col-12 col-xl-7"">
+<div class=""bn-btn""><span style=""color: #666666;"">Sale up to</span><br><span style=""font-size: 24pt;""><span style=""color: red;"">40% OFF</span></span><br><br><a class=""btn-shopnow action primary"" href=""#""><span>Shop now</span></a></div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <script type=""text/javascript"" xml=""space"">// <![CDATA[
@@ -1998,12 +2059,12 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
                 });
               });
             });
-// ]]></script>
-<div class=""block-product-tab-cat"">{{widget type=""MageBig\WidgetPlus\Block\ProductTab"" widget_tab=""collections"" collections=""newcreated,bestseller,discount"" category_ids=""3"" labels=""New Arrivals // Best Selling // Sale"" period=""all_time"" product_style=""1"" cache_lifetime=""86400"" limit=""8"" countdown=""0"" slider=""1"" row=""1"" margin=""30"" navigation=""1"" paging=""0"" column=""4"" x1600=""items:6"" x1200=""items:4"" x992=""items:3"" x768=""items:3"" x576=""items:2"" x0=""items:2"" template=""widget/product_tab01.phtml""}}</div>
+            // ]]></script>
+<div class=""block-product-tab-cat"">{{widget type=""MageBig\WidgetPlus\Block\ProductTab"" widget_tab=""collections"" collections=""newcreated,bestseller,discount"" category_ids=""3"" labels=""New Arrivals // Best Selling // Sale"" period=""all_time"" product_style=""1"" cache_lifetime=""86400"" limit=""8"" slider=""1"" row=""1"" margin=""30"" navigation=""1"" paging=""0"" column=""4"" x1600=""items:6"" x1200=""items:4"" x992=""items:3"" x768=""items:2"" x576=""items:2"" x0=""items:2,nav:false"" template=""widget/product_tab01.phtml""}}</div>
 </div>
 </div>
 <div class=""col-12 col-md-5 col-lg-4 col-xl-3"">
-<div class=""block-product-sidebar"">{{widget type=""MageBig\WidgetPlus\Block\Product"" widget_title=""Recommended For You"" product_type=""newupdated"" product_style=""5"" limit=""6"" countdown=""0"" slider=""1"" row=""6"" margin=""30"" navigation=""0"" paging=""0"" column=""1"" template=""widget/product01.phtml""}}</div>
+<div class=""block-product-sidebar"">{{widget type=""MageBig\WidgetPlus\Block\Product"" widget_title=""Recommended For You"" product_type=""newupdated"" category_ids=""3,15"" product_style=""5"" cache_lifetime=""86400"" limit=""7"" countdown=""0"" slider=""1"" row=""7"" margin=""30"" navigation=""0"" paging=""0"" column=""1"" template=""widget/product01.phtml""}}</div>
 </div>
 </div>
 </div>
@@ -2026,8 +2087,36 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 <div class=""block-product-layout-inner"">
 <div class=""block-product-bn block-product-bn-02"">
 <div class=""owl-carousel owl-theme"">
-<div class=""item-slider""><a href=""#""><img src=""{{media url='wysiwyg/magebig/layout05/b3.jpg'}}"" alt="""" /></a></div>
-<div class=""item-slider""><a href=""#""><img src=""{{media url='wysiwyg/magebig/layout05/b4.jpg'}}"" alt="""" /></a></div>
+<div class=""bn-item-promo object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 29.071%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/b3.jpg'}}"" alt="""" width=""829"" height=""241"" loading=""lazy""></span>
+<div class=""bn-item-content"">
+<div class=""row"">
+<div class=""col-12 col-xl-5"">
+<div class=""bn-text"">
+<div class=""title"">Impressive With Style Of July</div>
+<div class=""text d-none d-xl-block"">New arrivals with t-shirt, short<br>so cool for mens</div>
+</div>
+</div>
+<div class=""col-12 col-xl-7"">
+<div class=""bn-btn""><span style=""color: #666666;"">Price just</span><br><span style=""font-size: 24pt; color: #339966;"">$49.99</span><br><br><a class=""btn-shopnow action primary"" href=""#""><span>Shop now</span></a></div>
+</div>
+</div>
+</div>
+</div>
+<div class=""bn-item-promo object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 29.071%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/b4.jpg'}}"" alt="""" width=""829"" height=""241"" loading=""lazy""></span>
+<div class=""bn-item-content"">
+<div class=""row"">
+<div class=""col-12 col-xl-5"">
+<div class=""bn-text"">
+<div class=""title"">Herschuply Duffles Collection</div>
+<div class=""text d-none d-xl-block"">New arrivals with t-shirt, short<br>so cool for mens</div>
+</div>
+</div>
+<div class=""col-12 col-xl-7"">
+<div class=""bn-btn""><span style=""color: #666666;"">Sale up to</span><br><span style=""font-size: 24pt;""><span style=""color: red;"">40% OFF</span></span><br><br><a class=""btn-shopnow action primary"" href=""#""><span>Shop now</span></a></div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <script type=""text/javascript"" xml=""space"">// <![CDATA[
@@ -2042,12 +2131,12 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
                 });
               });
             });
-// ]]></script>
-<div class=""block-product-tab-cat"">{{widget type=""MageBig\WidgetPlus\Block\ProductTab"" widget_tab=""collections"" collections=""newcreated,bestseller,discount"" category_ids=""4"" labels=""New Arrivals // Best Selling // Sale"" period=""all_time"" product_style=""1"" cache_lifetime=""86400"" limit=""8"" slider=""1"" row=""1"" margin=""30"" navigation=""1"" paging=""0"" column=""4"" x1600=""items:6"" x1200=""items:4"" x992=""items:3"" x768=""items:3"" x576=""items:2"" x0=""items:2"" template=""widget/product_tab01.phtml""}}</div>
+            // ]]></script>
+<div class=""block-product-tab-cat"">{{widget type=""MageBig\WidgetPlus\Block\ProductTab"" widget_tab=""collections"" collections=""newcreated,bestseller,discount"" category_ids=""4"" labels=""New Arrivals // Best Selling // Sale"" period=""all_time"" product_style=""1"" cache_lifetime=""86400"" limit=""8"" slider=""1"" row=""1"" margin=""30"" navigation=""1"" paging=""0"" column=""4"" x1600=""items:6"" x1200=""items:4"" x992=""items:3"" x768=""items:2"" x576=""items:2"" x0=""items:2,nav:false"" template=""widget/product_tab01.phtml""}}</div>
 </div>
 </div>
 <div class=""col-12 col-md-5 col-lg-4 col-xl-3"">
-<div class=""block-product-sidebar"">{{widget type=""MageBig\WidgetPlus\Block\Product"" widget_title=""Recommended For You"" product_type=""newupdated"" category_ids=""4"" product_style=""5"" cache_lifetime=""86400"" limit=""6"" countdown=""0"" slider=""1"" row=""6"" margin=""30"" navigation=""0"" paging=""0"" column=""1"" template=""widget/product01.phtml""}}</div>
+<div class=""block-product-sidebar"">{{widget type=""MageBig\WidgetPlus\Block\Product"" widget_title=""Recommended For You"" product_type=""newupdated"" category_ids=""4"" product_style=""5"" cache_lifetime=""86400"" limit=""7"" countdown=""0"" slider=""1"" row=""7"" margin=""30"" navigation=""0"" paging=""0"" column=""1"" template=""widget/product01.phtml""}}</div>
 </div>
 </div>
 </div>
@@ -2060,8 +2149,6 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 <li><a class=""extra-link"" href=""{{store url='home-garden-kitchen/furniture.html'}}"">Furniture</a></li>
 <li><a class=""extra-link"" href=""{{store url='home-garden-kitchen/home-decor.html'}}"">Home Decor</a></li>
 <li><a class=""extra-link"" href=""{{store url='home-garden-kitchen/cookware.html'}}"">Cookware</a></li>
-<li><a class=""extra-link"" href=""{{store url='home-garden-kitchen/utensils-gadget.html'}}"">Utensil &amp; Gadget</a></li>
-<li><a class=""extra-link"" href=""{{store url='home-garden-kitchen/garden-tools.html'}}"">Garden Tools</a></li>
 </ul>
 </div>
 <div class=""block-product-inner"">
@@ -2070,8 +2157,36 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 <div class=""block-product-layout-inner"">
 <div class=""block-product-bn block-product-bn-02"">
 <div class=""owl-carousel owl-theme"">
-<div class=""item-slider""><a href=""#""><img src=""{{media url='wysiwyg/magebig/layout05/b5.jpg'}}"" alt="""" /></a></div>
-<div class=""item-slider""><a href=""#""><img src=""{{media url='wysiwyg/magebig/layout05/b6.jpg'}}"" alt="""" /></a></div>
+<div class=""bn-item-promo object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 29.071%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/b5.jpg'}}"" alt="""" width=""829"" height=""241"" loading=""lazy""></span>
+<div class=""bn-item-content"">
+<div class=""row"">
+<div class=""col-12 col-xl-5"">
+<div class=""bn-text"">
+<div class=""title"">Wood Minimalist Chair 2020</div>
+<div class=""text d-none d-xl-block"">Special design from IKEA furniture<br>for Scadinavian style</div>
+</div>
+</div>
+<div class=""col-12 col-xl-7"">
+<div class=""bn-btn""><span style=""color: #666666;"">Discount</span><br><span style=""font-size: 24pt;""><span style=""color: red;"">25% Off</span></span><br><br><a class=""btn-shopnow action primary"" href=""#""><span>Shop now</span></a></div>
+</div>
+</div>
+</div>
+</div>
+<div class=""bn-item-promo object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 29.071%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout05/b6.jpg'}}"" alt="""" width=""829"" height=""241"" loading=""lazy""></span>
+<div class=""bn-item-content"">
+<div class=""row"">
+<div class=""col-12 col-xl-5"">
+<div class=""bn-text"">
+<div class=""title"">Simple Otoman Chair 2020</div>
+<div class=""text d-none d-xl-block"">Big romotion from<br>12/09 - 12/10/2020. Hurry up!</div>
+</div>
+</div>
+<div class=""col-12 col-xl-7"">
+<div class=""bn-btn""><span style=""color: #999999;"">Price just</span><br><span style=""font-size: 24pt; color: #339966;"">$89.99</span><br><br><a class=""btn-shopnow action primary"" href=""#""><span>Shop now</span></a></div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <script type=""text/javascript"" xml=""space"">// <![CDATA[
@@ -2086,12 +2201,12 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
                 });
               });
             });
-// ]]></script>
-<div class=""block-product-tab-cat"">{{widget type=""MageBig\WidgetPlus\Block\ProductTab"" widget_tab=""collections"" collections=""newcreated,bestseller,discount"" category_ids=""5"" labels=""New Arrivals // Best Selling // Sale"" period=""all_time"" product_style=""1"" cache_lifetime=""86400"" limit=""8"" slider=""1"" row=""1"" margin=""30"" navigation=""1"" paging=""0"" column=""4"" x1600=""items:6"" x1200=""items:4"" x992=""items:3"" x768=""items:3"" x576=""items:2"" x0=""items:2"" template=""widget/product_tab01.phtml""}}</div>
+            // ]]></script>
+<div class=""block-product-tab-cat"">{{widget type=""MageBig\WidgetPlus\Block\ProductTab"" widget_tab=""collections"" collections=""newcreated,bestseller,discount"" category_ids=""5"" labels=""New Arrivals // Best Selling // Sale"" period=""all_time"" product_style=""1"" cache_lifetime=""86400"" limit=""8"" slider=""1"" row=""1"" margin=""30"" navigation=""1"" paging=""0"" column=""4"" x1600=""items:6"" x1200=""items:4"" x992=""items:3"" x768=""items:2"" x576=""items:2"" x0=""items:2,nav:false"" template=""widget/product_tab01.phtml""}}</div>
 </div>
 </div>
 <div class=""col-12 col-md-5 col-lg-4 col-xl-3"">
-<div class=""block-product-sidebar"">{{widget type=""MageBig\WidgetPlus\Block\Product"" widget_title=""Recommended For You"" product_type=""newupdated"" category_ids=""5"" product_style=""5"" cache_lifetime=""86400"" limit=""6"" countdown=""0"" slider=""1"" row=""6"" margin=""30"" navigation=""0"" paging=""0"" column=""1"" template=""widget/product01.phtml""}}</div>
+<div class=""block-product-sidebar"">{{widget type=""MageBig\WidgetPlus\Block\Product"" widget_title=""Recommended For You"" product_type=""newupdated"" category_ids=""5"" product_style=""5"" cache_lifetime=""86400"" limit=""7"" countdown=""0"" slider=""1"" row=""7"" margin=""30"" navigation=""0"" paging=""0"" column=""1"" template=""widget/product01.phtml""}}</div>
 </div>
 </div>
 </div>
@@ -2099,3 +2214,473 @@ title,page_layout,meta_keywords,meta_description,identifier,content_heading,cont
 <!-- End Block Home, Garden & Kitchen --> <!-- Start Block Blog -->
 <div class=""blog-home5"">{{widget type=""MageBig\WidgetPlus\Block\StaticPlus"" block_id=""blog-v5"" countdown=""0"" slider=""0"" background_type=""0"" template=""widget/static_block.phtml""}}</div>
 <!-- End Block Blog -->",1,0,,,,,,
+"Martfury 06 - Kids",1column,"marketplace, multi-vendor, multiple store, high performance magento 2 theme","Most powerful Magento theme for your store online",home-06,,"<div class=""banner-slider-top banner-slider-cat"">
+<div class=""row"">
+<div class=""d-none d-xl-block col-lg-3 bn-menu"">{{block class=""MageBig\SmartMenu\Block\SmartMenu"" template=""html/topmenu2.phtml""}}</div>
+<div class=""col-12 col-xl-9"">
+<div class=""row no-gutters bn-inner"">
+<div class=""col-12 col-sm-12 col-md-7"">
+<div class=""item-bn-slider-05 slider-2 lazyload"">
+<div class=""owl-carousel owl-theme"">
+<div class=""item-slider"">
+<div class=""img-slide""><span class=""item object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 70.566%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/slider01.jpg'}}"" alt="""" width=""530"" height=""374"" loading=""lazy""></span></span></div>
+<div class=""block-center"">
+<p class=""text-small animated fadeInDownSlide""><span style=""color: #3078a6;"">LIMITED EDITION</span></p>
+<h2 class=""text-large animated fadeInDownSlide delay-0s5"">Baby Hipseat<br>Carrier<br>Waist Stool</h2>
+<div class=""text-normal animated fadeInDownSlide delay-1s"">
+<div>Discount</div>
+<p>40% Off</p>
+</div>
+<div class=""btn-wrap animated fadeInDownSlide delay-1s5""><a class=""btn-shopnow action primary"" href=""#""><span>Shop now</span></a></div>
+</div>
+</div>
+<div class=""item-slider"">
+<div class=""img-slide""><span class=""item object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 70.566%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/slider02.jpg'}}"" alt="""" width=""530"" height=""374"" loading=""lazy""></span></span></div>
+<div class=""block-center"">
+<p class=""text-small animated fadeInDownSlide""><span style=""color: #3078a6;"">Leachco</span></p>
+<h2 class=""text-large animated fadeInDownSlide delay-0s5"">Infant<br>Seat<br>Lounger</h2>
+<div class=""text-normal animated fadeInDownSlide delay-1s"">
+<div>Price just</div>
+<p>$199.99</p>
+</div>
+<div class=""btn-wrap animated fadeInDownSlide delay-1s5""><a class=""btn-shopnow action primary"" href=""#""><span>Shop now</span></a></div>
+</div>
+</div>
+</div>
+</div>
+<script type=""text/javascript"" xml=""space"">// <![CDATA[
+            require(['jquery', 'owlWidget'], function ($) {
+              $(function() {
+                $('.item-bn-slider-05').owlWidget({
+                  autoplay: true,
+                  items: 1,
+                  autoplayTimeout: 8000,
+                  dots: true,
+                  nav: true,
+                  loop: true,
+                  margin: 0
+                });
+              });
+            });
+            // ]]></script>
+</div>
+<div class=""col-12 col-sm-12 col-md-5"">
+<div class=""row no-gutters"">
+<div class=""col-6 col-sm-6"">
+<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01 object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 101.075%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/bgbn-01.jpg'}}"" alt="""" width=""186"" height=""188"" loading=""lazy""></span></span><span class=""text"">Milk blackmores toddler 300g<br><span style=""color: #999999;"">Discount</span> <span style=""color: #ff0000;"">30%</span></span></a></div>
+</div>
+<div class=""col-6 col-sm-6"">
+<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01 object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 101.075%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/bgbn-02.jpg'}}"" alt="""" width=""186"" height=""188"" loading=""lazy""></span></span><span class=""text"">Baby<br>stroller<br>3in1<br><span style=""color: #ff0000;"">$599</span><br><span style=""text-decoration: line-through; color: #999999;"">$699</span></span></a></div>
+</div>
+<div class=""col-12 col-sm-12"">
+<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01 object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 50.674%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/bgbn-03.jpg'}}"" alt="""" width=""371"" height=""188"" loading=""lazy""></span></span><span class=""text"">Combo 5x<br>newborn disaper<br>bambo<br><br><br><br><span style=""color: #999999;"">Discount</span> <span style=""color: #ff0000;"">20%</span></span></a></div>
+</div>
+</div>
+</div>
+<div class=""col-12 col-sm-12"">
+<div class=""row no-gutters"">
+<div class=""col-12 col-sm-12 col-md-7"">
+<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01 object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 35.405%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/bgbn-04.jpg'}}"" alt="""" width=""531"" height=""188"" loading=""lazy""></span></span><span class=""text""><strong>LZTET</strong> Baby<br>Rocking Wood Chair<br><br><br><br><span style=""color: #999999;"">Price just</span> <br><span style=""color: #ff0000;""><span style=""color: #339966;"">$159.99</span></span></span></a></div>
+</div>
+<div class=""col-12 col-sm-12 col-md-5"">
+<div class=""row no-gutters"">
+<div class=""col-6 col-sm-6"">
+<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01 object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 101.075%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/bgbn-05.jpg'}}"" alt="""" width=""186"" height=""188"" loading=""lazy""></span></span><span class=""text"">Snap Swim <br>Diaper<br><span style=""color: #ff0000;"">$49</span><br><span style=""text-decoration: line-through; color: #999999;"">$59</span></span></a></div>
+</div>
+<div class=""col-6 col-sm-6"">
+<div class=""item-bn-inner""><a href=""#""><span class=""item-bn hover-effect01 object-fit""><span class=""img-native-wrap"" style=""padding-bottom: 101.075%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/bgbn-06.jpg'}}"" alt="""" width=""186"" height=""188"" loading=""lazy""></span></span><span class=""text"">Voucher body care<br>at bratus spa<br><span style=""color: #ff0000;"">25%</span> <span style=""color: #999999;"">Off</span></span></a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Start Block Deal of the day -->
+<div class=""deal-block-top-wrap"">{{widget type=""MageBig\WidgetPlus\Block\StaticPlus"" block_id=""deal-block-top-v06"" countdown=""1"" slider=""0"" background_type=""0"" template=""widget/static_block.phtml""}}</div>
+<!-- End Block Deal of the day --> <!-- Start Block Search Trending -->
+<div class=""search-trend-wrap"">
+<div class=""search-title"">
+<h2 class=""title""><span>Search Trending</span></h2>
+</div>
+<div id=""search-trend"" class=""search-trend"">
+<div class=""trend-tabs owl-carousel owl-theme"">
+<div id=""tab-label-trend-01"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-01-title"" class=""data switch"" href=""#trend-01"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-star"">&nbsp;</i><span>Hot Trending</span> </a></div>
+<div id=""tab-label-trend-02"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-02-title"" class=""data switch"" href=""#trend-02"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-wind"">&nbsp;</i><span>Baby Hygiene</span> </a></div>
+<div id=""tab-label-trend-03"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-03-title"" class=""data switch"" href=""#trend-03"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-lampshade"">&nbsp;</i><span>Baby Sleeping</span> </a></div>
+<div id=""tab-label-trend-04"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-04-title"" class=""data switch"" href=""#trend-04"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-lollipop"">&nbsp;</i><span>Bayby Out</span> </a></div>
+<div id=""tab-label-trend-05"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-05-title"" class=""data switch"" href=""#trend-05"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-shirt"">&nbsp;</i><span>Apparels</span> </a></div>
+<div id=""tab-label-trend-06"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-06-title"" class=""data switch"" href=""#trend-06"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-baby-bottle"">&nbsp;</i><span>Eat &amp; Drink</span> </a></div>
+<div id=""tab-label-trend-07"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-07-title"" class=""data switch"" href=""#trend-07"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-baseball"">&nbsp;</i><span>Toys</span> </a></div>
+<div id=""tab-label-trend-08"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-08-title"" class=""data switch"" href=""#trend-08"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-library"">&nbsp;</i><span>Home Wares</span> </a></div>
+<div id=""tab-label-trend-09"" class=""data item title"" data-role=""collapsible""><a id=""tab-label-trend-08-title"" class=""data switch"" href=""#trend-08"" data-toggle=""switch"" tabindex=""-1""> <i class=""mbi mbi-car"">&nbsp;</i><span>Cars</span> </a></div>
+</div>
+<div class=""tab-content-wrap tab-content-fadein"">
+<div id=""trend-01"" class=""data item content"" data-role=""content"">
+<div class=""trend-content"">
+<div class=""row no-gutters"">
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=bodysuit""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s01.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#bodysuit</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=carseat""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s02.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#carseat</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=cream""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s03.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#cream</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=seat""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s04.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#seat</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=bathseat""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s05.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#bathseat</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=nipples""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s06.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#nipples</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=carriers""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s07.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#carriers</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=bag""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s08.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#bag</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=diapers""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s09.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#diapers</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=crib""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s10.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#crib</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=ointment""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s11.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#ointment</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=underwear""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s12.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#underwear</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=woolcap""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s13.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#woolcap</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=boys""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s14.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#boys</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=chair""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s15.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#chair</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=pregnancy""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s16.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#pregnancy</span></a></div>
+</div>
+</div>
+</div>
+</div>
+<div id=""trend-02"" class=""data item content"" data-role=""content"">
+<div class=""trend-content"">
+<div class=""row no-gutters"">
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=diapers""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s09.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#diapers</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=bodysuit""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s01.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#bodysuit</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=carseat""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s02.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#carseat</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=cream""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s03.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#cream</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=nipples""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s06.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#nipples</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=carriers""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s07.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#carriers</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=crib""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s10.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#crib</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=chair""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s15.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#chair</span></a></div>
+</div>
+</div>
+</div>
+</div>
+<div id=""trend-03"" class=""data item content"" data-role=""content"">
+<div class=""trend-content"">
+<div class=""row no-gutters"">
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=crib""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s10.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#crib</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=diapers""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s09.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#diapers</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=bodysuit""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s01.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#bodysuit</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=carseat""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s02.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#carseat</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=cream""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s03.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#cream</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=nipples""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s06.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#nipples</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=carriers""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s07.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#carriers</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=chair""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s15.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#chair</span></a></div>
+</div>
+</div>
+</div>
+</div>
+<div id=""trend-04"" class=""data item content"" data-role=""content"">
+<div class=""trend-content"">
+<div class=""row no-gutters"">
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=seat""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s04.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#seat</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=ointment""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s11.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#ointment</span></a></div>
+</div>
+</div>
+</div>
+</div>
+<div id=""trend-05"" class=""data item content"" data-role=""content"">
+<div class=""trend-content"">
+<div class=""row no-gutters"">
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=ointment""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s11.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#ointment</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=pregnancy""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s16.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#pregnancy</span></a></div>
+</div>
+</div>
+</div>
+</div>
+<div id=""trend-06"" class=""data item content"" data-role=""content"">
+<div class=""trend-content"">
+<div class=""row no-gutters"">
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=woolcap""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s13.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#woolcap</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=boys""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s14.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#boys</span></a></div>
+</div>
+</div>
+</div>
+</div>
+<div id=""trend-07"" class=""data item content"" data-role=""content"">
+<div class=""trend-content"">
+<div class=""row no-gutters"">
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=bag""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s08.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#bag</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=diapers""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s09.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#diapers</span></a></div>
+</div>
+</div>
+</div>
+</div>
+<div id=""trend-08"" class=""data item content"" data-role=""content"">
+<div class=""trend-content"">
+<div class=""row no-gutters"">
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=underwear""><span class=""img-native-wrap"" style=""padding-bottom: 100.781%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s12.jpg'}}"" alt="""" width=""128"" height=""129"" loading=""lazy""></span><span>#underwear</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=carriers""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s07.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#carriers</span></a></div>
+</div>
+</div>
+</div>
+</div>
+<div id=""trend-09"" class=""data item content"" data-role=""content"">
+<div class=""trend-content"">
+<div class=""row"">
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=ointment""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s11.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#ointment</span></a></div>
+</div>
+<div class=""col-4 col-sm-3 col-md-2 tp-xl-8-col"">
+<div class=""item-trend""><a href=""/catalogsearch/result/?q=chair""><span class=""img-native-wrap"" style=""padding-bottom: 100%;""><img class=""img-fluid"" src=""{{media url='wysiwyg/magebig/layout06/s15.jpg'}}"" alt="""" width=""129"" height=""129"" loading=""lazy""></span><span>#chair</span></a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script type=""text/javascript"" xml=""space"">// <![CDATA[
+    require([
+      'jquery',
+      'tabs'], function ($) {
+      $(""#search-trend"").tabs({""openedState"":""opened""});
+    });
+    require(['jquery', 'owlWidget'], function ($) {
+      $(function() {
+        $('#search-trend').owlWidget({
+          items: 8,
+          dots: false,
+          nav: true,
+          loop: false,
+          margin: 0,
+          responsive: {""0"":{""items"":2},""576"":{""items"":3},""768"":{""items"":4},""992"":{""items"":6},""1200"":{""items"":8}}
+        });
+      });
+    });
+    // ]]></script>
+</div>
+<!-- End Block Search Trending --> <!-- Start Block Brand -->
+<div class=""brand-row"">
+<div class=""main-heading"">
+<h2 class=""title""><span>Best Selling Brand</span></h2>
+</div>
+<div class=""block-static"">
+<div class=""row no-gutters align-items-center text-center"">
+<div class=""col-6 col-mb-5"">
+<div class=""item""><a href=""#""><span class=""img-native-wrap"" style=""padding-bottom: 54.31%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout04/brand-01.jpg&quot;}}"" alt="""" width=""232"" height=""126"" loading=""lazy""></span></a></div>
+</div>
+<div class=""col-6 col-mb-5"">
+<div class=""item""><a href=""#""><span class=""img-native-wrap"" style=""padding-bottom: 54.31%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout04/brand-02.jpg&quot;}}"" alt="""" width=""232"" height=""126"" loading=""lazy""></span></a></div>
+</div>
+<div class=""col-6 col-mb-5"">
+<div class=""item""><a href=""#""><span class=""img-native-wrap"" style=""padding-bottom: 54.31%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout04/brand-03.jpg&quot;}}"" alt="""" width=""232"" height=""126"" loading=""lazy""></span></a></div>
+</div>
+<div class=""col-6 col-mb-5"">
+<div class=""item""><a href=""#""><span class=""img-native-wrap"" style=""padding-bottom: 54.31%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout04/brand-04.jpg&quot;}}"" alt="""" width=""232"" height=""126"" loading=""lazy""></span></a></div>
+</div>
+<div class=""col-6 col-mb-5"">
+<div class=""item""><a href=""#""><span class=""img-native-wrap"" style=""padding-bottom: 54.31%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout04/brand-05.jpg&quot;}}"" alt="""" width=""232"" height=""126"" loading=""lazy""></span></a></div>
+</div>
+<div class=""col-6 col-mb-5"">
+<div class=""item""><a href=""#""><span class=""img-native-wrap"" style=""padding-bottom: 54.31%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout04/brand-06.jpg&quot;}}"" alt="""" width=""232"" height=""126"" loading=""lazy""></span></a></div>
+</div>
+<div class=""col-6 col-mb-5"">
+<div class=""item""><a href=""#""><span class=""img-native-wrap"" style=""padding-bottom: 54.31%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout04/brand-07.jpg&quot;}}"" alt="""" width=""232"" height=""126"" loading=""lazy""></span></a></div>
+</div>
+<div class=""col-6 col-mb-5"">
+<div class=""item""><a href=""#""><span class=""img-native-wrap"" style=""padding-bottom: 54.31%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout04/brand-08.jpg&quot;}}"" alt="""" width=""232"" height=""126"" loading=""lazy""></span></a></div>
+</div>
+<div class=""col-6 col-mb-5"">
+<div class=""item""><a href=""#""><span class=""img-native-wrap"" style=""padding-bottom: 54.31%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout04/brand-09.jpg&quot;}}"" alt="""" width=""232"" height=""126"" loading=""lazy""></span></a></div>
+</div>
+<div class=""col-6 col-mb-5"">
+<div class=""item""><a href=""#""><span class=""img-native-wrap"" style=""padding-bottom: 54.31%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout04/brand-10.jpg&quot;}}"" alt="""" width=""232"" height=""126"" loading=""lazy""></span></a></div>
+</div>
+</div>
+</div>
+</div>
+<!-- End Block Brand --> <!-- Start Block Eat & Drink for Baby -->
+<div class=""row no-gutters block-cat-wrap"">
+<div class=""col-12 col-lg-6 col-xl-5 block-cat-list"">
+<div class=""row no-gutters h-100"">
+<div class=""col-7 col-lg-5"">
+<div class=""block-cat-home"">
+<h2 class=""title""><a href=""#"">Eat &amp; Drink for Baby</a></h2>
+<ul>
+<li><a href=""#"">Best Seller</a></li>
+<li><a href=""#"">New Arrivals</a></li>
+<li><a href=""#"">Milks</a></li>
+<li><a href=""#"">Milk Bottles</a></li>
+<li><a href=""#"">Weaning Foods</a></li>
+<li><a href=""#"">Nipples</a></li>
+<li><a href=""#"">Others</a></li>
+<li><a href=""#"">Sales &amp; Deals</a></li>
+</ul>
+<div class=""view-all""><a href=""#"">View All</a></div>
+</div>
+</div>
+<div class=""col-5 col-lg-7 block-cat-promo"">
+<div class=""promo-now""><a class=""hover-effect01"" href=""/clothing-apparel.html""><span class=""img-native-wrap"" style=""padding-bottom: 239.163%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout06/Promotions.jpg&quot;}}"" alt="""" width=""263"" height=""629"" data-object-fit=""cover"" loading=""lazy""></span><span class=""btn-wrap""><span class=""action primary"">Shop Now</span></span></a></div>
+</div>
+</div>
+</div>
+<div class=""col-12 col-lg-6 col-xl-7"">
+<div class=""block-cat-product"">{{widget type=""MageBig\WidgetPlus\Block\Product"" product_type=""newcreated"" category_ids=""73"" product_style=""1"" cache_lifetime=""86400"" limit=""8"" countdown=""0"" slider=""1"" row=""2"" margin=""0"" navigation=""0"" paging=""0"" column=""3"" x1600=""items:4"" x1200=""items:3"" x992=""items:2"" x768=""items:3"" x576=""items:2"" x0=""items:2"" template=""widget/product01.phtml""}}</div>
+</div>
+</div>
+<!-- End Block Eat & Drink for Baby --><!-- Start Block Apparels for Baby -->
+<div class=""row no-gutters block-cat-wrap"">
+<div class=""col-12 col-lg-6 col-xl-5 block-cat-list"">
+<div class=""row no-gutters h-100"">
+<div class=""col-7 col-lg-5"">
+<div class=""block-cat-home"">
+<h2 class=""title""><a href=""#"">Apparels for Baby</a></h2>
+<ul>
+<li><a href=""#"">Best Seller</a></li>
+<li><a href=""#"">New Arrivals</a></li>
+<li><a href=""#"">For Newborns</a></li>
+<li><a href=""#"">Boy Fashion</a></li>
+<li><a href=""#"">Girl Fashion</a></li>
+<li><a href=""#"">Accessories</a></li>
+<li><a href=""#"">Others</a></li>
+<li><a href=""#"">Sales &amp; Deals</a></li>
+</ul>
+<div class=""view-all""><a href=""#"">View All</a></div>
+</div>
+</div>
+<div class=""col-5 col-lg-7 block-cat-promo"">
+<div class=""promo-now""><a class=""hover-effect01"" href=""/clothing-apparel.html""><span class=""img-native-wrap"" style=""padding-bottom: 239.163%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout06/Promotions2.jpg&quot;}}"" alt="""" width=""263"" height=""629"" data-object-fit=""cover"" loading=""lazy""></span><span class=""btn-wrap""><span class=""action primary"">Shop Now</span></span></a></div>
+</div>
+</div>
+</div>
+<div class=""col-12 col-lg-6 col-xl-7"">
+<div class=""block-cat-product"">{{widget type=""MageBig\WidgetPlus\Block\Product"" product_type=""newcreated"" category_ids=""74"" product_style=""1"" cache_lifetime=""86400"" limit=""8"" countdown=""0"" slider=""1"" row=""2"" margin=""0"" navigation=""0"" paging=""0"" column=""3"" x1600=""items:4"" x1200=""items:3"" x992=""items:2"" x768=""items:3"" x576=""items:2"" x0=""items:2"" template=""widget/product01.phtml""}}</div>
+</div>
+</div>
+<!-- End Block Apparels for Baby --> <!-- Start Block Baby Out -->
+<div class=""row no-gutters block-cat-wrap"">
+<div class=""col-12 col-lg-6 col-xl-5 block-cat-list"">
+<div class=""row no-gutters h-100"">
+<div class=""col-7 col-lg-5"">
+<div class=""block-cat-home"">
+<h2 class=""title""><a href=""#"">Baby Out</a></h2>
+<ul>
+<li><a href=""#"">Best Seller</a></li>
+<li><a href=""#"">New Arrivals</a></li>
+<li><a href=""#"">Strollers</a></li>
+<li><a href=""#"">Kids Scooters</a></li>
+<li><a href=""#"">Travel Gears</a></li>
+<li><a href=""#"">Car Seat</a></li>
+<li><a href=""#"">Hipseat Carrier</a></li>
+<li><a href=""#"">Sales &amp; Deals</a></li>
+</ul>
+<div class=""view-all""><a href=""#"">View All</a></div>
+</div>
+</div>
+<div class=""col-5 col-lg-7 block-cat-promo"">
+<div class=""promo-now""><a class=""hover-effect01"" href=""/clothing-apparel.html""><span class=""img-native-wrap"" style=""padding-bottom: 239.163%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout06/Promotions3.jpg&quot;}}"" alt="""" width=""263"" height=""629"" data-object-fit=""cover"" loading=""lazy""></span><span class=""btn-wrap""><span class=""action primary"">Shop Now</span></span></a></div>
+</div>
+</div>
+</div>
+<div class=""col-12 col-lg-6 col-xl-7"">
+<div class=""block-cat-product"">{{widget type=""MageBig\WidgetPlus\Block\Product"" product_type=""newcreated"" category_ids=""75,6"" product_style=""1"" cache_lifetime=""86400"" limit=""8"" countdown=""0"" slider=""1"" row=""2"" margin=""0"" navigation=""0"" paging=""0"" column=""3"" x1600=""items:4"" x1200=""items:3"" x992=""items:2"" x768=""items:3"" x576=""items:2"" x0=""items:2"" template=""widget/product01.phtml""}}</div>
+</div>
+</div>
+<!-- End Block Baby Out --> <!-- Start Block Pregnancy & Maternity -->
+<div class=""row no-gutters block-cat-wrap"">
+<div class=""col-12 col-lg-6 col-xl-5 block-cat-list"">
+<div class=""row no-gutters h-100"">
+<div class=""col-7 col-lg-5"">
+<div class=""block-cat-home"">
+<h2 class=""title""><a href=""#"">Pregnancy &amp; Maternity</a></h2>
+<ul>
+<li><a href=""#"">Best Seller</a></li>
+<li><a href=""#"">New Arrivals</a></li>
+<li><a href=""#"">Milk pump</a></li>
+<li><a href=""#"">Shampoo &amp; Shower Gel</a></li>
+<li><a href=""#"">For Pregnant</a></li>
+<li><a href=""#"">For Mom After Borned</a></li>
+<li><a href=""#"">Maternity Pillows</a></li>
+<li><a href=""#"">Sales &amp; Deals</a></li>
+</ul>
+<div class=""view-all""><a href=""#"">View All</a></div>
+</div>
+</div>
+<div class=""col-5 col-lg-7 block-cat-promo"">
+<div class=""promo-now""><a class=""hover-effect01"" href=""/clothing-apparel.html""><span class=""img-native-wrap"" style=""padding-bottom: 239.163%;""><img class=""img-fluid"" src=""{{media url=&quot;wysiwyg/magebig/layout06/Promotions4.jpg&quot;}}"" alt="""" width=""263"" height=""629"" data-object-fit=""cover"" loading=""lazy""></span><span class=""btn-wrap""><span class=""action primary"">Shop Now</span></span></a></div>
+</div>
+</div>
+</div>
+<div class=""col-12 col-lg-6 col-xl-7"">
+<div class=""block-cat-product"">{{widget type=""MageBig\WidgetPlus\Block\Product"" product_type=""newcreated"" category_ids=""76,7"" product_style=""1"" cache_lifetime=""86400"" limit=""8"" countdown=""0"" slider=""1"" row=""2"" margin=""0"" navigation=""0"" paging=""0"" column=""3"" x1600=""items:4"" x1200=""items:3"" x992=""items:2"" x768=""items:3"" x576=""items:2"" x0=""items:2"" template=""widget/product01.phtml""}}</div>
+</div>
+</div>
+<!-- End Block Pregnancy & Maternity -->",1,0,,,,,,
+"Special Offers",1column,,,special-offers,"Special Offers","{{widget type=""MageBig\WidgetPlus\Block\Product"" product_type=""discount"" category_ids=""3,4,5,6,8,9,12"" product_style=""7"" cache_lifetime=""86400"" limit=""18"" countdown=""0"" slider=""0"" template=""widget/product01.phtml""}}",1,0,,,,,,

@@ -1,6 +1,6 @@
 (function(factory) {
     if (typeof define === "function" && define.amd) {
-        define(["jquery", "jquery/ui", 'magnificpopup'], factory);
+        define(["jquery", 'magnificpopup'], factory);
     } else {
         factory(jQuery);
     }
@@ -35,9 +35,10 @@
         },
         _buildQuickView: function(config) {
             this._addButton(config);
-            var $qs_button = $('.' + config.handlerClass);
-            var $isProductPage = $('body').hasClass('catalog-product-view');
-            $qs_button.magnificPopup({
+            var $qv_wrap = $('body'),
+                $isProductPage = $qv_wrap.hasClass('catalog-product-view');
+            $qv_wrap.magnificPopup({
+                delegate: '.' + config.handlerClass,
                 type: 'ajax',
                 tLoading: '',
                 overflowY: 'auto',
@@ -89,7 +90,6 @@
                         $('.sticky-menu.active').css('padding-right', '');
                         $('#go-top').css('margin-right', '');
 
-                        this.currItem.el.removeClass('has-trigger');
                         this.paramUrl = null;
                     },
                     ajaxContentAdded: function() {

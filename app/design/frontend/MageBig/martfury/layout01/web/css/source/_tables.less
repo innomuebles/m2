@@ -11,6 +11,7 @@
     .table-wrapper {
         margin-bottom: @indent__base;
     }
+    th.col, td.col {width: auto;}
     .table {
         tfoot {
             .lib-css(background, @sidebar__background-color);
@@ -19,7 +20,13 @@
                     th,
                     td {
                         border-top: @table__border-width @table__border-style @table__border-color;
-                        padding-top: @indent__base;
+                        padding-top: 15px;
+                    }
+                }
+                &:last-child {
+                    th,
+                    td {
+                        padding-bottom: 15px;
                     }
                 }
             }
@@ -33,82 +40,123 @@
             }
         }
     }
-}
 
-//
-//    Mobile
-//  _____________________________________________
-
-.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
-    .table-wrapper {
-        border-top: @table__border-width @table__border-style @table__border-color;
-        &.additional-attributes-wrapper {
-            border-top: none;
-        }
-        .lib-table-overflow();
-        position: relative; // To hide unnecessary horizontal scrollbar in Safari
-        .table:not(.totals):not(.cart):not(.table-comparison) {
-            .lib-table-responsive();
-            tbody {
-                > tr {
-                    > td:first-child {
-                        padding-top: 15px;
-                    }
-                    > td:last-child {
-                        border-bottom: @table__border-width @table__border-style @table__border-color;
-                        padding-bottom: 15px;
-                    }
-                    > td.col.qty {
-                        text-align: left;
-                    }
-                }
+    @media (max-width: 767px) {
+        .table-wrapper {
+            border-top: @table__border-width @table__border-style @table__border-color;
+            &.additional-attributes-wrapper {
+                border-top: none;
             }
-            &.additional-attributes {
+            .lib-table-overflow();
+            position: relative; // To hide unnecessary horizontal scrollbar in Safari
+            .table:not(.totals):not(.cart):not(.table-comparison) {
+                .lib-table-responsive();
                 tbody {
-                    th {
-                        &:extend(.abs-no-display-s all);
+                    > tr {
+                        > td:first-child {
+                            padding-top: 15px;
+                        }
+                        > td:last-child {
+                            padding-bottom: 15px;
+                        }
+                        > td.col.qty {
+                            text-align: right;
+                        }
                     }
-                    td {
-                        &:last-child {
-                            border: none;
-                            padding: 0 0 @indent__xs;
+                }
+                &.additional-attributes {
+                    tbody {
+                        th {
+                            display: none;
+                        }
+                        td {
+                            &:last-child {
+                                border: none;
+                                padding: 0 0 @indent__xs;
+                            }
+                        }
+                    }
+                }
+            }
+            .table:not(.totals):not(.table-comparison) {
+                tbody {
+                    tr td {
+                        padding: 3px 10px;
+                    }
+                }
+                tfoot {
+                    display: block;
+                    tr {
+                        display: block;
+                        &:extend(.abs-add-clearfix-mobile all);
+                        &:first-child {
+                            th,
+                            td {
+                                padding-top: 15px;
+                            }
+                        }
+                    }
+                    .mark {
+                        box-sizing: border-box;
+                        float: left;
+                        text-align: left;
+                        width: 70%;
+                    }
+                    .amount {
+                        box-sizing: border-box;
+                        float: left;
+                        text-align: right;
+                        width: 30%;
+                        background-color: transparent;
+                    }
+                    .grand.totals {
+                        .lib-font-size(16);
+                        .amount {
+                            padding-bottom: @indent__s;
                         }
                     }
                 }
             }
         }
-        .table:not(.totals):not(.table-comparison) {
-            tfoot {
-                display: block;
-                tr {
-                    display: block;
-                    &:extend(.abs-add-clearfix-mobile all);
-                    &:first-child {
-                        th,
-                        td {
-                            padding-top: @indent__base;
-                        }
-                    }
-                }
-                .mark {
-                    box-sizing: border-box;
-                    float: left;
-                    text-align: left;
-                    width: 70%;
-                }
-                .amount {
-                    box-sizing: border-box;
-                    float: left;
-                    text-align: right;
-                    width: 30%;
-                    background-color: transparent;
-                }
-                .grand.totals {
-                    .lib-font-size(16);
-                    .amount {
-                        padding-bottom: @indent__s;
-                    }
-                }
+    }
+
+    @media (min-width: 768px) {
+        .account {
+            .table>tbody>tr>th, .table>tbody>tr>td {
+                border-bottom: 1px solid #ccc;
+                padding: 10px;
+                width: auto;
+            }
+        }
+    }
+
+    @media print {
+        .container {
+            max-width: 100% !important;
+        }
+        .col-12 {
+            width: 100% !important;
+        }
+        .table-wrapper table {
+            width: 100%;
+
+            td, th {
+                width: auto;
+            }
+            .col {
+                width: auto !important;
+            }
+
+            table-layout: fixed;
+
+            & > tfoot > tr:first-child {
+                border-top: none;
+            }
+        }
+        .block-order-details-view {
+            .box {
+                width: 25% !important;
+                float: left !important;
             }
         }
     }

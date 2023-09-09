@@ -11,8 +11,6 @@
 "Sign In", "Log In"
 "Sign Up", "Register"
 "and up", "& up"
-"%1 items", "%1"
-"1 item", "1"
 "We use cookies to make your experience better.", "We use cookies to make your experience better."
 "To comply with the new e-Privacy directive, you agree to <a href=""%1"">the privacy policy and our use of cookies</a>.", "To comply with the new e-Privacy directive, you agree to <a href=""%1"">the privacy policy and our use of cookies</a>."
 "Continue", "Continue"
@@ -23,4 +21,7 @@
 "Show", "Show"
 "View as", "View as"
 "Categories", "Categories"
-"Position", "Position"
+"Position", "Position",
+"You added %1 to your <a href=""%2"">shopping cart</a>.", "You added %1 to your <a href=""%2"">shopping cart</a>."
+"Adding...", "Adding..."
+"Added", "Added"

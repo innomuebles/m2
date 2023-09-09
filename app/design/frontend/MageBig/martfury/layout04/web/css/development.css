@@ -95,3 +95,10 @@ form#contact-form{
     margin-left: 20px;
   }
 }
+
+
+/* new css */
+
+.header-main-content .menu-logo .icon-top-mobile {
+  display: none;
+}

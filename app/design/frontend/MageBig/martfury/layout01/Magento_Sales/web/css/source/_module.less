@@ -8,60 +8,33 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-    .customer-account-index .column {
-        .block {
-            display: inline-block;
-            margin-bottom: 30px;
-            width: 100%;
-        }
-        .block-title {
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ccc;
-            font-weight: 500;
-
-        }
-    }
     table {
         width: 100%;
         caption {
             display: none;
         }
     }
-    .table-order-items {
-        th {
+    .table-order-items, .table-downloadable-products, .table-additional-addresses-items {
+        thead th {
             font-weight: 500;
-            padding: 5px 0;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            padding: 15px 10px;
+            background: #f1f1f1;
         }
     }
     .order-links {
-        display: inline-block;
-        width: 100%;
+        display: block;
         vertical-align: top;
+        position: relative;
+        z-index: 10;
+        white-space: nowrap;
+        margin: 0 -20px;
+        overflow-x: auto;
+        overflow-y: auto;
         .item {
-            line-height: @tab-control__height;
-            margin: 0 0 -1px;
-
-            strong {
-                padding: 0 20px;
-                border: @border-width__base solid @border-color__base;
-                border-bottom-color: #ffffff;
-                display: block;
-            }
-
-            a {
-                .lib-css(background, @tab-control__background-color);
-                .lib-css(color, @tab-control__color);
-                border: @border-width__base solid @border-color__base;
-                display: block;
-                font-weight: @tab-control__font-weight;
-                padding: 0 20px;
-
-                &:hover {
-                    .lib-css(background, @tab-control__hover__background-color);
-                    .lib-css(text-decoration, @tab-control__hover__text-decoration);
-                }
-            }
+            display: inline-block;
+            padding: 10px 20px;
         }
     }
 
@@ -69,18 +42,30 @@
         margin-bottom: 15px;
     }
 
+    .order-items, .table-wrapper.invoice, .order-items-shipment {
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        table {
+            border-style: hidden;
+        }
+    }
+
     .order-details-items {
-        border: @border-width__base solid @border-color__base;
-        margin-bottom: 30px;
-        padding: @indent__s;
+        margin-top: 10px;
+        padding: 0;
+        display: inline-block;
+        vertical-align: top;
+        width: 100%;
+        position: relative;
+        z-index: 8;
 
         .order-title {
-            border-bottom: @border-width__base solid @border-color__base;
             padding: 0 0 @indent__s;
+            display: none;
 
             > strong {
-                .lib-font-size(24);
-                font-weight: @font-weight__light;
+                .font-size(18);
+                font-weight: 500;
             }
 
             .action {
@@ -103,6 +88,7 @@
         .table-order-items {
             > thead > tr > th {
                 border-bottom: 1px solid @border-color__base;
+                width: auto;
             }
 
             tbody {
@@ -152,6 +138,14 @@
             .product-item-name {
                 margin: 0;
                 .font-size(16);
+            }
+        }
+
+        tfoot {
+            .amount,
+            .mark {
+                text-align: right;
+                padding: 3px 10px;
             }
         }
 
@@ -259,10 +253,11 @@
 
     .block-order-details {
         &-comments {
-            margin: 0 0 40px;
-
+            margin: 30px 0 30px;
+            display: inline-block;
+            width: 100%;
             .comment-date {
-                font-weight: @font-weight__semibold;
+                font-weight: 500;
             }
 
             .comment-content {
@@ -276,8 +271,13 @@
                 margin-bottom: 30px;
             }
 
-            .box-title {
-                font-weight: @font-weight__semibold;
+            > .block-title strong {
+                .font-size(18);
+                font-weight: 500;
+            }
+
+            .box-title strong {
+                font-weight: 500;
             }
 
             .box-content {
@@ -313,12 +313,8 @@
     }
 
     .order-tracking {
-        .order-title + & {
-            border-bottom: @border-width__base solid @border-color__base;
-        }
-
         margin: 0;
-        padding: 20px 0;
+        padding: 0 0 20px;
 
         .tracking-title {
             display: inline-block;
@@ -333,11 +329,9 @@
     .order-actions-toolbar {
         margin-bottom: 25px;
 
-        .actions {
+        .action {
             &.print {
                 &:extend(.abs-action-print all);
-                display: none;
-                margin: 0;
             }
             a {
                 color: @main2_color;
@@ -349,7 +343,43 @@
     }
 
     .order-status {
-        &:extend(.abs-status all);
+        border: 1px solid #d1d1d1;
+        border-radius: 3px;
+        display: inline-block;
+        padding: 5px 10px;
+        vertical-align: top;
+        font-size: 1.5rem;
+        &.complete {
+            color: green;
+            border-color: green;
+        }
+        &.new {
+            color: #e91e63;
+            border-color: #e91e63;
+        }
+        &.processing {
+            color: blue;
+            border-color: blue;
+        }
+        &.holded {
+            color: #ff5722;
+            border-color: #ff5722;
+        }
+        &.closed, &.canceled {
+            color: gray;
+            border-color: gray;
+        }
+        &.pending_payment, &.payment_review {
+            color: darkcyan;
+            border-color: darkcyan;
+        }
+    }
+
+    .order-status-wrap {
+        .actions-toolbar {
+            float: right;
+            text-align: right;
+        }
     }
 
     .account,
@@ -421,7 +451,7 @@
 //  Mobile
 //  _____________________________________________
 
-.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .table-wrapper {
         &.orders-recent {
             &:extend(.abs-account-table-margin-mobile all);
@@ -478,14 +508,8 @@
             &:extend(.abs-no-border-top all);
         }
 
-        .order-title {
-            strong {
-                display: block;
-            }
-        }
-
         .action {
-            .lib-css(margin-top, @indent__s);
+            margin: 0 15px;
         }
 
         .items-qty {
@@ -519,7 +543,7 @@
             &:before {
                 content: attr(data-th) ':';
                 display: block;
-                font-weight: @font-weight__bold;
+                font-weight: 500;
                 padding-left: 10px;
             }
 
@@ -567,39 +591,13 @@
     .order-details-items {
         .order-title {
             .action {
-                margin: 12px 0 0 30px;
-
-                &.track {
-                    float: right;
-                }
+                margin: 12px 15px 0;
             }
         }
     }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    .order-links {
-        &:extend(.abs-add-clearfix-desktop all);
-        .item {
-            float: left;
-            margin: 0 @tab-control__margin-right 0 -1px;
-            &:first-child {
-                margin-left: 0;
-            }
-
-            a {
-                padding: 0 20px;
-            }
-        }
-    }
-
-    .order-actions-toolbar {
-        .action.print {
-            display: block;
-            float: right;
-        }
-    }
-
     .account,
     [class^='sales-guest-'],
     .sales-guest-view {
@@ -615,33 +613,15 @@
         }
     }
 
-    .order-status {
-        &:extend(.abs-status-desktop all);
-    }
-
     .block-order-details-comments {
-        margin: 0 0 60px;
-
-        .comment-date {
-            clear: left;
-            float: left;
-            margin-right: 50px;
-            max-width: 90px;
-        }
-
         .comment-content {
             overflow: hidden;
         }
     }
 
     .order-details-items {
-        margin-top: -1px;
-        padding: 25px;
-
         .col {
-            &.name {
-                padding-left: 0;
-            }
+            width: auto;
 
             &.price {
                 text-align: center;
@@ -655,13 +635,6 @@
         tbody td {
             padding-bottom: 20px;
             padding-top: 20px;
-        }
-
-        tfoot {
-            .amount,
-            .mark {
-                text-align: right;
-            }
         }
 
         &.ordered {

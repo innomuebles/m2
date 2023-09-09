@@ -3,6 +3,7 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
+
 namespace MageBig\AjaxFilter\Block\Navigation\Renderer;
 
 use Magento\Eav\Model\Entity\Attribute;
@@ -31,24 +32,27 @@ class SwatchesRender extends \Magento\Swatches\Block\LayeredNavigation\RenderLay
      */
     protected $_template = 'MageBig_AjaxFilter::layer/filter/style/swatches.phtml';
 
-    public function getFilter() {
+    public function getFilter()
+    {
         return $this->filter;
     }
 
-    public function getActionUrl() {
+    public function getActionUrl()
+    {
         $query = $this->getRequest()->getQueryValue();
         $code = $this->getCode();
         $query[$code] = null;
         $url = $this->getUrl('*/*/*', [
-            '_current'      => true,
-            '_use_rewrite'  => true,
-            '_query'        => $query
+            '_current' => true,
+            '_use_rewrite' => true,
+            '_query' => $query
         ]);
 
         return $url;
     }
 
-    public function getCode() {
+    public function getCode()
+    {
         return $this->getFilter()->getRequestVar();
     }
 
@@ -62,7 +66,7 @@ class SwatchesRender extends \Magento\Swatches\Block\LayeredNavigation\RenderLay
             'label' => $swatchOption->getLabel(),
             'link' => 'javascript:void();',
             'custom_style' => 'disabled',
-            'value'=> 0,
+            'value' => 0,
             'count' => 0,
             'selected' => 0
         ];
@@ -93,10 +97,14 @@ class SwatchesRender extends \Magento\Swatches\Block\LayeredNavigation\RenderLay
         ];
     }
 
-    public function checkSelected ($value) {
+    public function checkSelected($value)
+    {
         $code = $this->filter->getRequestVar();
         $selectedOption = $this->getRequest()->getParam($code);
-        $selectedOption = explode(',', $selectedOption);
+        if (is_array($selectedOption)) {
+            return false;
+        }
+        $selectedOption = explode(',', (string)$selectedOption);
 
         return in_array($value, $selectedOption) ? 1 : 0;
     }

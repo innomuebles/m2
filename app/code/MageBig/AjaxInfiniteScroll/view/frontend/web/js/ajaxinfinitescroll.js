@@ -91,6 +91,17 @@ define([
                         event.ajaxOptions.cache = true;
                     }
                 });
+
+                ais.on('render', function (items) {
+                    $(items).each(function() {
+                        var swatches = $(this).find('[data-role^="swatch-option-"]');
+                        if (swatches.length) {
+                            var priceBox = '<script type="text/x-magento-init">' + swatches.attr('data-price-box') + '</script>';
+                            swatches.append(priceBox);
+                        }
+                    });
+                });
+
                 ais.on('rendered', function (items) {
                     if ($("form[data-role='tocart-form']").length && self.options.isRedirectCart == 0) {
                         $("form[data-role='tocart-form']").catalogAddToCart();

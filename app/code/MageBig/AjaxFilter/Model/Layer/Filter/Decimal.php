@@ -96,8 +96,9 @@ class Decimal extends \Magento\CatalogSearch\Model\Layer\Filter\Decimal
 
         $productCollection = $this->getLayer()->getProductCollection();
         $attribute = $this->getAttributeModel();
+        $attributeCode = $attribute->getAttributeCode();
 
-        $this->setBeforeApplyFacetedData($this->helper->getBeforeApplyFacetedData($productCollection, $attribute, $this));
+        $this->setBeforeApplyFacetedData($this->helper->getBeforeApplyFacetedData($productCollection, $attributeCode));
 
         $productCollection->addFieldToFilter(
             $this->getAttributeModel()->getAttributeCode(),
@@ -122,16 +123,13 @@ class Decimal extends \Magento\CatalogSearch\Model\Layer\Filter\Decimal
     {
         $attribute = $this->getAttributeModel();
 
-        /** @var \Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection $productCollection */
-        $productCollection = $this->getLayer()->getProductCollection();
-
-        if ($this->getBeforeApplyFacetedData()) {
-            $facets = $this->getBeforeApplyFacetedData();
-        } else {
-            $facets = $productCollection->getFacetedData($attribute->getAttributeCode());
+        if (!$productCollection = $this->getBeforeApplyFacetedData()) {
+            $productCollection = $this->getLayer()->getProductCollection();
         }
 
+        $facets = $productCollection->getFacetedData($attribute->getAttributeCode());
         $data = [];
+
         foreach ($facets as $key => $aggregation) {
             $count = $aggregation['count'];
             list($from, $to) = explode('_', $key);

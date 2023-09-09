@@ -1,5 +1,5 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Magento\Framework\View\Design\Theme\Image" 
+    <preference for="Magento\Framework\View\Design\Theme\Image"
                 type="MageBig\MbFrame\Framework\View\Design\Theme\Image" />
 
     <preference for="Magento\Framework\App\Config\Initial"
@@ -12,24 +12,37 @@
         </arguments>
     </type>
 
-    <!--<preference for="Magento\Cms\Model\Wysiwyg\Config"
-                type="MageBig\MbFrame\Framework\CMS\Model\Wysiwyg\Config" />-->
+    <type name="Magento\LoginAsCustomer\Model\AuthenticateCustomerBySecret">
+        <plugin name="magebig_login_as_customer" type="MageBig\MbFrame\Plugin\LoginAsCustomer\Model\AuthenticateCustomerBySecret"/>
+    </type>
 
-    <type name="MageBig\MbFrame\Controller\Adminhtml\System\Config\Save">
+    <type name="Magento\Paypal\Model\Config">
+        <plugin name="magebig_paypal_express_shortcut"
+                type="MageBig\MbFrame\Plugin\Paypal\Model\ConfigPlugin"/>
+    </type>
+
+    <virtualType name="DefaultWYSIWYGValidator">
         <arguments>
-            <argument name="cache" xsi:type="object">Magento\Framework\App\Cache\Type\Layout</argument>
+            <argument name="allowedTags" xsi:type="array">
+                <item name="iframe" xsi:type="string">iframe</item>
+            </argument>
+            <argument name="allowedAttributes" xsi:type="array">
+                <item name="data-src" xsi:type="string">data-src</item>
+                <item name="data-mfp-src" xsi:type="string">data-mfp-src</item>
+            </argument>
+            <argument name="attributesAllowedByTags" xsi:type="array">
+                <item name="a" xsi:type="array">
+                    <item name="rel" xsi:type="string">rel</item>
+                </item>
+                <item name="img" xsi:type="array">
+                    <item name="loading" xsi:type="string">loading</item>
+                    <item name="srcset" xsi:type="string">srcset</item>
+                    <item name="data-object-fit" xsi:type="string">data-object-fit</item>
+                </item>
+                <item name="iframe" xsi:type="array">
+                    <item name="loading" xsi:type="string">loading</item>
+                </item>
+            </argument>
         </arguments>
-    </type>
-    <type name="Magento\Backend\Model\Menu\Builder">
-        <plugin name="magebig_backend_model_menu_builder"
-                type="MageBig\MbFrame\Framework\Model\Menu\Builder\Plugin"
-                sortOrder="10"
-                disabled="false"/>
-    </type>
-    <type name="Magento\Catalog\Helper\Image">
-        <plugin name="magebig_product_image_plugin"
-                type="MageBig\MbFrame\Framework\Catalog\Helper\Image\Plugin"
-                sortOrder="10"
-                disabled="false"/>
-    </type>
+    </virtualType>
 </config>

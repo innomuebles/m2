@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © 2015-17 Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -22,6 +22,11 @@ class DisplayMode implements \Magento\Framework\Option\ArrayInterface
      * @const int
      */
     const APPROVED = 1;
+
+    /**
+     * @const int
+     */
+    const BLANK = 2;
     
     /**
      * Options int
@@ -33,6 +38,8 @@ class DisplayMode implements \Magento\Framework\Option\ArrayInterface
         return  [
             ['value' => self::PENDING, 'label' => __('Recent Blog Posts')],
             ['value' => self::APPROVED, 'label' => __('Featured Blog Posts')],
+            ['value' => self::BLANK, 'label' => __('Blank (Use widgets to build the page content)')],
+
         ];
     }
 

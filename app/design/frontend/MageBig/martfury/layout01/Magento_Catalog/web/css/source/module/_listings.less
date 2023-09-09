@@ -36,7 +36,6 @@
                     color: @main2_color;
                     &:hover {
                         color: @main_color;
-                        text-decoration: underline;
                     }
                 }
             }
@@ -69,9 +68,12 @@
             font-size: @font-size__s;
             display: inline-block;
             &:after {
-                content: ':';
+                content: '';
             }
         }
+    }
+    .normal-price .price-label {
+        display: none !important;
     }
     .special-price, .minimal-price {
         .price {
@@ -87,7 +89,7 @@
     .special-price {
         display: inline-block;
         .price-label {
-            display: none;
+            display: none !important;
         }
         .price {
             color: #ff3300;
@@ -109,7 +111,6 @@
         }
     }
     .minimal-price-link {
-        display: none;
         margin-top: 5px;
         .price-label {
             .lib-css(color, @link__color);
@@ -140,8 +141,32 @@
         position: relative;
         overflow: hidden;
         padding-bottom: 10px;
-        > a {
+        > a.photo {
             display: block;
+            position: relative;
+            .main-photo {
+                z-index: 1;
+            }
+            .hover-photo {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 2;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 300ms, visibility 300ms;
+                img {
+                    display: none;
+                }
+            }
+            &:hover .hover-photo {
+                opacity: 1;
+                visibility: visible;
+                img {
+                    display: block;
+                }
+            }
         }
     }
     .product-item:hover .product-btn {
@@ -160,6 +185,7 @@
         opacity: 0;
         visibility: hidden;
         margin-bottom: -40px;
+        touch-action: manipulation;
         .abs-transition-mg();
         .mbi {
             width: 34px;
@@ -197,6 +223,7 @@
     }
     .swatches-list {
         position: relative;
+        min-height: 35px;
     }
     .price-container {
         .price {
@@ -226,9 +253,6 @@
         .font-size(14);
         .product-item {
             margin-bottom: 0;
-        }
-        .product-image-wrapper {
-            &:extend(.abs-reset-image-wrapper all);
         }
         .product-item-info {
             border: 1px solid transparent;
@@ -266,4 +290,3 @@
         }
     }
 }
-

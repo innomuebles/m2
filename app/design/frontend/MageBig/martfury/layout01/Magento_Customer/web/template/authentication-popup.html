@@ -1,10 +1,3 @@
-<!--
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
- -->
-
 <div class="block-authentication"
      data-bind="afterRender: setModalElement, blockLoader: isLoading"
      style="display: none">
@@ -54,23 +47,24 @@
                   id="login-form">
                 <div class="fieldset login" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
                     <div class="field email required">
-                        <label class="label" for="email"><span data-bind="i18n: 'Email Address'"></span></label>
+                        <label class="label" for="email-auth"><span data-bind="i18n: 'Email Address'"></span></label>
                         <div class="control">
                             <input name="username"
-                                   id="email"
+                                   id="email-auth"
                                    type="email"
                                    class="input-text"
+                                   data-mage-init='{"mage/trim-input":{}}'
                                    data-bind="attr: {autocomplete: autocomplete}"
                                    data-validate="{required:true, 'validate-email':true}">
                         </div>
                     </div>
                     <div class="field password required">
-                        <label for="pass" class="label"><span data-bind="i18n: 'Password'"></span></label>
+                        <label for="pass-auth" class="label"><span data-bind="i18n: 'Password'"></span></label>
                         <div class="control">
                             <input name="password"
                                    type="password"
                                    class="input-text"
-                                   id="pass"
+                                   id="pass-auth"
                                    data-bind="attr: {autocomplete: autocomplete}"
                                    data-validate="{required:true}">
                         </div>

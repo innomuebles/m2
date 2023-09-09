@@ -6,13 +6,14 @@ $i = 0;
     <?php if ($carousel == 1 && $row > 1 && $i == 0): ?>
         <div class="owl-carousel owl-theme">
     <?php endif ?>
-    <?php if ($i % $column == 0 || ($row > 1 && $i % $row == 0)): ?>
+    <?php if (($i % $column == 0 || ($row > 1 && $i % $row == 0)) && $carousel): ?>
         <div class="category-products">
-        <ol class="product-items <?= $type; ?> <?= $carousel && $row == 1 ? ' owl-carousel owl-theme' : '' ?> <?= !$carousel ? ' row': '' ?>">
+        <div class="product-items <?= $type; ?> <?= $carousel && $row == 1 ? ' owl-carousel owl-theme' : '' ?> <?=
+        !$carousel ? ' row': '' ?>">
     <?php endif ?>
 
     <?php $i++ ?>
-    <li class="product-item<?= !$carousel ? ' col-6 col-sm-4 col-md-3' : '' ?>">
+    <div class="product-item<?= !$carousel ? ' col-6 col-sm-4 col-md-3' : '' ?>">
         <div class="product-item-info">
             <div class="product-show">
                 <a href="<?= $block->getProductUrl($_product) ?>" class="product-item-photo">
@@ -74,7 +75,7 @@ $i = 0;
             <div class="product details product-item-details">
                 <?php if ($_product->getTypeId() == 'configurable' && $block->getData('product_style') != 4) : ?>
                     <div class="swatches-list">
-                        <?= $this->getLayout()->createBlock("MageBig\WidgetPlus\Block\Product\Renderer\Listing\Configurable")->setProduct($_product)->setSwatchId($id)->setTemplate("MageBig_WidgetPlus::renderer.phtml")->toHtml(); ?>
+                        <?= $this->getLayout()->createBlock("MageBig\WidgetPlus\Block\Product\Renderer\Listing\Configurable")->setProduct($_product)->setSwatchId($pricePrefixId)->setTemplate("MageBig_WidgetPlus::renderer.phtml")->toHtml(); ?>
                     </div>
                 <?php endif; ?>
                 <h3 class="product-item-name">
@@ -99,9 +100,9 @@ $i = 0;
                 </div>
             </div>
         </div>
-    </li>
-    <?php if ($i == $count || $i % $column == 0 || ($row > 1 && $i % $row == 0)): ?>
-        </ol>
+    </div>
+    <?php if (($i == $count || $i % $column == 0 || ($row > 1 && $i % $row == 0)) && $carousel): ?>
+        </div>
         </div>
     <?php endif ?>
     <?php if ($carousel == 1 && $row > 1 && $i == $count): ?>

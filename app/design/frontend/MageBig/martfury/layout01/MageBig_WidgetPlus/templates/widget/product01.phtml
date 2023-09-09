@@ -9,9 +9,13 @@
 $cfHelper   = $this->helper('MageBig\WidgetPlus\Helper\Config');
 $mbHelper   = $this->helper('MageBig\MbFrame\Helper\Data');
 $id         = $block->getWidgetId();
-$title      = $block->escapeHtml($block->getData('widget_title'), 'h2|h3|h4|h5|div|span|i|br|a');
-$subtitle   = $block->escapeHtml($block->getData('widget_subtitle'), 'h2|h3|h4|h5|div|span|i|br|a');
-$class      = $block->escapeHtmlAttr($block->getData('classes'));
+$title      = $block->escapeHtml($block->getData('widget_title'), ['h2', 'h3', 'h4', 'h5', 'div', 'span', 'i', 'br', 'a']);
+$subtitle   = $block->escapeHtml($block->getData('widget_subtitle'), ['h2', 'h3', 'h4', 'h5', 'div', 'span', 'i', 'br', 'a']);
+$class      = $block->getData('classes');
+$isHover    = $mbHelper->getConfig('mbconfig/category_view/product_image_hover');
+if ($class) {
+    $class  = $block->escapeHtmlAttr($class);
+}
 $type       = $block->getData('product_type');
 $carousel   = $block->getData('slider');
 $collection = $block->getLoadedProductCollection();
@@ -25,7 +29,7 @@ if ($count < 1 && ($type == 'related' || $type = 'crosssell' || $type = 'upsell'
 }
 ?>
 <?php if ($showBlock) : ?>
-    <div class="widgetplus widget-product <?= $type ?> <?= $class ?>" id="<?= $id ?>">
+    <div class="widgetplus widget-product lazyload <?= $type ?> <?= $class ?>" id="<?= $id ?>">
         <?php if ($title): ?>
             <div class="main-heading">
                 <h2 class="heading-title"><span><?= __($title) ?></span></h2>
@@ -38,9 +42,10 @@ if ($count < 1 && ($type == 'related' || $type = 'crosssell' || $type = 'upsell'
         <?php if ($count): ?>
             <?php
             $type          = 'widget-product-grid';
-            $row           = $block->getData('row') ? (int)$block->getData('row') : 1;
+            $row           = (int)$block->getData('row') ?: 1;
             $pricePrefixId = $id;
-            $column        = $carousel == 1 && $row == 1 ? $count : ($carousel == 1 && $row > 1 ? $row : $block->getData('column'));
+            $column        = $carousel == 1 && $row == 1 ? $count : ($carousel == 1 && $row > 1 ? $row : (int)$block->getData('column'));
+            $column        = $column ?: 1;
             $image         = 'new_products_content_widget_grid';
 
             $showAddCart   = $mbHelper->getConfig('mbconfig/category_view/show_addcart');
@@ -61,9 +66,6 @@ if ($count < 1 && ($type == 'related' || $type = 'crosssell' || $type = 'upsell'
             ?>
             <?php
             switch ($productStyle) {
-                case '1' :
-                    require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-01.phtml');
-                    break;
                 case '2' :
                     require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-02.phtml');
                     break;
@@ -75,6 +77,12 @@ if ($count < 1 && ($type == 'related' || $type = 'crosssell' || $type = 'upsell'
                     break;
                 case '5' :
                     require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-05.phtml');
+                    break;
+                case '6' :
+                    require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-06.phtml');
+                    break;
+                case '7' :
+                    require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-07.phtml');
                     break;
                 default :
                     require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-01.phtml');
@@ -97,7 +105,7 @@ if ($count < 1 && ($type == 'related' || $type = 'crosssell' || $type = 'upsell'
         ?>
         <script type="text/x-magento-init">
             {
-                "#<?= $id ?> .owl-carousel": {
+                "#<?= $id ?>": {
                     "MageBig_WidgetPlus/js/owl.carousel-set": {
                         "autoplay"          : <?= $autoplay ?>,
                         "autoplayTimeout"   : <?= $autoplayTimeout ?>,

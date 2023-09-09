@@ -27,7 +27,7 @@
                        source_model="Magento\Config\Model\Config\Source\Yesno">
                 <label translate="true">Enable Countdown</label>
                 <description translate="true">
-                    <![CDATA[Enable countdown and put html code to static block<div><code>&lt;div class="promo-count" data-date="08 22 2020"&gt;&lt;/div&gt;</code></div>]]></description>
+                    <![CDATA[Enable countdown and put html code to static block<div><code>&lt;div class="promo-count" data-date="November 30, 2020"&gt;&lt;/div&gt;</code></div>]]></description>
             </parameter>
             <parameter name="slider" xsi:type="select" visible="true"
                        source_model="MageBig\WidgetPlus\Model\Widget\Source\Carousel">
@@ -314,6 +314,9 @@
                     </option>
                     <option name="style6" value="6">
                         <label translate="true">Template 06</label>
+                    </option>
+                    <option name="style7" value="7">
+                        <label translate="true">Template 07 - Grid</label>
                     </option>
                 </options>
             </parameter>
@@ -845,133 +848,5 @@
                 <template name="default" value="block_crosssell" />
             </container>
         </containers>
-    </widget>
-
-    <widget id="widgetplus_instagram_feed" class="MageBig\WidgetPlus\Block\InstagramFeed" is_email_compatible="true"
-            placeholder_image="MageBig_WidgetPlus::images/magebig.png">
-        <label translate="true">Widget++ Instagram Feed</label>
-        <description>Show Instagram image on page</description>
-        <parameters>
-            <parameter name="user_name" xsi:type="text" required="true" visible="true">
-                <label translate="true">Instagram User Name</label>
-                <description translate="true">Get instagram images by user name (maximum 12 images)</description>
-            </parameter>
-            <parameter name="widget_title" xsi:type="text" required="false" visible="true">
-                <label translate="true">Title</label>
-            </parameter>
-            <parameter name="classes" xsi:type="text" required="false" visible="true">
-                <label translate="true">Custom Class</label>
-                <description>Add your custom html class</description>
-            </parameter>
-            <parameter name="slider" xsi:type="select" visible="true">
-                <label translate="true">Carousel / Slideshow</label>
-                <description translate="true">Enable Carousel or Slideshow</description>
-                <options>
-                    <option name="no" value="0">
-                        <label translate="true">No</label>
-                    </option>
-                    <option name="carousel" value="1" selected="true">
-                        <label translate="true">Carousel</label>
-                    </option>
-                </options>
-            </parameter>
-            <parameter name="column" xsi:type="text" visible="true">
-                <label translate="true">Columns</label>
-                <description translate="true">The number of items show on the screen. Default: 4</description>
-                <depends>
-                    <parameter name="slider" value="1"/>
-                </depends>
-                <value>5</value>
-            </parameter>
-            <parameter name="margin" xsi:type="text" visible="true">
-                <label translate="true">Margin</label>
-                <description translate="true">Margin item. Default: 30</description>
-                <depends>
-                    <parameter name="slider" value="1"/>
-                </depends>
-                <value>0</value>
-            </parameter>
-            <parameter name="autoplay" xsi:type="text" visible="true">
-                <label translate="true">Autoplay (ms)</label>
-                <description translate="true">Default 5000 to play every 5 seconds. Leave empty to disable autoplay.
-                </description>
-                <depends>
-                    <parameter name="slider" value="1|2"/>
-                </depends>
-            </parameter>
-            <parameter name="navigation" xsi:type="select" visible="true"
-                       source_model="Magento\Config\Model\Config\Source\Yesno">
-                <label translate="true">Show Navigation</label>
-                <description translate="true">Show next/prev buttons</description>
-                <depends>
-                    <parameter name="slider" value="1|2"/>
-                </depends>
-            </parameter>
-            <parameter name="paging" xsi:type="select" visible="true"
-                       source_model="Magento\Config\Model\Config\Source\Yesno">
-                <label translate="true">Show Paging</label>
-                <description translate="true">Show dots navigation</description>
-                <depends>
-                    <parameter name="slider" value="1|2"/>
-                </depends>
-            </parameter>
-            <parameter name="x1600" xsi:type="text" visible="true">
-                <label translate="true">Viewport ≥1600px</label>
-                <description translate="true">Ex: items:6,nav:true</description>
-                <depends>
-                    <parameter name="slider" value="1"/>
-                </depends>
-                <value>items:6</value>
-            </parameter>
-            <parameter name="x1200" xsi:type="text" visible="true">
-                <label translate="true">Viewport ≥1200px</label>
-                <description translate="true">Ex: items:4,nav:true</description>
-                <depends>
-                    <parameter name="slider" value="1"/>
-                </depends>
-                <value>items:5</value>
-            </parameter>
-            <parameter name="x992" xsi:type="text" visible="true">
-                <label translate="true">Viewport ≥992px</label>
-                <description translate="true">Ex: items:3,nav:true</description>
-                <depends>
-                    <parameter name="slider" value="1"/>
-                </depends>
-                <value>items:4</value>
-            </parameter>
-            <parameter name="x768" xsi:type="text" visible="true">
-                <label translate="true">Viewport ≥768px</label>
-                <description translate="true">Ex: items:3,nav:true</description>
-                <depends>
-                    <parameter name="slider" value="1"/>
-                </depends>
-                <value>items:3</value>
-            </parameter>
-            <parameter name="x576" xsi:type="text" visible="true">
-                <label translate="true">Viewport ≥576px</label>
-                <description translate="true">Ex: items:2,nav:true</description>
-                <depends>
-                    <parameter name="slider" value="1"/>
-                </depends>
-                <value>items:3</value>
-            </parameter>
-            <parameter name="x0" xsi:type="text" visible="true">
-                <label translate="true"><![CDATA[Viewport <576px]]></label>
-                <description translate="true">Ex: items:2,nav:true</description>
-                <depends>
-                    <parameter name="slider" value="1"/>
-                </depends>
-                <value>items:2</value>
-            </parameter>
-
-            <parameter name="template" xsi:type="select" visible="true" required="true">
-                <label translate="true">Template</label>
-                <options>
-                    <option name="block" value="widget/instagram_feed.phtml" selected="true">
-                        <label translate="true">Static Block</label>
-                    </option>
-                </options>
-            </parameter>
-        </parameters>
     </widget>
 </widgets>

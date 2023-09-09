@@ -37,7 +37,7 @@ class Collection extends Template implements RendererInterface
 
     public function getOptions()
     {
-        $output = array();
+        $output = [];
         $values = $this->getElement()->getValue();
 
         if (!is_array($values)) {
@@ -50,22 +50,22 @@ class Collection extends Template implements RendererInterface
         foreach ($values as $value) {
             foreach ($options as $option) {
                 if ($option['value'] == $value) {
-                    array_push($output, array(
+                    array_push($output, [
                         'value' => $option['value'],
                         'label' => $option['label'],
                         'selected' => true,
-                    ));
+                    ]);
                 }
             }
         }
 
         foreach ($options as $option) {
             if (!in_array($option['value'], $values)) {
-                array_push($output, array(
+                array_push($output, [
                     'value' => $option['value'],
                     'label' => $option['label'],
                     'selected' => false,
-                ));
+                ]);
             }
         }
 

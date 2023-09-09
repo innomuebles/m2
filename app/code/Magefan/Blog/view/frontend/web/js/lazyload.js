@@ -1,6 +1,6 @@
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -58,6 +58,12 @@
                         that.opt.current_page++;
                     }
 
+                    if ($html.find('[data-original]').length) {
+                        require(['jquery', 'Magefan_Blog/js/lib/mfblogunveil', 'domReady!'], function($){
+                            $('.mfblogunveil').mfblogunveil();
+                        });
+                    }
+
                     endLoading();
 
                 }).fail(function (xhr, ajaxOptions, thrownError) {
@@ -98,7 +104,7 @@
                 startLoading();
             });
         }
-    }
+    };
 
     return function (options) {
         new Lazyload(options)

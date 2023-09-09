@@ -82,12 +82,10 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $originalPrice = $_product->getPriceInfo()->getPrice('regular_price')->getAmount()->getValue();
         $finalPrice = $_product->getPriceInfo()->getPrice('final_price')->getAmount()->getValue();
-        $percentage = 0;
-        if ($originalPrice > $finalPrice) {
-            $percentage = round(($originalPrice - $finalPrice) * 100 / $originalPrice, 0);
-        }
 
-        if ($percentage) {
+        if ($finalPrice > 0 && $originalPrice > $finalPrice) {
+            $percentage = round(($originalPrice - $finalPrice) * 100 / $originalPrice, 0);
+
             return "-" . $percentage . "%";
         }
 
@@ -125,12 +123,17 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getDate($product)
     {
-        $todate = $product->getData('special_to_date');
-        $fromdate = $product->getData('special_from_date');
-        if ($todate) {
-            $today = $this->_localeDate->date()->format('Y-m-d H:i:s');
-            if ($todate > $today && $fromdate <= $today) {
-                return $todate;
+        $originalPrice = $product->getPriceInfo()->getPrice('regular_price')->getAmount()->getValue();
+        $finalPrice = $product->getPriceInfo()->getPrice('final_price')->getAmount()->getValue();
+
+        if ($finalPrice > 0 && $originalPrice > $finalPrice) {
+            $todate = $product->getData('special_to_date');
+            $fromdate = $product->getData('special_from_date');
+            if ($todate) {
+                $today = $this->_localeDate->date()->format('Y-m-d H:i:s');
+                if ($todate > $today && $fromdate <= $today) {
+                    return date('F d, Y', strtotime($todate));
+                }
             }
         }
 
@@ -141,10 +144,10 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         switch ($name) {
             case 'widget_title':
-                return $this->escapeHtml($data, 'h2|h3|h4|h5|div|span|i|br|a');
+                return $this->escapeHtml($data, ['h2', 'h3', 'h4', 'h5', 'div', 'span', 'i', 'br', 'a']);
                 break;
             case 'widget_subtitle':
-                return $this->escapeHtml($data, 'h2|h3|h4|h5|div|span|i|br|a');
+                return $this->escapeHtml($data, ['h2', 'h3', 'h4', 'h5', 'div', 'span', 'i', 'br', 'a']);
                 break;
             case 'id':
                 return 'widgetplus-' . uniqid();
@@ -180,9 +183,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         return $this->serializer->serialize([
             0 => $this->string2KeyedArray($value1),
-            576 => $this->string2KeyedArray($value2),
-            768 => $this->string2KeyedArray($value3),
-            992 => $this->string2KeyedArray($value4),
+            540 => $this->string2KeyedArray($value2),
+            720 => $this->string2KeyedArray($value3),
+            960 => $this->string2KeyedArray($value4),
             1200 => $this->string2KeyedArray($value5),
             1600 => $this->string2KeyedArray($value6),
         ]);
@@ -200,8 +203,10 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     public function string2KeyedArray($string, $delimiter = ',', $kv = ':')
     {
         $ka = [];
-        if ($a = explode($delimiter, $string)) {
+        if ($string) {
             // create parts
+            $a = explode($delimiter, $string);
+
             foreach ($a as $s) {
                 // each part
                 if ($s) {

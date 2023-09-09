@@ -1,0 +1,19 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var $block MageBig\MbFrame\Block\Template
+ */
+
+$logo = $block->getSvgLogo();
+?>
+<div data-role="main-css-loader" class="loading-mask">
+    <?php if ($logo) : ?>
+        <?= $logo ?>
+    <?php else: ?>
+    <div class="loader"></div>
+    <?php endif ?>
+</div>

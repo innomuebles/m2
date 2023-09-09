@@ -66,7 +66,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getAjaxWishlistInitOptions()
     {
         $options = [
-            'enabled'         => $this->isEnabledAjaxWishlist(),
             'ajaxWishlistUrl' => $this->_urlBuilder->getUrl('ajaxwishlist/wishlist/add'),
             'isLogedIn'       => $this->isLoggedIn()
         ];

@@ -7,7 +7,7 @@
  */
 namespace MageBig\AjaxFilter\Block\Navigation;
 
-use Magento\Framework\View\Element\AbstractBlock;
+use Magento\Framework\View\Element\Template;
 use Magento\LayeredNavigation\Block\Navigation\FilterRendererInterface;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 
@@ -17,7 +17,7 @@ use Magento\Catalog\Model\Layer\Filter\FilterInterface;
  * @api
  * @since 100.0.2
  */
-class FilterRenderer extends AbstractBlock implements FilterRendererInterface
+class FilterRenderer extends Template implements FilterRendererInterface
 {
     /**
      * {@inheritDoc}

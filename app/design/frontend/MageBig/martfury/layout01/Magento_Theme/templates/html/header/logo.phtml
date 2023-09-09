@@ -4,26 +4,39 @@
  * See LICENSE.txt for license details.
  */
 
-// @codingStandardsIgnoreFile
-
 /**
  * @var \Magento\Theme\Block\Html\Header\Logo $block
  */
+$storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt();
+/**
+ * @var \Magento\Theme\ViewModel\Block\Html\Header\LogoSizeResolverInterface|null $logoSizeResolver
+ */
+$logoSizeResolver = $block->getLogoSizeResolver();
+$logoWidth = $logoSizeResolver !== null && $logoSizeResolver->getWidth()
+    ? $logoSizeResolver->getWidth()
+    : $block->getLogoWidth();
+$logoHeight = $logoSizeResolver !== null && $logoSizeResolver->getHeight()
+    ? $logoSizeResolver->getHeight()
+    : $block->getLogoHeight();
+
+$mbHelper = $this->helper('MageBig\MbFrame\Helper\Data');
 ?>
-<?php $mbHelper = $this->helper('MageBig\MbFrame\Helper\Data'); ?>
-<?php $storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt();?>
 
 <?php if ($mbHelper->isHomePage()):?>
     <h1 class="logo text-hide">
 <?php else: ?>
     <div class="logo text-hide">
 <?php endif ?>
-    <a href="<?= $block->getUrl(''); ?>" title="<?= /* @escapeNotVerified */ $storeName ?>">
-        <strong><?= /* @escapeNotVerified */ $block->getLogoAlt() ?></strong>
-        <img class="img-fluid" src="<?= /* @escapeNotVerified */ $block->getLogoSrc() ?>"
-             alt="<?= /* @escapeNotVerified */ $block->getLogoAlt() ?>"
-             <?= $block->getLogoWidth() ? 'width="' . $block->getLogoWidth() . '"' : '' ?>
-             <?= $block->getLogoHeight() ? 'height="' . $block->getLogoHeight() . '"' : '' ?>
+    <a
+        class="logo"
+        href="<?= $block->escapeUrl($block->getUrl('')) ?>"
+        title="<?= $block->escapeHtmlAttr($storeName) ?>"
+        aria-label="store logo">
+        <img src="<?= $block->escapeUrl($block->getLogoSrc()) ?>"
+             title="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>"
+             alt="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>"
+            <?= $logoWidth ? 'width="' . $block->escapeHtmlAttr($logoWidth) . '"' : '' ?>
+            <?= $logoHeight ? 'height="' . $block->escapeHtmlAttr($logoHeight) . '"' : '' ?>
         />
     </a>
 <?php if ($mbHelper->isHomePage()):?>

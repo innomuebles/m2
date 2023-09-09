@@ -2,7 +2,7 @@
 <!--
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -202,6 +202,30 @@
                     <item name="source" xsi:type="string">category</item>
                     <item name="dataScope" xsi:type="string">posts_sort_by</item>
                     <item name="default" xsi:type="string">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="posts_list_template">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magefan\Blog\Model\Config\Source\PostListTemplate</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Template</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">category</item>
+                    <item name="dataScope" xsi:type="string">posts_list_template</item>
+                    <item name="default" xsi:type="string">default</item>
+                </item>
+            </argument>
+        </field>
+        <field name="posts_per_page">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">integer</item>
+                    <item name="label" xsi:type="string" translate="true">Posts Per Page</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">category</item>
+                    <item name="dataScope" xsi:type="string">posts_per_page</item>
                 </item>
             </argument>
         </field>

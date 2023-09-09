@@ -16,7 +16,13 @@
 
 @loader-icon__background-image: url('@{baseDir}images/loader-1.gif');
 
-// 
+@color-yellow-light1: #e2f6fe;
+@color-brownie1: #000;
+@color-brownie-light1: #00b6ff;
+@table-th__font-weight: 500;
+@button-primary__background: @main_color;
+
+//
 // mbicon font icon
 // ----------------------------------------------
 @mbi-paint-roller: "\e620";
@@ -295,7 +301,8 @@
 
 @icon-wishlist-full: @mbi-heart;
 @icon-wishlist-empty: @mbi-heart;
-@icon-warning: @mbi-warning;
+//@icon-warning: @mbi-warning;
+@icon-warning: @mbi-notification;
 @icon-update: @mbi-sync2;
 @icon-trash: @mbi-trash2;
 @icon-star: @mbi-star2;
@@ -379,7 +386,7 @@
 
 
 // Message
-@message__padding: 30px 40px;
+@message__padding: 10px 30px;
 @message__margin: 0;
 
 @message__color: false;
@@ -391,14 +398,14 @@
 
 @message-icon__font-size: ceil(@message__font-size + 7);
 @message-icon__font-line-height: @message-icon__font-size;
-@message-icon__inner-padding-left: 40px;
+@message-icon__inner-padding-left: 30px;
 @message-icon__lateral-width: 30px;
 @message-icon__lateral-arrow-size: 5px;
-@message-icon__top: 15px;
+@message-icon__top: 18px;
 @message-icon__right: false;
 @message-icon__bottom: false;
 @message-icon__left: 0;
 
-@message-error__background: #e02b27;
-@message-error__color: #fff;
-@message-error-icon__color-inner: #fff;
+@message-error__background: #e2f6fe;
+@message-error__color: #e02b27;
+@message-error-icon__color-inner: #e02b27;

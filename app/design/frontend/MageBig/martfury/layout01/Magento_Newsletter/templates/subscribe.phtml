@@ -4,8 +4,7 @@
  * See LICENSE.txt for license details.
  */
 
-// @codingStandardsIgnoreFile
-
+/** @var \Magento\Newsletter\Block\Subscribe $block */
 ?>
 <?php
 $mbHelper = $this->helper('MageBig\MbFrame\Helper\Data');
@@ -18,23 +17,26 @@ $title2 = $block->escapeHtml($mbHelper->getConfig('mbconfig/footer/title_small_n
     <div class="main-newsletter-inner">
         <div class="row subscribe align-items-center">
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
-                <h2 class="title"><span><?php echo __($title1) ?></span></h2>
+                <label class="title" for="newsletter"><span><?php echo __($title1) ?></span></label>
                 <div class="text"><?php echo __($title2) ?></div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-7">
                 <form
                     novalidate
-                    action="<?= /* @escapeNotVerified */ $block->getFormActionUrl() ?>"
+                    action="<?= $block->escapeUrl($block->getFormActionUrl()) ?>"
                     method="post"
                     data-mage-init='{"validation": {"errorClass": "mage-error"}}'
                     id="newsletter-validate-detail">
                     <div class="block-content">
                         <div class="input-box">
                             <input name="email" type="email" id="newsletter"
-                                        placeholder="<?= __('Enter your email here...') ?>"
-                                        data-validate="{required:true, 'validate-email':true}"/>
-                            <button class="hover-effect07" title="<?= /* @escapeNotVerified */ __('Subscribe') ?>" type="submit">
-                                <span><?= /* @escapeNotVerified */ __('Subscribe') ?></span>
+                                   placeholder="<?= __('Enter your email here...') ?>"
+                                   data-mage-init='{"mage/trim-input":{}}'
+                                   data-validate="{required:true, 'validate-email':true}"/>
+                            <button class="hover-effect07"
+                                    title="<?= $block->escapeHtmlAttr(__('Subscribe')) ?>"
+                                    type="submit">
+                                <span><?= $block->escapeHtml(__('Subscribe')) ?></span>
                             </button>
                         </div>
                     </div>
@@ -43,4 +45,13 @@ $title2 = $block->escapeHtml($mbHelper->getConfig('mbconfig/footer/title_small_n
         </div>
     </div>
 </div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Customer/js/block-submit-on-send": {
+                "formId": "newsletter-validate-detail"
+            }
+        }
+    }
+</script>
 <?php endif;?>

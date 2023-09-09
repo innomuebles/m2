@@ -7,7 +7,7 @@
 <div class="social-login block-container forgot" style="display:none">
     <form class="form password forget form-password-forget"
           id="social-form-password-forget"
-          data-mage-init='{"validation":{}}'>
+          data-mage-init='{"validation":{}}' method="post">
         <div class="social-login-title">
             <h2 class="forgot-pass-title"><?= __('Forgot Password') ?></h2>
         </div>
@@ -21,14 +21,14 @@
             </div>
             <?= $block->getChildHtml('form_additional_info') ?>
             <?php //echo $block->getChildHtml('forgot.captcha'); ?>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit" class="action send primary"><span><?= $block->escapeHtml(__('Reset My Password')) ?></span></button>
+                </div>
+                <div class="secondary">
+                    <button type="button" class="action back"><span><?= $block->escapeHtml(__('Go back')) ?></span></button>
+                </div>
+            </div>
         </fieldset>
-        <div class="actions-toolbar">
-            <div class="primary">
-                <button type="button" class="action send primary"><span><?= $block->escapeHtml(__('Reset My Password')) ?></span></button>
-            </div>
-            <div class="secondary">
-                <a class="action back" href="#"><span><?= $block->escapeHtml(__('Go back')) ?></span></a>
-            </div>
-        </div>
     </form>
 </div>

@@ -31,6 +31,7 @@ class Init extends \Magento\Framework\View\Element\Template
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Catalog\Model\Session $catalogSession
      * @param \Magento\Framework\Registry $registry
+     * @param Json $serialize
      * @param array $data
      */
     public function __construct(

@@ -22,14 +22,12 @@ class ProductFields
      */
     public function toOptionArray()
     {
-        $this->options = [
+        return [
             ['value' => self::NAME, 'label' => __('Product Name')],
             ['value' => self::SKU, 'label' => __('SKU')],
             ['value' => self::IMAGE, 'label' => __('Product Image')],
             ['value' => self::REVIEWS_RATING, 'label' => __('Reviews Rating')],
             ['value' => self::PRICE, 'label' => __('Price')],
         ];
-
-        return $this->options;
     }
 }

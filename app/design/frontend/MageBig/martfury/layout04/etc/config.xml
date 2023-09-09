@@ -3,18 +3,17 @@
         <mbconfig>
             <general>
                 <full_width>0</full_width>
+                <logo_loading><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" width="86" height="40"><path fill-rule="evenodd" d="M0 0h21l4 22v-2l5-20h20v40H37l-1-22-4 22H18l-5-24h-1v24H0V0Z"/><path fill="#fcb800" fill-rule="evenodd" d="M53 0h33v11H69v4h14v10H69v15H53V0Z"/></svg>]]></logo_loading>
             </general>
             <header>
                 <menu_layout>horizontal</menu_layout>
                 <sticky_header>1</sticky_header>
+                <sticky_type>0</sticky_type>
+                <sticky_offset>500</sticky_offset>
             </header>
             <category_view>
-                <!--alternative_image></alternative_image-->
-                <keep_image_ratio>1</keep_image_ratio>
-                <image_width>270</image_width>
-                <image_height>270</image_height>
+                <product_image_hover>1</product_image_hover>
                 <show_addcart>1</show_addcart>
-                <show_quickview>1</show_quickview>
                 <show_wishlist>1</show_wishlist>
                 <show_compare>1</show_compare>
                 <show_rating>1</show_rating>
@@ -45,13 +44,14 @@
                 </category_three_columns>
             </category_view>
             <product_view>
-                <keep_image_ratio>1</keep_image_ratio>
-                <base_image_width>700</base_image_width>
-                <base_image_height>700</base_image_height>
-                <thumbnail_width>65</thumbnail_width>
-                <thumbnail_height>65</thumbnail_height>
-                <nav_dir>vertical</nav_dir>
+                <product_layout>1</product_layout>
+                <media_width>1</media_width>
+                <nav_dir>horizontal</nav_dir>
+                <gallery_autoplay>1</gallery_autoplay>
+                <gallery_duration>600</gallery_duration>
+                <gallery_effect>crossfade</gallery_effect>
                 <allowfullscreen>1</allowfullscreen>
+                <gallery_caption>1</gallery_caption>
                 <share_social>1</share_social>
                 <enable_countdown>1</enable_countdown>
                 <enable_sold>1</enable_sold>
@@ -61,6 +61,10 @@
                 <cookie_position>bottom-full</cookie_position>
                 <go_top>1</go_top>
             </footer>
+            <mobile_view>
+                <btn_menu>0</btn_menu>
+                <bottom_menu>1</bottom_menu>
+            </mobile_view>
         </mbconfig>
         <mbdesign>
             <general>
@@ -120,15 +124,12 @@
             </footer>
         </mbdesign>
         <cms_home_page>home-onecolumn</cms_home_page>
-        <admin>
-            <security>
-                <session_lifetime>86400</session_lifetime>
-            </security>
-        </admin>
         <design>
             <header translate="welcome">
                 <welcome>Welcome to Martfury Online Store !</welcome>
                 <logo_src>default/logo-martfury.png</logo_src>
+                <logo_width>189</logo_width>
+                <logo_height>64</logo_height>
             </header>
             <!--<search_engine_robots>
                 <default_robots>NOINDEX,FOLLOW</default_robots>
@@ -153,6 +154,9 @@
                 <cookie_lifetime>86400</cookie_lifetime>
                 <cookie_restriction>1</cookie_restriction>
             </cookie>
+            <browser_capabilities>
+                <javascript>0</javascript>
+            </browser_capabilities>
         </web>
         <!--<checkout>
             <options>

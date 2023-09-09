@@ -5,7 +5,7 @@
  * See COPYING.txt for license details.
  */
 -->
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="checkout" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="checkout.root">
             <arguments>
@@ -14,13 +14,9 @@
                         <item name="checkout" xsi:type="array">
                             <item name="children" xsi:type="array">
                                 <item name="authentication" xsi:type="array">
-                                    <item name="children" xsi:type="array">
-                                        <item name="social-checkout" xsi:type="array">
-                                            <item name="component" xsi:type="string">MageBig_SocialLogin/js/view/social-checkout</item>
-                                            <item name="sortOrder" xsi:type="string">2</item>
-                                            <item name="displayArea" xsi:type="string">before</item>
-                                        </item>
-                                    </item>
+                                    <item name="sortOrder" xsi:type="string">1</item>
+                                    <item name="component" xsi:type="string">MageBig_SocialLogin/js/view/authentication</item>
+                                    <item name="displayArea" xsi:type="string">authentication</item>
                                 </item>
                             </item>
                         </item>

@@ -20,7 +20,7 @@ class InstallData implements Setup\InstallDataInterface
      */
     protected $installer;
 
-    public function __construct(Setup\SampleData\Executor $executor, Installer $installer)
+    public function __construct(\MageBig\MbFrame\Framework\Setup\SampleData\Executor $executor, Installer $installer)
     {
         $this->executor = $executor;
         $this->installer = $installer;

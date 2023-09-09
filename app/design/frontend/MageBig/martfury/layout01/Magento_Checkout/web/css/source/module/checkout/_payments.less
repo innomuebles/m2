@@ -78,7 +78,7 @@
 
         .payment-method-content {
             display: none;
-            .lib-css(padding, 0 0 @indent__base @checkout-payment-method-content__padding__xl);
+            .lib-css(padding, 0 0 @indent__base 0);
             .fieldset {
                 &:not(:last-child) {
                     margin: 0 0 @indent__base;
@@ -192,31 +192,18 @@
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
     .checkout-payment-method {
+        .actions-toolbar {
+            .primary {
+                float: right;
+                margin: 0;
+            }
+        }
+
         .fieldset {
             > .field-select-billing {
                 > .control {
                     float: none;
                     width: 100%;
-                }
-            }
-        }
-
-        .payment-method-content {
-            .fieldset {
-                > .field {
-                    margin: 0 0 @indent__base;
-
-                    &.type {
-                        .control {
-                            margin-left: 25.8%;
-                        }
-
-                        &.no-detection {
-                            .control {
-                                margin-left: 0;
-                            }
-                        }
-                    }
                 }
             }
         }

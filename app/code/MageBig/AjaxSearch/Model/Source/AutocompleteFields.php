@@ -9,16 +9,13 @@ class AutocompleteFields
     const PRODUCT = 'product';
 
     /**
-     *
-     * @return array
+     * @return array[]
      */
     public function toOptionArray()
     {
-        $this->options = [
-            ['value' => self::SUGGEST, 'label' => __('Suggested')],
+        return [
             ['value' => self::PRODUCT, 'label' => __('Products')],
+            ['value' => self::SUGGEST, 'label' => __('Suggested')]
         ];
-
-        return $this->options;
     }
 }

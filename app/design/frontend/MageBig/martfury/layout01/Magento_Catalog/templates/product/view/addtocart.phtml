@@ -15,27 +15,37 @@
     <div class="fieldset-add">
         <?php if ($block->shouldRenderQuantity()): ?>
         <div class="field">
-            <label class="label" for="qty"><span><?= /* @escapeNotVerified */ __('Quantity') ?>:</span></label>
+            <label class="label" for="qty"><span><?= $block->escapeHtml(__('Quantity')) ?>:</span></label>
             <div class="control">
-                <div class="custom-qty reduced"><button type="button" class="btn-qty minus"><span class="mbi mbi-minus"></span></button></div>
+                <div class="custom-qty reduced">
+                    <button type="button" class="btn-qty minus"
+                            aria-label="<?= $block->escapeHtmlAttr(__('Reduced Qty')) ?>">
+                        <span class="mbi mbi-minus"></span>
+                    </button>
+                </div>
                 <input
                    name="qty"
                    id="qty"
-                   value="<?= /* @escapeNotVerified */ $block->getProductDefaultQty() * 1 ?>"
-                   title="<?= /* @escapeNotVerified */ __('Qty') ?>" class="input-text qty"
+                   value="<?= $block->getProductDefaultQty() * 1 ?>"
+                   title="<?= $block->escapeHtmlAttr(__('Qty')) ?>" class="input-text qty"
                    data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
                 />
-                <div class="custom-qty increase"><button type="button" class="btn-qty plus"><span class="mbi mbi-plus"></span></button></div>
+                <div class="custom-qty increase">
+                    <button type="button" class="btn-qty plus"
+                            aria-label="<?= $block->escapeHtmlAttr(__('Increase Qty')) ?>">
+                        <span class="mbi mbi-plus"></span>
+                    </button>
+                </div>
             </div>
             <?= $this->getLayout()->createBlock("Magento\CatalogInventory\Block\Qtyincrements")->setTemplate("Magento_Catalog::product/view/qtyincrements.phtml")->toHtml() ?>
         </div>
         <?php endif; ?>
         <div class="actions">
             <button type="submit"
-                    title="<?= /* @escapeNotVerified */ $buttonTitle ?>"
+                    title="<?= /* @noEscape */ $buttonTitle ?>"
                     class="action primary tocart"
                     id="product-addtocart-button">
-                <span><?= /* @escapeNotVerified */ $buttonTitle ?></span>
+                <span><?= /* @noEscape */ $buttonTitle ?></span>
             </button>
             <?= $block->getChildHtml('', true) ?>
         </div>
@@ -45,20 +55,20 @@
 
 <?php if ($block->isRedirectToCartEnabled()) : ?>
     <script type="text/x-magento-init">
-    {
-        "#product_addtocart_form": {
-            "Magento_Catalog/product/view/validation": {
-                "radioCheckboxClosest": ".nested"
+        {
+            "#product_addtocart_form": {
+                "Magento_Catalog/product/view/validation": {
+                    "radioCheckboxClosest": ".nested"
+                }
             }
         }
-    }
-</script>
+    </script>
 <?php else : ?>
     <script type="text/x-magento-init">
-    {
-        "#product_addtocart_form": {
-            "Magento_Catalog/js/validate-product": {}
+        {
+            "#product_addtocart_form": {
+                "Magento_Catalog/js/validate-product": {}
+            }
         }
-    }
-</script>
+    </script>
 <?php endif; ?>

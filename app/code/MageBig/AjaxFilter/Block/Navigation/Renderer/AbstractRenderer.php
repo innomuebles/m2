@@ -2,10 +2,10 @@
 
 namespace MageBig\AjaxFilter\Block\Navigation\Renderer;
 
-use Magento\LayeredNavigation\Block\Navigation\FilterRendererInterface;
+use Magento\Catalog\Helper\Data as CatalogHelper;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 use Magento\Framework\View\Element\Template;
-use Magento\Catalog\Helper\Data as CatalogHelper;
+use Magento\LayeredNavigation\Block\Navigation\FilterRendererInterface;
 
 abstract class AbstractRenderer extends Template implements FilterRendererInterface
 {
@@ -97,7 +97,8 @@ abstract class AbstractRenderer extends Template implements FilterRendererInterf
      */
     abstract protected function canRenderFilter();
 
-    public function getFilterStyle() {
+    public function getFilterStyle()
+    {
         if ($this->getFilter()->hasAttributeModel()) {
             return $this->getFilter()->getAttributeModel()->getData('filter_style');
         }

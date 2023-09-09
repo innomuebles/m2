@@ -88,5 +88,51 @@
     width: 150px;
 }
 input.l-tcb {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    background: #ffffff;
+    border-radius: 2px;
+    border: 1px solid #adadad;
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    margin: 0 5px 0 0 !important;
+    position: relative;
+    transition: all 0.1s ease-in;
     vertical-align: middle;
+    width: 16px;
+}
+input.l-tcb:checked:after {
+    font-family: 'Admin Icons';
+    content: "\e62d";
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 14px;
+    color: #514943;
+    font-size: 11px;
+    line-height: 13px;
+    text-align: center;
+    font-weight: 400;
+}
+.admin__action-multiselect-crumb button.action-close {
+    bottom: 0;
+    font-size: .5em;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 2rem;
+    padding: 0 !important;
+}
+.admin__action-multiselect-crumb button.action-close:before {
+    font-size: inherit !important;
+}
+.mce-branding {
+    display: none !important;
+}
+.options-list {
+    list-style: none;
 }

@@ -13,7 +13,7 @@ class Content
     {
         // $this->logger->debug($subject->getRequest()->getParam('target_element_id'));
         if (strpos($subject->getRequest()->getParam('target_element_id'), 'background_')) {
-            return $subject->getUrl('cms/*/onInsert', array('is_background' => true));
+            return $subject->getUrl('cms/*/onInsert', ['is_background' => true]);
         }
 
         return $result;

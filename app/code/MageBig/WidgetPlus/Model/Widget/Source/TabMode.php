@@ -2,7 +2,7 @@
 
 namespace MageBig\WidgetPlus\Model\Widget\Source;
 
-class TabMode implements \Magento\Framework\Option\ArrayInterface
+class TabMode implements \Magento\Framework\Data\OptionSourceInterface
 {
     public function toOptionArray()
     {

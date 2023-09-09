@@ -1,28 +1,30 @@
 <script>
     require(['jquery','domReady!'],function($){
         var newVal,
-            defaultValue = $('#qty').val(),
+            defaultValue = parseFloat($('#qty').val()),
             inrement = <?= $block->getProductQtyIncrements() ? $block->getProductQtyIncrements() : 1 ?>;
 
         $(".btn-qty").click(function (event) {
+            event.preventDefault();
             var $button = $(this),
-                oldValue = $button.closest('.control').find("input#qty").val();
+                $input = $button.closest('.control').find("input#qty"),
+                oldValue = parseFloat($input.val());
 
             if (!oldValue || oldValue < inrement) {
                 oldValue = 0;
             }
 
             if ($button.hasClass('plus')) {
-                newVal = parseFloat(oldValue) + inrement;
+                newVal = oldValue + inrement;
             } else {
-                if (oldValue > defaultValue && parseFloat(oldValue) - inrement > 0) {
-                    newVal = parseFloat(oldValue) - inrement;
+                if (oldValue > defaultValue && oldValue - inrement > 0) {
+                    newVal = oldValue - inrement;
                 } else {
                     newVal = defaultValue;
                 }
             }
-
-            $button.closest('.control').find("input#qty").val(newVal);
+            newVal = parseFloat(newVal.toFixed(10));
+            $input.val(newVal);
         });
     });
 </script>

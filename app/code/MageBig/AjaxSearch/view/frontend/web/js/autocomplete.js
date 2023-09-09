@@ -70,12 +70,12 @@ define([
 
             $(this.inputSelector)
                 .unbind('input') // unbind all magento events
-                .on('input', $.proxy(this.loadEvent, this)) // bind ajaxsearch load event
-                .on('input', $.proxy(this.searchButtonStatus, this)) // bind show/hide search button event
-                .on('focus', $.proxy(this.showPopup, this)); // bind show popup event
-            $(document).on('click', $.proxy(this.hidePopup, this)); // bind hide popup event
+                .on('input', $.proxy(self.loadEvent, this)) // bind ajaxsearch load event
+                .on('input', $.proxy(self.searchButtonStatus, this)) // bind show/hide search button event
+                .on('focus', $.proxy(self.showPopup, this)); // bind show popup event
+            $(document).on('click', $.proxy(self.hidePopup, this)); // bind hide popup event
 
-            $(document).ready($.proxy(this.searchButtonStatus, this));
+            $(document).ready($.proxy(self.searchButtonStatus, this));
         },
 
         initStore: function () {
@@ -152,11 +152,13 @@ define([
                     self.spinnerShow();
                 },
                 success: $.proxy(function (response) {
-                    self.parseData(response);
                     self.saveToLocalStorage(response, self.searchText);
-                    self.spinnerHide();
+
                     self.showPopup();
-                })
+                }),
+                complete: function () {
+                    self.spinnerHide();
+                }
             });
         },
 
@@ -261,9 +263,10 @@ define([
 
             hasStorage = this.loadFromLocalStorage(searchText);
             if (!hasStorage) {
-                self.load();
+                self.searchText = searchText;
+                self.loadData();
             } else {
-                this.loadPopup(true);
+                self.loadPopup(true);
             }
         },
 
@@ -288,6 +291,7 @@ define([
 
         spinnerHide: function () {
             this.spinner.loader('hide');
+            this.spinner.find('.loading-mask').hide();
         }
     });
 });

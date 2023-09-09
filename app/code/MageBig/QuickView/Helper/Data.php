@@ -9,6 +9,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
     protected $_storeManager;
     protected $_scopeConfig;
+
     /**
      * @param \Magento\Framework\App\Helper\Context $context
      */
@@ -25,17 +26,23 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $id = $_product->getId();
 
-        return $this->getBaseUrl().'quickview/view/index/id/'.$id;
+        return $this->getBaseUrl() . 'quickview/view/index/id/' . $id;
     }
 
-    public function getQuickViewButton($_product, $class = '')
+    public function getQuickViewButton($_product, $class = '', $title = '')
     {
         if ($this->getConfig('quickview/general/active')) {
             $quickViewUrl = $this->getQuickViewUrl($_product);
             $quickViewTitle = __('Quick View');
             $quickViewLabel = "<i class='mbi mbi-eye'></i>";
             $html = "<button type='button' class=\"btn-quickview {$class}\" data-mfp-src=\"{$quickViewUrl}\" title=\"{$quickViewTitle}\">";
-            $html .= "{$quickViewLabel}";
+
+            if ($title) {
+                $html .= "{$title}";
+            } else {
+                $html .= "{$quickViewLabel}";
+            }
+
             if ($_product->getHasOptions()) {
                 $html .= '<span class="has-option d-none"></span>';
             }

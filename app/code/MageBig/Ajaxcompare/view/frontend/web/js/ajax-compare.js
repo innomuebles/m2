@@ -1,7 +1,6 @@
 define([
     'jquery',
     'mage/translate',
-    'jquery/ui',
     'mage/validation/validation',
     'magnificpopup'
 ], function ($) {

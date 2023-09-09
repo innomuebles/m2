@@ -1,13 +1,14 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
 
 namespace Magefan\Blog\Block\Category;
 
+use Magefan\Blog\Block\Post\PostList\Toolbar;
 use Magento\Store\Model\ScopeInterface;
 
 /**
@@ -56,11 +57,22 @@ class View extends \Magefan\Blog\Block\Post\PostList
             $this->pageConfig->setDescription($category->getMetaDescription());
 
             if ($this->config->getDisplayCanonicalTag(\Magefan\Blog\Model\Config::CANONICAL_PAGE_TYPE_CATEGORY)) {
-                $this->pageConfig->addRemotePageAsset(
-                    $category->getCanonicalUrl(),
-                    'canonical',
-                    ['attributes' => ['rel' => 'canonical']]
-                );
+
+                $layoutUpdate = $category->getData('layout_update_xml') ?: '';
+                if (false === strpos($layoutUpdate, 'rel="canonical"')) {
+                    $canonicalUrl = $category->getCanonicalUrl();
+                    $page = (int)$this->_request->getParam(Toolbar::PAGE_PARM_NAME);
+                    if ($page > 1) {
+                        $canonicalUrl .= ((false === strpos($canonicalUrl, '?')) ? '?' : '&')
+                            . Toolbar::PAGE_PARM_NAME . '=' . $page;
+                    }
+
+                    $this->pageConfig->addRemotePageAsset(
+                        $canonicalUrl,
+                        'canonical',
+                        ['attributes' => ['rel' => 'canonical']]
+                    );
+                }
             }
 
             $pageMainTitle = $this->getLayout()->getBlock('page.main.title');

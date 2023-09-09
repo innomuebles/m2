@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -62,7 +62,11 @@ class View extends \Magefan\Blog\App\Action\Action
      */
     protected function _initCategory()
     {
-        $id = $this->getRequest()->getParam('id');
+        $id = (int)$this->getRequest()->getParam('id');
+        if (!$id) {
+            return false;
+        }
+
         $storeId = $this->_storeManager->getStore()->getId();
 
         $category = $this->_objectManager->create(\Magefan\Blog\Model\Category::class)->load($id);

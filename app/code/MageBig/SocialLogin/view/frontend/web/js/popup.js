@@ -27,7 +27,7 @@ define([
             loginForm: '#social-form-login',
             loginBtn: '#btn-social-login-authentication',
             forgotBtn: '#social-form-login .action.remind',
-            createBtn: '#social-form-login .action.create',
+            createBtn: '.social-login.authentication .action.create',
             formLoginUrl: '',
             /*Email*/
             emailFormContainer: '.social-login.fake-email',
@@ -42,14 +42,14 @@ define([
             forgotFormContent: '.social-login.forgot .block-content',
             forgotForm: '#social-form-password-forget',
             forgotSendBtn: '#social-form-password-forget .action.send',
-            forgotBackBtn: '#social-form-password-forget .action.back',
+            forgotBackBtn: '.social-login.forgot .action.back',
             forgotFormUrl: '',
             /*Create*/
             createFormContainer: '.social-login.create',
             createFormContent: '.social-login.create .block-content',
             createForm: '#social-form-create',
             createAccBtn: '#social-form-create .action.create',
-            createBackBtn: '#social-form-create .action.back',
+            createBackBtn: '.social-login.create .action.back',
             createFormUrl: '',
             popupCreate: 0,
             popupForgot: 0
@@ -110,6 +110,15 @@ define([
                             event.preventDefault();
                             self.showLogin();
                         });
+
+                        setTimeout(function () {
+                            if (!$('.customer-menu').length) {
+                                $('.wishlist-topbar').on('click', '.wishlist-icon', function (event) {
+                                    event.preventDefault();
+                                    el.trigger('click');
+                                });
+                            }
+                        }, 3000);
                     }
                     if ((typeof href !== 'undefined' && href.search('customer/account/create') !== -1 && self.options.popupCreate) == 1) {
                         el.addClass('social-login');
@@ -122,37 +131,43 @@ define([
                     }
                 });
 
-                headerLink.magnificPopup({
-                    delegate: 'a.social-login',
-                    removalDelay: 500,
-                    callbacks: {
-                        beforeOpen: function () {
-                            this.st.mainClass = this.st.el.attr('data-effect');
-                        },
-                        open: function() {
-                            if( this.fixedContentPos ) {
-                                if(this._hasScrollBar(this.wH)){
-                                    var s = this._getScrollbarSize();
-                                    if(s) {
-                                        $('.sticky-menu.active').css('padding-right', s);
-                                        $('#go-top').css('margin-right', s);
-                                    }
-                                }
-                            }
-                        },
-                        close: function() {
-                            $('.sticky-menu.active').css('padding-right', '');
-                            $('#go-top').css('margin-right', '');
-                        }
-                    },
-                    midClick: true
-                });
+                self.initPopup(headerLink);
             }
 
             this.options.createFormUrl = this.correctUrlProtocol(this.options.createFormUrl);
             this.options.formLoginUrl = this.correctUrlProtocol(this.options.formLoginUrl);
             this.options.forgotFormUrl = this.correctUrlProtocol(this.options.forgotFormUrl);
             this.options.fakeEmailUrl = this.correctUrlProtocol(this.options.fakeEmailUrl);
+        },
+
+        initPopup: function (elm) {
+            elm.magnificPopup({
+                delegate: '.social-login',
+                removalDelay: 300,
+                mainClass: 'mfp-move-from-top',
+                closeOnBgClick: false,
+                callbacks: {
+                    // beforeOpen: function () {
+                    //     this.st.mainClass = this.st.el.attr('data-effect');
+                    // },
+                    open: function () {
+                        if (this.fixedContentPos) {
+                            if (this._hasScrollBar(this.wH)) {
+                                var s = this._getScrollbarSize();
+                                if (s) {
+                                    $('.sticky-menu.active').css('padding-right', s);
+                                    $('#go-top').css('margin-right', s);
+                                }
+                            }
+                        }
+                    },
+                    close: function () {
+                        $('.sticky-menu.active').css('padding-right', '');
+                        $('#go-top').css('margin-right', '');
+                    }
+                },
+                midClick: true
+            });
         },
 
         /**
@@ -174,14 +189,22 @@ define([
          * Init button click
          */
         initObserve: function () {
-            var self = this;
+            var self = this,
+                submitBtnLogin = $(this.options.loginBtn),
+                submitBtnCreate = $(this.options.createAccBtn),
+                submitBtnForgot = $(this.options.forgotSendBtn);
 
-            this.initLoginObserve();
+            submitBtnLogin.on('click', function () {
+                self.initLoginObserve();
+            });
 
             this.initEmailObserve();
 
             if (this.options.popupCreate) {
-                this.initCreateObserve();
+                submitBtnCreate.on('click', function () {
+                    self.initCreateObserve();
+                });
+
                 $(this.options.createBtn).on('click', function (event) {
                     event.preventDefault();
                     self.showCreate();
@@ -190,7 +213,9 @@ define([
             }
 
             if (this.options.popupForgot) {
-                this.initForgotObserve();
+                submitBtnForgot.on('click', function () {
+                    self.initForgotObserve();
+                });
                 $(this.options.forgotBtn).on('click', function (event) {
                     event.preventDefault();
                     self.showForgot();
@@ -198,20 +223,48 @@ define([
                 $(this.options.forgotBackBtn).on('click', self.showLogin.bind(this));
             }
 
+            this.loginForm.find('input').keypress(function (event) {
+                var code = event.keyCode;
+                if (code === 13) {
+                    self.initLoginObserve();
+                }
+            });
+
+            this.createForm.find('input').keypress(function (event) {
+                var code = event.keyCode || event.which;
+                if (code === 13) {
+                    self.initCreateObserve();
+                }
+            });
+
+            this.forgotForm.find('input').keypress(function (event) {
+                var code = event.keyCode || event.which;
+                if (code === 13) {
+                    self.initForgotObserve();
+                }
+            });
+
+            this.fakeEmailFrom.find('input').keypress(function (event) {
+                var code = event.keyCode || event.which;
+                if (code === 13) {
+                    self.processEmail();
+                }
+            });
+
         },
 
         /**
          * Login process
          */
         initLoginObserve: function () {
-            var self = this;
+            var self = this,
+                submitBtn = $(this.options.loginBtn),
+                form = this.loginForm;
 
-            $(this.options.loginBtn).on('click', this.processLogin.bind(this));
-            this.loginForm.find('input').keypress(function (event) {
-                var code = event.keyCode || event.which;
-                if (code === 13) {
-                    self.processLogin();
-                }
+            form.submit(function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                self.processLogin();
             });
         },
 
@@ -219,14 +272,14 @@ define([
          * Create process
          */
         initCreateObserve: function () {
-            var self = this;
+            var self = this,
+                submitBtn = $(this.options.createAccBtn),
+                form = this.createForm;
 
-            $(this.options.createAccBtn).on('click', this.processCreate.bind(this));
-            this.createForm.find('input').keypress(function (event) {
-                var code = event.keyCode || event.which;
-                if (code === 13) {
-                    self.processCreate();
-                }
+            form.submit(function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                self.processCreate();
             });
         },
 
@@ -234,14 +287,14 @@ define([
          * Forgot process
          */
         initForgotObserve: function () {
-            var self = this;
+            var self = this,
+                submitBtn = $(this.options.forgotSendBtn),
+                form = this.forgotForm;
 
-            $(this.options.forgotSendBtn).on('click', this.processForgot.bind(this));
-            this.forgotForm.find('input').keypress(function (event) {
-                var code = event.keyCode || event.which;
-                if (code === 13) {
-                    self.processForgot();
-                }
+            form.submit(function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                self.processForgot();
             });
         },
 
@@ -252,12 +305,6 @@ define([
             var self = this;
 
             $(this.options.fakeEmailSendBtn).on('click', this.processEmail.bind(this));
-            this.fakeEmailFrom.find('input').keypress(function (event) {
-                var code = event.keyCode || event.which;
-                if (code === 13) {
-                    self.processEmail();
-                }
-            });
         },
 
         /**
@@ -373,16 +420,18 @@ define([
                         window.location.reload();
                     }
                 } else {
-                    self.reloadCaptcha('login');
+                    // self.reloadCaptcha('login');
                     self.removeLoading(self.loginFormContent);
+                    self.reloadRecaptcha();
                 }
             }).fail(function () {
-                self.reloadCaptcha('login');
+                // self.reloadCaptcha('login');
                 self.addMsg(self.loginFormContent, {
                     message: $t('Could not authenticate. Please try again later'),
                     success: false
                 });
                 self.removeLoading(self.loginFormContent);
+                self.reloadRecaptcha();
             });
         },
 
@@ -407,9 +456,10 @@ define([
                 type: 'POST',
                 data: parameters
             }).done(function (response) {
-                self.reloadCaptcha('forgot');
+                // self.reloadCaptcha('forgot');
                 self.addMsg(self.forgotFormContent, response);
                 self.removeLoading(self.forgotFormContent);
+                self.reloadRecaptcha();
             });
         },
 
@@ -442,7 +492,7 @@ define([
                 self.removeLoading(self.fakeEmailFormContent);
                 if (response.success) {
                     if (response.url == '' || response.url == null) {
-                        window.location.reload(true);
+                        location.reload();
                     } else {
                         window.location.href = response.url;
                     }
@@ -475,11 +525,12 @@ define([
                 } else if (response.success) {
                     customerData.invalidate(['customer']);
                     self.addMsg(self.createFormContent, response);
-                    window.location.reload(true);
+                    location.reload();
                 } else {
-                    self.reloadCaptcha('create');
+                    // self.reloadCaptcha('create');
                     self.addMsg(self.createFormContent, response);
                     self.removeLoading(self.createFormContent);
+                    self.reloadRecaptcha();
                 }
             });
         },
@@ -508,11 +559,11 @@ define([
             var message = response.message,
                 messageClass = response.success ? this.options.successMsgClass : this.options.errorMsgClass;
 
-            if (typeof(message) === 'object' && message.length > 0) {
+            if (typeof (message) === 'object' && message.length > 0) {
                 message.forEach(function (msg) {
                     this._appendMessage(block, msg, messageClass);
                 }.bind(this));
-            } else if (typeof(message) === 'string') {
+            } else if (typeof (message) === 'string') {
                 this._appendMessage(block, message, messageClass);
             }
         },
@@ -542,6 +593,18 @@ define([
             }
 
             currentMessage.append($('<div>' + message + '</div>'));
+        },
+
+        reloadRecaptcha: function () {
+            if (typeof grecaptcha !== 'undefined') {
+                var c = $('.g-recaptcha').length;
+                if (c) {
+                    for (var i = 0; i < c; i++)
+                        grecaptcha.reset(i);
+
+                    $('input[name="token"]').val('');
+                }
+            }
         }
     });
 

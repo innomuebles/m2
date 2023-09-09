@@ -4,7 +4,6 @@
  * See LICENSE.txt for license details.
  */
 
-
 namespace MageBig\AjaxFilter\Plugin\Category;
 
 class View
@@ -38,7 +37,7 @@ class View
             if ($block = $layout->getBlock('catalog.navigation.state')) {
                 $filters = $block->getActiveFilters();
                 $urlParams = [];
-                foreach($filters as $filter) {
+                foreach ($filters as $filter) {
                     $filterModel = $filter->getFilter();
                     $code = $filterModel->getRequestVar();
                     if (isset($newQueryValue[$code])) {
@@ -48,15 +47,15 @@ class View
                             if (is_array($label)) {
                                 $newQueryValue[$code] = [];
                                 foreach ($label as $lb) {
-                                    $newQueryValue[$code][] = $filterManager->translitUrl(htmlspecialchars_decode($lb)) ? : $lb;
+                                    $newQueryValue[$code][] = $filterManager->translitUrl(htmlspecialchars_decode($lb)) ?: $lb;
                                 }
                                 $newQueryValue[$code] = trim(implode(',', $newQueryValue[$code]));
                             } else {
-                                $newQueryValue[$code] = $filterManager->translitUrl(htmlspecialchars_decode($label)) ? : $label;
+                                $newQueryValue[$code] = $filterManager->translitUrl(htmlspecialchars_decode($label)) ?: $label;
                             }
                         } elseif ($class == 'Magento\CatalogSearch\Model\Layer\Filter\Category') {
-                            $cat = $filterManager->translitUrl(htmlspecialchars_decode($filter->getLabel())) ? : $filter->getLabel();
-                            $newQueryValue[$code] = $newQueryValue[$code].'_'.$cat;
+                            $cat = $filterManager->translitUrl(htmlspecialchars_decode($filter->getLabel())) ?: $filter->getLabel();
+                            $newQueryValue[$code] = $newQueryValue[$code] . '_' . $cat;
                         }
                     }
                 }

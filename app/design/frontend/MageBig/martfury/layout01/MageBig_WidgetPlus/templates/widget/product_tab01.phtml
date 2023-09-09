@@ -13,15 +13,16 @@
 $cfHelper   = $this->helper('MageBig\WidgetPlus\Helper\Config');
 $mbHelper   = $this->helper('MageBig\MbFrame\Helper\Data');
 $id         = $block->getWidgetId();
-$title      = $block->escapeHtml($block->getData('widget_title'), 'h2|h3|h4|h5|div|span|i|br|a');
-$subtitle   = $block->escapeHtml($block->getData('widget_subtitle'), 'h2|h3|h4|h5|div|span|i|br|a');
+$title      = $block->escapeHtml($block->getData('widget_title'), ['h2', 'h3', 'h4', 'h5', 'div', 'span', 'i', 'br', 'a']);
+$subtitle   = $block->escapeHtml($block->getData('widget_subtitle'), ['h2', 'h3', 'h4', 'h5', 'div', 'span', 'i', 'br', 'a']);
 $class      = $block->escapeHtmlAttr($block->getData('classes'));
+$isHover    = $mbHelper->getConfig('mbconfig/category_view/product_image_hover');
 $type       = $block->getData('product_type');
 $carousel   = $block->getData('slider');
 $tabs       = $block->getTabs();
 
 ?>
-<div class="widgetplus widget-product-tab <?= $class ?>" id="<?= $id ?>" data-mage-init='{"tabs":{"openedState":"active"}}'>
+<div class="widgetplus widget-product-tab lazyload <?= $class ?>" id="<?= $id ?>" data-mage-init='{"tabs":{"openedState":"opened"}}'>
     <?php if ($title): ?>
         <div class="main-heading">
             <h2 class="heading-title"><span><?= __($title) ?></span></h2>
@@ -75,9 +76,6 @@ $tabs       = $block->getTabs();
             ?>
             <?php
             switch ($productStyle) {
-                case '1' :
-                    require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-01.phtml');
-                    break;
                 case '2' :
                     require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-02.phtml');
                     break;
@@ -113,7 +111,7 @@ $tabs       = $block->getTabs();
     ?>
     <script type="text/x-magento-init">
         {
-            "#<?= $id ?> .owl-carousel": {
+            "#<?= $id ?>": {
                 "MageBig_WidgetPlus/js/owl.carousel-set": {
                     "autoplay"          : <?= $autoplay ?>,
                     "autoplayTimeout"   : <?= $autoplayTimeout ?>,

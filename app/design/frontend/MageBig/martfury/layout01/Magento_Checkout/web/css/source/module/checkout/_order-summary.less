@@ -13,7 +13,7 @@
 @checkout-summary-title__margin: @indent__s;
 @checkout-summary-mark-value__color: @color-gray60;
 
-@checkout-summary-items__max-height: 370px;
+@checkout-summary-items__max-height: 385px;
 @checkout-summary-items__padding: 15px;
 
 //
@@ -81,13 +81,13 @@
                 .lib-css(padding, @indent__s @indent__xl @indent__s 0);
                 cursor: pointer;
                 .lib-icon-font(
-                @icon-down,
-                @_icon-font-size: 14px,
-                @_icon-font-line-height: 1,
-                @_icon-font-text-hide: true,
-                @_icon-font-margin: 3px 0 0,
-                @_icon-font-position: after,
-                @_icon-font-display: block
+                    @icon-down,
+                    @_icon-font-size: 14px,
+                    @_icon-font-line-height: 1,
+                    @_icon-font-text-hide: true,
+                    @_icon-font-margin: 3px 0 0,
+                    @_icon-font-position: after,
+                    @_icon-font-display: block
                 );
                 margin-bottom: 0;
                 position: relative;
@@ -110,8 +110,8 @@
             &.active {
                 > .title {
                     .lib-icon-font-symbol(
-                    @_icon-font-content: @icon-up,
-                    @_icon-font-position: after
+                        @_icon-font-content: @icon-up,
+                        @_icon-font-position: after
                     );
                 }
             }
@@ -127,6 +127,7 @@
             .lib-css(max-height, @checkout-summary-items__max-height);
             .lib-css(padding, @checkout-summary-items__padding @checkout-summary-items__padding 0 0);
             border: 0;
+            overflow: auto;
         }
 
         .column.main & {
@@ -186,6 +187,12 @@
                     margin: 0;
                 }
             }
+        }
+    }
+    @media (max-width: 767px) {
+        .opc-block-summary .minicart-items-wrapper {
+            overflow: visible;
+            max-height: none;
         }
     }
 }

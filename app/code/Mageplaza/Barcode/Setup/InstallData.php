@@ -67,7 +67,7 @@ class InstallData implements InstallDataInterface
             Product::ENTITY,
             HelperData::ATTRIBUTE_CODE,
             [
-                'group'                   => 'general',
+                'group'                   => 'Product Details',
                 'type'                    => 'varchar',
                 'label'                   => 'Mageplaza Barcode',
                 'input'                   => 'text',
@@ -82,9 +82,9 @@ class InstallData implements InstallDataInterface
                 'user_defined'            => false,
                 'default'                 => '',
                 'searchable'              => false,
-                'filterable'              => true,
+                'filterable'              => false,
                 'comparable'              => false,
-                'visible_on_front'        => true,
+                'visible_on_front'        => false,
                 'used_in_product_listing' => true,
                 'unique'                  => true,
                 'apply_to'                => ''

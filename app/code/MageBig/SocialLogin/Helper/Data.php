@@ -103,16 +103,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $isSecure;
     }
 
-
-    /**
-     * @param null $storeId
-     * @return bool
-     */
-    public function isEnabled($storeId = null)
-    {
-        return $this->getConfigGeneral('enabled', $storeId);
-    }
-
     /**
      * @param string $code
      * @param null $storeId

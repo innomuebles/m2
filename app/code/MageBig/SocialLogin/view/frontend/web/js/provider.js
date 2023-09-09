@@ -15,45 +15,55 @@ define([
      */
     window.socialCallback = function (url, windowObj) {
         customerData.invalidate(['customer']);
-        customerData.reload(['customer'], true);
-
-        if (url !== '') {
-            window.location.href = url;
-        } else {
-            window.location.reload(true);
-        }
-
-        windowObj.close();
+        customerData.reload(['customer'], true).done(function () {
+            if (url !== '') {
+                window.location.href = url;
+            } else {
+                window.location.reload();
+            }
+            windowObj.close();
+        });
     };
 
     return function (config, element) {
         var model = {
             initialize: function () {
                 var self = this;
-                $(element).on('click', function () {
+                $(element).on('click', function (e) {
+                    e.preventDefault();
                     self.openPopup();
                 });
             },
 
             openPopup: function () {
-                window.open(config.url, config.label, this.getPopupParams());
+                var date = new Date(),
+                    currentTime = date.getTime();
+                window.open(config.url + '?' + currentTime, config.label, this.getPopupParams());
             },
 
-            getPopupParams: function (w, h, l, t) {
-                this.screenX = typeof window.screenX !== 'undefined' ? window.screenX : window.screenLeft;
-                this.screenY = typeof window.screenY !== 'undefined' ? window.screenY : window.screenTop;
-                this.outerWidth = typeof window.outerWidth !== 'undefined' ? window.outerWidth : document.body.clientWidth;
-                this.outerHeight = typeof window.outerHeight !== 'undefined' ? window.outerHeight : (document.body.clientHeight - 22);
-                this.width = w ? w : 500;
-                this.height = h ? h : 420;
-                this.left = l ? l : parseInt(this.screenX + ((this.outerWidth - this.width) / 2), 10);
-                this.top = t ? t : parseInt(this.screenY + ((this.outerHeight - this.height) / 2.5), 10);
+            getPopupParams: function () {
+                var w = 600,
+                    h = 500;
+
+                const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+                const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
+
+                const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+                const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+                const systemZoom = width / window.screen.availWidth;
+                var left = (width - w) / 2 / systemZoom + dualScreenLeft / 2
+                const top = (height - h) / 2 / systemZoom + dualScreenTop / 2
+
+                if (dualScreenLeft < 0) {
+                    left = -(-dualScreenLeft / 2 + w);
+                }
 
                 return (
-                    'width=' + this.width +
-                    ',height=' + this.height +
-                    ',left=' + this.left +
-                    ',top=' + this.top
+                    'width=' + w +
+                    ',height=' + h +
+                    ',left=' + left +
+                    ',top=' + top
                 );
             }
         };

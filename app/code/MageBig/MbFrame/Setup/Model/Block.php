@@ -37,12 +37,14 @@ class Block
      * @var \Magento\Catalog\Api\CategoryRepositoryInterface
      */
     protected $categoryRepository;
+    protected $blockCollectionFactory;
 
     /**
-     * @param SampleDataContext                                $sampleDataContext
-     * @param \Magento\Cms\Model\BlockFactory                  $blockFactory
-     * @param Block\Converter                                  $converter
+     * @param SampleDataContext $sampleDataContext
+     * @param \Magento\Cms\Model\BlockFactory $blockFactory
+     * @param Block\Converter $converter
      * @param \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository
+     * @param \Magento\Cms\Model\ResourceModel\Block\CollectionFactory $blockCollectionFactory
      */
     public function __construct(
         SampleDataContext $sampleDataContext,
@@ -51,11 +53,11 @@ class Block
         \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
         \Magento\Cms\Model\ResourceModel\Block\CollectionFactory $blockCollectionFactory
     ) {
-        $this->fixtureManager         = $sampleDataContext->getFixtureManager();
-        $this->csvReader              = $sampleDataContext->getCsvReader();
-        $this->blockFactory           = $blockFactory;
-        $this->converter              = $converter;
-        $this->categoryRepository     = $categoryRepository;
+        $this->fixtureManager = $sampleDataContext->getFixtureManager();
+        $this->csvReader = $sampleDataContext->getCsvReader();
+        $this->blockFactory = $blockFactory;
+        $this->converter = $converter;
+        $this->categoryRepository = $categoryRepository;
         $this->blockCollectionFactory = $blockCollectionFactory;
     }
 
@@ -89,6 +91,9 @@ class Block
         echo 'export Block finish' . '<br/><br/>';
     }
 
+    /**
+     * @param bool $override
+     */
     public function install($override = false)
     {
         //$logger = \Magento\Framework\App\ObjectManager::getInstance()->get('\Psr\Log\LoggerInterface');
@@ -99,7 +104,7 @@ class Block
                 return;
             }
 
-            $rows   = $this->csvReader->getData($fileName);
+            $rows = $this->csvReader->getData($fileName);
             $header = array_shift($rows);
 
             foreach ($rows as $row) {
@@ -110,17 +115,15 @@ class Block
                 $row = $data;
 
                 $blockCollection = $this->blockCollectionFactory->create();
-                $oldBlocks       = $blockCollection->addFilter('identifier', $row['identifier'])->load();
+                $oldBlocks = $blockCollection->addFilter('identifier', $row['identifier'])->load();
 
-                if ($override && $oldBlocks->count()) {
+                if ($override && $oldBlocks) {
                     foreach ($oldBlocks as $oldBlock) {
                         $oldBlock->delete();
                     }
-                } elseif ($oldBlocks->count() > 0) {
-                    continue;
                 }
 
-                $data     = $this->converter->convertRow($row);
+                $data = $this->converter->convertRow($row);
                 $cmsBlock = $this->saveCmsBlock($data['block']);
                 $cmsBlock->unsetData();
             }

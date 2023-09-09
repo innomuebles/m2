@@ -13,6 +13,8 @@ namespace MageBig\MbFrame\Model\Config\Source;
 class Patterns implements \Magento\Framework\Option\ArrayInterface
 {
 
+    protected $_directoryList;
+
     public function __construct(
         \Magento\Framework\App\Filesystem\DirectoryList $directoryList
     ) {

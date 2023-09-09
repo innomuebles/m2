@@ -288,6 +288,13 @@
                 Parallax.overScroll = Math.max(winScrollTop - scrollTopMax, Math.min(winScrollTop, 0));
             };
 
+            $('body').on('contentUpdated', function () {
+                loadDimensions();
+                self.refresh();
+                Parallax.isFresh = false;
+                Parallax.requestRender();
+            });
+
             $win.on('resize.px.parallax load.px.parallax', function() {
                 loadDimensions();
                 self.refresh();
@@ -345,7 +352,9 @@
         destroy: function(el){
             var i,
                 parallaxElement = $(el).data('px.parallax');
-            parallaxElement.$mirror.remove();
+            if (!!parallaxElement.$mirror) {
+                parallaxElement.$mirror.remove();
+            }
             for(i=0; i < this.sliders.length; i+=1){
                 if(this.sliders[i] == parallaxElement){
                     this.sliders.splice(i, 1);

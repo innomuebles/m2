@@ -7,7 +7,6 @@ define([
     'jquery',
     'underscore',
     'fotoramaVideoEvents',
-    'jquery/ui',
     'jquery/jquery.parsequery'
 ], function ($, _) {
     'use strict';

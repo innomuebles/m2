@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -19,7 +19,12 @@ class PostList extends \Magefan\Blog\Block\Post\PostList\AbstractList
      * Block template file
      * @var string
      */
-    protected $_defaultToolbarBlock = 'Magefan\Blog\Block\Post\PostList\Toolbar';
+    protected $_defaultToolbarBlock = \Magefan\Blog\Block\Post\PostList\Toolbar::class;
+
+    /**
+     * @var
+     */
+    protected $toolbarBlock;
 
     /**
      * Preparing global layout
@@ -28,12 +33,15 @@ class PostList extends \Magefan\Blog\Block\Post\PostList\AbstractList
      */
     protected function _prepareLayout()
     {
-        $page = $this->_request->getParam(
+        $page = (int)$this->_request->getParam(
             \Magefan\Blog\Block\Post\PostList\Toolbar::PAGE_PARM_NAME
         );
 
         if ($page > 1) {
-            $this->pageConfig->setRobots('NOINDEX,FOLLOW');
+            //$this->pageConfig->setRobots('NOINDEX,FOLLOW');
+
+            $title = (__('Page') . ' ' . $page) . ' - ' . $this->pageConfig->getTitle()->getShortHeading();
+            $this->pageConfig->getTitle()->set($title);
         }
 
         return parent::_prepareLayout();
@@ -50,21 +58,53 @@ class PostList extends \Magefan\Blog\Block\Post\PostList\AbstractList
     }
 
     /**
+     * Get relevant path to template
+     *
+     * @return string
+     */
+    public function getTemplate()
+    {
+        if ($template = $this->templatePool->getTemplate('blog_post_list', $this->getPostTemplateType())) {
+            $this->_template = $template;
+        }
+
+        return parent::getTemplate();
+    }
+
+    /**
+     * Get template type
+     *
+     * @return string
+     */
+    protected function getPostTemplateType()
+    {
+        return (string)$this->_scopeConfig->getValue(
+            'mfblog/post_list/template',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
      * Retrieve Toolbar Block
      * @return \Magefan\Blog\Block\Post\PostList\Toolbar
      */
     public function getToolbarBlock()
     {
-        $blockName = $this->getToolbarBlockName();
+        if (null === $this->toolbarBlock) {
+            $blockName = $this->getToolbarBlockName();
 
-        if ($blockName) {
-            $block = $this->getLayout()->getBlock($blockName);
-            if ($block) {
-                return $block;
+            if ($blockName) {
+                $block = $this->getLayout()->getBlock($blockName);
+                if ($block) {
+                    $this->toolbarBlock = $block;
+                }
+            }
+            if (!$this->toolbarBlock) {
+                $this->toolbarBlock = $this->getLayout()->createBlock($this->_defaultToolbarBlock, uniqid(microtime()));
             }
         }
-        $block = $this->getLayout()->createBlock($this->_defaultToolbarBlock, uniqid(microtime()));
-        return $block;
+
+        return $this->toolbarBlock;
     }
 
     /**
@@ -141,10 +181,6 @@ class PostList extends \Magefan\Blog\Block\Post\PostList\AbstractList
      */
     protected function getBreadcrumbsBlock()
     {
-        if ($this->_scopeConfig->getValue('web/default/show_cms_breadcrumbs', ScopeInterface::SCOPE_STORE)) {
-            return $this->getLayout()->getBlock('breadcrumbs');
-        }
-
-        return false;
+        return $this->getLayout()->getBlock('breadcrumbs');
     }
 }

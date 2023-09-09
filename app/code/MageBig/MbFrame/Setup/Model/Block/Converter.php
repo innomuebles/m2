@@ -47,12 +47,17 @@ class Converter
     protected $productCollectionFactory;
 
     /**
-     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory            $categoryFactory
-     * @param \Magento\Eav\Model\Config                                                  $eavConfig
-     * @param \Magento\CatalogSampleData\Model\Product\Converter                         $productConverter
-     * @param \Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory   $attributeCollectionFactory
+     * @var \Magento\Eav\Model\Config
+     */
+    private $eavConfig;
+
+    /**
+     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryFactory
+     * @param \Magento\Eav\Model\Config $eavConfig
+     * @param \MageBig\MbFrame\Setup\Model\Product\Converter $productConverter
+     * @param \Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory $attributeCollectionFactory
      * @param \Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory $attrOptionCollectionFactory
-     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory             $productCollectionFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
      */
     public function __construct(
         \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryFactory,

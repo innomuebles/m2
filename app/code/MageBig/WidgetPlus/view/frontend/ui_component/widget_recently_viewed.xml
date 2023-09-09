@@ -15,7 +15,6 @@
         <deps>
             <dep>widget_recently_viewed.recently_viewed_datasource</dep>
         </deps>
-        <spinner>widget_columns</spinner>
     </settings>
     <dataSource name="recently_viewed_datasource" component="Magento_Catalog/js/product/provider">
         <argument name="dataProvider" xsi:type="configurableObject">
@@ -31,6 +30,7 @@
                     <item name="identifiersConfig" xsi:type="array">
                         <item name="namespace" xsi:type="string">recently_viewed_product</item>
                     </item>
+                    <item name="scopeConfig" xsi:type="object">Magento\Framework\App\Config\ScopeConfigInterface</item>
                 </item>
             </argument>
         </argument>
@@ -124,10 +124,10 @@
                 <label translate="true">Price</label>
             </settings>
         </column>
-        <column name="addtocart-button" component="Magento_Catalog/js/product/addtocart-button" displayArea="action-primary-area">
+        <column name="addtocart-button" component="MageBig_WidgetPlus/js/product/addtocart-button" displayArea="action-primary-area">
             <settings>
                 <label translate="true">Add To Cart</label>
-                <bodyTmpl>Magento_Catalog/product/addtocart-button</bodyTmpl>
+                <bodyTmpl>MageBig_WidgetPlus/product/addtocart-button</bodyTmpl>
             </settings>
         </column>
     </columns>

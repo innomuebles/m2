@@ -22,7 +22,7 @@
      */
 
 
-    /**
+    /**mainClass
      * Private static constants
      */
     var CLOSE_EVENT = 'Close',
@@ -136,7 +136,6 @@
          */
         init: function() {
             var appVersion = navigator.appVersion;
-            mfp.isLowIE = mfp.isIE8 = document.all && !document.addEventListener;
             mfp.isAndroid = (/android/gi).test(appVersion);
             mfp.isIOS = (/iphone|ipad|ipod/gi).test(appVersion);
             mfp.supportsTransition = supportsTransitions();
@@ -181,6 +180,17 @@
 
             // if popup is already opened - we just update the content
             if(mfp.isOpen) {
+                if (data.mainClass && mfp.st.mainClass !== data.mainClass) {
+                    mfp.st.closeOnBgClick = data.closeOnBgClick;
+                    mfp.st.fixedContentPos = data.fixedContentPos;
+                    mfp.wrap.removeClass('mfp-ready');
+                    mfp._addClassToMFP(data.mainClass + ' mfp-none-transition');
+                    setTimeout(function () {
+                        mfp.bgOverlay.removeClass(mfp.st.mainClass).removeClass('mfp-none-transition');
+                        mfp.wrap.removeClass(mfp.st.mainClass).removeClass('mfp-none-transition');
+                        mfp._addClassToMFP('mfp-ready');
+                    }, 0);
+                }
                 mfp.updateItemHTML();
                 return;
             }
@@ -326,20 +336,12 @@
             }
 
             if(mfp.fixedContentPos) {
-                if(!mfp.isIE7) {
-                    windowStyles.overflow = 'hidden';
-                } else {
-                    // ie7 double-scroll bug
-                    $('body, html').css('overflow', 'hidden');
-                }
+                windowStyles.overflow = 'hidden';
             }
 
 
 
             var classesToadd = mfp.st.mainClass;
-            if(mfp.isIE7) {
-                classesToadd += ' mfp-ie7';
-            }
             if(classesToadd) {
                 mfp._addClassToMFP( classesToadd );
             }
@@ -385,12 +387,11 @@
          * Closes the popup
          */
         close: function() {
-            if(!mfp.isOpen) return;
             _mfpTrigger(BEFORE_CLOSE_EVENT);
+            if(!mfp.isOpen) return;
 
-            mfp.isOpen = false;
             // for CSS3 animation
-            if(mfp.st.removalDelay && !mfp.isLowIE && mfp.supportsTransition )  {
+            if(mfp.st.removalDelay && mfp.supportsTransition )  {
                 mfp._addClassToMFP(REMOVING_CLASS);
                 setTimeout(function() {
                     mfp._close();
@@ -398,6 +399,7 @@
             } else {
                 mfp._close();
             }
+            mfp.isOpen = false;
         },
 
         /**
@@ -420,11 +422,8 @@
 
             if(mfp.fixedContentPos) {
                 var windowStyles = {marginRight: ''};
-                if(mfp.isIE7) {
-                    $('body, html').css('overflow', '');
-                } else {
-                    windowStyles.overflow = '';
-                }
+
+                windowStyles.overflow = '';
                 $('html').css(windowStyles);
             }
 
@@ -641,7 +640,7 @@
             var disableOn = options.disableOn !== undefined ? options.disableOn : $.magnificPopup.defaults.disableOn;
 
             if(disableOn) {
-                if($.isFunction(disableOn)) {
+                if (typeof disableOn === "function") {
                     if( !disableOn.call(mfp) ) {
                         return true;
                     }
@@ -712,7 +711,7 @@
         // "target" is an element that was clicked
         _checkIfClose: function(target) {
 
-            if($(target).hasClass(PREVENT_CLOSE_CLASS)) {
+            if($(target).closest('.' + PREVENT_CLOSE_CLASS).length) {
                 return;
             }
 
@@ -724,7 +723,7 @@
             } else {
 
                 // We close the popup if click is on close button or on preloader. Or if there is no content.
-                if(!mfp.content || $(target).hasClass('mfp-close') || (mfp.preloader && target === mfp.preloader[0]) ) {
+                if(!mfp.content || $(target).closest('.mfp-close').length || (mfp.preloader && target === mfp.preloader[0]) ) {
                     return true;
                 }
 
@@ -752,7 +751,7 @@
             mfp.wrap.removeClass(cName);
         },
         _hasScrollBar: function(winHeight) {
-            return (  (mfp.isIE7 ? _document.height() : document.body.scrollHeight) > (winHeight || _window.height()) );
+            return (  document.body.scrollHeight > (winHeight || _window.height()) );
         },
         _setFocus: function() {
             (mfp.st.focus ? mfp.content.find(mfp.st.focus).eq(0) : mfp.wrap).focus();
@@ -893,7 +892,7 @@
 
             overflowY: 'auto',
 
-            closeMarkup: '<button title="%title%" type="button" class="mfp-close">&#215;</button>',
+            closeMarkup: '<button title="%title%" type="button" class="mfp-close"></button>',
 
             tClose: 'Close (Esc)',
 
@@ -1117,7 +1116,7 @@
             var src = mfp.st.image.titleSrc;
 
             if(src) {
-                if($.isFunction(src)) {
+                if (typeof src === "function") {
                     return src.call(mfp, item);
                 } else if(item.el) {
                     return item.el.attr(src) || '';
@@ -1130,17 +1129,17 @@
 
         options: {
             markup: '<div class="mfp-figure">'+
-            '<div class="mfp-close"></div>'+
-            '<figure>'+
-            '<div class="mfp-img"></div>'+
-            '<figcaption>'+
-            '<div class="mfp-bottom-bar">'+
-            '<div class="mfp-title"></div>'+
-            '<div class="mfp-counter"></div>'+
-            '</div>'+
-            '</figcaption>'+
-            '</figure>'+
-            '</div>',
+                '<div class="mfp-close"></div>'+
+                '<figure>'+
+                '<div class="mfp-img"></div>'+
+                '<figcaption>'+
+                '<div class="mfp-bottom-bar">'+
+                '<div class="mfp-title"></div>'+
+                '<div class="mfp-counter"></div>'+
+                '</div>'+
+                '</figcaption>'+
+                '</figure>'+
+                '</div>',
             cursor: 'mfp-zoom-out-cur',
             titleSrc: 'title',
             verticalFit: true,
@@ -1168,9 +1167,6 @@
                 });
 
                 _mfpOn('Resize'+ns, mfp.resizeImage);
-                if(mfp.isLowIE) {
-                    _mfpOn('AfterChange', mfp.resizeImage);
-                }
             },
             resizeImage: function() {
                 var item = mfp.currItem;
@@ -1178,10 +1174,6 @@
 
                 if(mfp.st.image.verticalFit) {
                     var decr = 0;
-                    // fix box-sizing in ie7/8
-                    if(mfp.isLowIE) {
-                        decr = parseInt(item.img.css('padding-top'), 10) + parseInt(item.img.css('padding-bottom'),10);
-                    }
                     item.img.css('max-height', mfp.wH-decr);
                 }
             },
@@ -1301,7 +1293,7 @@
                     var img = document.createElement('img');
                     img.className = 'mfp-img';
                     if(item.el && item.el.find('img').length) {
-                        img.alt = item.el.find('img').attr('alt');
+                        img.alt = item.el.find('img').attr('alt') || '';
                     }
                     item.img = $(img).on('load.mfploader', onLoadComplete).on('error.mfploader', onLoadError);
                     img.src = item.src;
@@ -1557,11 +1549,6 @@
                     if(!isShowing) {
                         el[0].src = _emptyPage;
                     }
-
-                    // IE8 black screen bug fix
-                    if(mfp.isIE8) {
-                        el.css('display', isShowing ? 'block' : 'none');
-                    }
                 }
             }
         };
@@ -1570,9 +1557,9 @@
 
         options: {
             markup: '<div class="mfp-iframe-scaler">'+
-            '<div class="mfp-close"></div>'+
-            '<iframe class="mfp-iframe" src="//about:blank" frameborder="0" allowfullscreen></iframe>'+
-            '</div>',
+                '<div class="mfp-close"></div>'+
+                '<iframe class="mfp-iframe" src="//about:blank" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'+
+                '</div>',
 
             srcAction: 'iframe_src',
 
@@ -1581,15 +1568,20 @@
                 youtube: {
                     index: 'youtube.com',
                     id: 'v=',
-                    src: '//www.youtube.com/embed/%id%?autoplay=1'
+                    src: 'https://www.youtube.com/embed/%id%?autoplay=1'
+                },
+                youtu: {
+                    index: 'youtu.be/',
+                    id: '/',
+                    src: 'https://www.youtube.com/embed/%id%?autoplay=1'
                 },
                 vimeo: {
                     index: 'vimeo.com/',
                     id: '/',
-                    src: '//player.vimeo.com/video/%id%?autoplay=1'
+                    src: 'https://player.vimeo.com/video/%id%?autoplay=1'
                 },
                 gmaps: {
-                    index: '//maps.google.',
+                    index: 'https://maps.google.',
                     src: '%id%&output=embed'
                 }
             }

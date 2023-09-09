@@ -1,19 +1,5 @@
 // MageBig Variables
 & when (@media-common = true) {
-    .wf-active {
-        body {
-            font-family: @font_default;
-        }
-        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .smartmenu {
-            font-family: @font_h;
-        }
-        .font-special {
-            font-family: @font_special;
-        }
-        .font-text, .std, .desc, .text {
-            font-family: @font_text;
-        }
-    }
     .border-bottom (@a) when (@a = transparent) {
         border-bottom: none;
     }
@@ -36,6 +22,26 @@
         }
     }
 
+    body {
+        font-family: @font_default,'Segoe UI','Helvetica Neue';
+        background-color: @page_background;
+        color: @page_text;
+        .background-image(@page_background_pattern; @page_background_file; @page_background_image_option; @page_background_image_size);
+    }
+    h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .smartmenu {
+        font-family: @font_default,'Segoe UI','Helvetica Neue';
+        font-weight: 500;
+    }
+    input, textarea {
+        font-family: @font_h,'Segoe UI','Helvetica Neue';
+    }
+    .font-special {
+        font-family: @font_special,'Segoe UI','Helvetica Neue';
+    }
+    .font-text, .std, .desc, .text {
+        font-family: @font_text,'Segoe UI','Helvetica Neue';
+    }
+
     a {
         color: @page_link;
         &:hover {
@@ -54,16 +60,16 @@
         }
     }
 
-    body {
-        background-color: @page_background;
-        color: @page_text;
-        .background-image(@page_background_pattern; @page_background_file; @page_background_image_option; @page_background_image_size);
-    }
-
     .page-header {
         background-color: @header_background;
         color: @header_text;
         .background-image(@header_background_pattern; @header_background_file; @header_background_image_option; @header_background_image_size);
+        .wishlist-icon, .showcart {
+            color: @header_text;
+            &:hover {
+                color: @main_color;
+            }
+        }
         a {
             color: @header_link;
             &:hover {
@@ -93,13 +99,6 @@
             &:hover {
                 color: @main_color;
             }
-        }
-    }
-
-    .mb-toggle-switch span {
-        background-color: @headertop_text_color;
-        &:before, &:after {
-            background-color: @headertop_text_color;
         }
     }
 
@@ -143,6 +142,12 @@
             &:hover {
                 color: @main_color;
             }
+        }
+        .header-content-action .authorization-link + li a {
+            color: fade(@header_text, 60%);
+        }
+        .sticky-menu.active .header-content-action .authorization-link + li a {
+            color: fade(#000, 60%);
         }
         .sticky-menu.active .header-content-action .authorization-link a {
             color: #000000;

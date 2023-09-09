@@ -38,6 +38,8 @@
         .lib-css(margin, 0 0 @checkout-wrapper__margin);
 
         .opc {
+            display: inline-block;
+            width: 100%;
             &:extend(.abs-reset-list all);
         }
 
@@ -50,6 +52,16 @@
         .step-content {
             margin: 0 0 30px;
         }
+
+        .form-login {
+            .captcha-image, .actions-toolbar {
+                text-align: center;
+            }
+        }
+    }
+    .layout06 #checkoutSteps {
+        background: #fff;
+        padding: 15px;
     }
 
     .checkout-index-index {

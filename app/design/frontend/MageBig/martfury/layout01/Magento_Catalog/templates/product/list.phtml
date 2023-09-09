@@ -26,13 +26,15 @@ $showCompare = $mbHelper->getConfig('mbconfig/category_view/show_compare');
 $showWishlist = $mbHelper->getConfig('mbconfig/category_view/show_wishlist');
 $showRating = $mbHelper->getConfig('mbconfig/category_view/show_rating');
 $showQuickview = $mbHelper->getConfig('mbconfig/category_view/show_quickview');
+$isHover = $mbHelper->getConfig('mbconfig/category_view/product_image_hover');
 ?>
+<?= $block->getChildHtml('category.product.filter.mobile'); ?>
 <?php if (!$_productCollection->count()): ?>
     <div class="message info empty"><div><?= /* @escapeNotVerified */ __('We can\'t find products matching the selection.') ?></div></div>
 <?php else: ?>
     <?php
-        $toolbar = $block->getToolbarHtml();
-        echo $toolbar;
+    $toolbar = $block->getToolbarHtml();
+    echo $toolbar;
     ?>
     <?= $block->getAdditionalHtml() ?>
     <?php
@@ -62,17 +64,16 @@ $showQuickview = $mbHelper->getConfig('mbconfig/category_view/show_quickview');
                 <?php foreach ($_productCollection as $_product): ?>
                     <li class="item product product-item <?= $class ?>">
                         <div class="product-item-info" data-container="product-grid">
-                            <?php
-                            $productImage = $block->getImage($_product, $image);
-                            if ($pos != null) {
-                                $position = ' style="left:' . $productImage->getWidth() . 'px;'
-                                    . 'top:' . $productImage->getHeight() . 'px;"';
-                            }
-                            ?>
-                            <?php // Product Image ?>
                             <div class="product-show">
-                                <a href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
-                                    <?= $productImage->toHtml(); ?>
+                                <?php $productImage = $block->getImage($_product, $image); ?>
+                                <a href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>" class="product photo product-item-photo">
+                                    <span class="main-photo"><?= $productImage->toHtml(); ?></span>
+                                    <?php if ($isHover) : ?>
+                                        <?php $hoverImg = $block->getImage($_product, 'product_grid_hover'); ?>
+                                        <?php if (!strpos($hoverImg->getImageUrl(), 'mb_hover_img')) : ?>
+                                            <span class="hover-photo"><?= $hoverImg->toHtml(); ?></span>
+                                        <?php endif ?>
+                                    <?php endif ?>
                                     <?php if ($labelHelper->getDiscountPercent($_product)) : ?>
                                         <span class="discount-percent"><?= $labelHelper->getDiscountPercent($_product); ?></span>
                                     <?php endif;?>
@@ -94,7 +95,7 @@ $showQuickview = $mbHelper->getConfig('mbconfig/category_view/show_quickview');
                                                 </div>
                                             <?php else: ?>
                                                 <div class="col">
-                                                    <?php if ($_product->getIsSalable()): ?>
+                                                    <?php if ($_product->isAvailable()): ?>
                                                         <div class="stock available"><span><?= /* @escapeNotVerified */ __('In stock') ?></span></div>
                                                     <?php else: ?>
                                                         <div class="stock unavailable"><span><?= /* @escapeNotVerified */ __('Out of stock') ?></span></div>
@@ -104,22 +105,22 @@ $showQuickview = $mbHelper->getConfig('mbconfig/category_view/show_quickview');
                                         <?php endif; ?>
 
                                         <div class="col" <?php if (!$showQuickview) : ?>style="display: none;"<?php endif; ?>>
-                                            <?= $this->helper('MageBig\QuickView\Helper\Data')->getQuickViewButton($_product,'mb-tooltip'); ?>
+                                            <?= $this->helper('MageBig\QuickView\Helper\Data')->getQuickViewButton($_product, 'mb-tooltip'); ?>
                                         </div>
                                         <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow() && $showWishlist): ?>
                                             <div class="col btn-wishlist">
                                                 <button type="button"
-                                                   data-post='<?= /* @escapeNotVerified */ $block->getAddToWishlistParams($_product); ?>'
-                                                   class="action towishlist mb-tooltip" data-action="add-to-wishlist"
-                                                   title="<?= /* @escapeNotVerified */ __('Add to Wishlist') ?>"><i aria-hidden="true" class="mbi mbi-heart"></i></button>
+                                                        data-post='<?= /* @escapeNotVerified */ $block->getAddToWishlistParams($_product); ?>'
+                                                        class="action towishlist mb-tooltip" data-action="add-to-wishlist"
+                                                        title="<?= /* @escapeNotVerified */ __('Add to Wishlist') ?>"><i aria-hidden="true" class="mbi mbi-heart"></i></button>
                                             </div>
                                         <?php endif; ?>
                                         <?php if ($block->getAddToCompareUrl() && $showCompare): ?>
                                             <?php $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');?>
                                             <div class="col btn-compare">
                                                 <button type="button" class="action tocompare mb-tooltip"
-                                                   data-post='<?= /* @escapeNotVerified */ $compareHelper->getPostDataParams($_product);?>'
-                                                   title="<?= /* @escapeNotVerified */ __('Add to Compare') ?>"><i aria-hidden="true" class="mbi mbi-chart-bars"></i></button>
+                                                        data-post='<?= /* @escapeNotVerified */ $compareHelper->getPostDataParams($_product);?>'
+                                                        title="<?= /* @escapeNotVerified */ __('Add to Compare') ?>"><i aria-hidden="true" class="mbi mbi-chart-bars"></i></button>
                                             </div>
                                         <?php endif; ?>
                                     </div>
@@ -130,9 +131,11 @@ $showQuickview = $mbHelper->getConfig('mbconfig/category_view/show_quickview');
                                     <div class="swatches-list">
                                         <?= $block->getProductDetailsHtml($_product); ?>
                                     </div>
+                                <?php else : ?>
+                                    <?= $block->getProductDetailsHtml($_product); ?>
                                 <?php endif; ?>
                                 <?php
-                                    $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                                $_productNameStripped = $block->stripTags($_product->getName(), null, true);
                                 ?>
                                 <h2 class="product name product-item-name">
                                     <a class="product-item-link"
@@ -149,16 +152,6 @@ $showQuickview = $mbHelper->getConfig('mbconfig/category_view/show_quickview');
                                     \Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE,
                                     \Magento\Framework\Pricing\Render::ZONE_ITEM_LIST
                                 ) ?>
-
-                                <div class="product-item-inner">
-                                    <?php if ($showDescription):?>
-                                        <div class="product description product-item-description">
-                                            <?= /* @escapeNotVerified */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
-                                            <a href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>" title="<?= /* @escapeNotVerified */ $_productNameStripped ?>"
-                                               class="action more"><?= /* @escapeNotVerified */ __('Learn More') ?></a>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
                             </div>
                         </div>
                     </li>
@@ -175,30 +168,34 @@ $showQuickview = $mbHelper->getConfig('mbconfig/category_view/show_quickview');
                         <div class="product-item-info" data-container="product-grid">
                             <?php
                             $productImage = $block->getImage($_product, $image);
-                            if ($pos != null) {
-                                $position = ' style="left:' . $productImage->getWidth() . 'px;'
-                                    . 'top:' . $productImage->getHeight() . 'px;"';
-                            }
                             ?>
-                            <?php // Product Image ?>
-                            <div class="row">
+                            <div class="row product details product-item-details">
                                 <div class="col-12 col-sm-3">
                                     <div class="product-show">
-                                <a href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
-                                    <span class="front"><?= $productImage->toHtml(); ?></span>
-                                </a>
-                                <?= $this->helper('MageBig\QuickView\Helper\Data')->getQuickViewButton($_product,'mb-tooltip'); ?>
-                                <?php if ($_product->getTypeId() == 'configurable') : ?>
-                                    <div class="swatches-list">
-                                        <?= $block->getProductDetailsHtml($_product); ?>
+                                        <a href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
+                                            <span class="main-photo"><?= $productImage->toHtml(); ?></span>
+                                            <?php if ($isHover) : ?>
+                                                <?php $hoverImg = $block->getImage($_product, 'product_grid_hover'); ?>
+                                                <?php if (!strpos($hoverImg->getImageUrl(), 'mb_hover_img')) : ?>
+                                                    <span class="hover-photo"><?= $hoverImg->toHtml(); ?></span>
+                                                <?php endif ?>
+                                            <?php endif ?>
+                                            <?php if ($labelHelper->getDiscountPercent($_product)) : ?>
+                                                <span class="discount-percent"><?= $labelHelper->getDiscountPercent($_product); ?></span>
+                                            <?php endif;?>
+                                        </a>
+                                        <?= $this->helper('MageBig\QuickView\Helper\Data')->getQuickViewButton($_product, 'mb-tooltip'); ?>
+                                        <?php if ($_product->getTypeId() == 'configurable') : ?>
+                                            <div class="swatches-list">
+                                                <?= $block->getProductDetailsHtml($_product); ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
-                                <?php endif; ?>
-                            </div>
                                 </div>
                                 <div class="col-12 col-sm-9">
                                     <div class="row">
                                         <div class="col-12 col-sm-8">
-                                            <div class="product details product-item-details">
+                                            <div class="product-list-details">
                                                 <?php
                                                 $_productNameStripped = $block->stripTags($_product->getName(), null, true);
                                                 ?>
@@ -210,7 +207,7 @@ $showQuickview = $mbHelper->getConfig('mbconfig/category_view/show_quickview');
                                                     </a>
                                                 </h2>
                                                 <?php if ($showRating) : ?>
-                                                <?= $block->getReviewsSummaryHtml($_product, $templateType); ?>
+                                                    <?= $block->getReviewsSummaryHtml($_product, $templateType); ?>
                                                 <?php endif; ?>
 
                                                 <div class="product-item-inner">
@@ -224,7 +221,11 @@ $showQuickview = $mbHelper->getConfig('mbconfig/category_view/show_quickview');
                                         </div>
                                         <div class="col-12 col-sm-4">
                                             <div class="product-btn-info">
-                                                <?= /* @escapeNotVerified */ $block->getProductPrice($_product) ?>
+                                                <?= /* @escapeNotVerified */ $block->getProductPriceHtml(
+                                                    $_product,
+                                                    \Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE,
+                                                    \Magento\Framework\Pricing\Render::ZONE_ITEM_LIST
+                                                ) ?>
                                                 <?php if ($showAddCart) : ?>
                                                     <?php if ($_product->isSaleable()): ?>
                                                         <div class="price-block">
@@ -240,7 +241,7 @@ $showQuickview = $mbHelper->getConfig('mbconfig/category_view/show_quickview');
                                                         </div>
                                                     <?php else: ?>
                                                         <div class="price-block">
-                                                            <?php if ($_product->getIsSalable()): ?>
+                                                            <?php if ($_product->isAvailable()): ?>
                                                                 <div class="stock available"><span><?= /* @escapeNotVerified */ __('In stock') ?></span></div>
                                                             <?php else: ?>
                                                                 <div class="stock unavailable"><span><?= /* @escapeNotVerified */ __('Out of stock') ?></span></div>
@@ -254,17 +255,17 @@ $showQuickview = $mbHelper->getConfig('mbconfig/category_view/show_quickview');
                                                         <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow() && $showWishlist): ?>
                                                             <div class="col btn-wishlist">
                                                                 <button type="button"
-                                                                   data-post='<?= /* @escapeNotVerified */ $block->getAddToWishlistParams($_product); ?>'
-                                                                   class="action towishlist" data-action="add-to-wishlist"
-                                                                   title="<?= /* @escapeNotVerified */ __('Add to Wishlist') ?>"><i aria-hidden="true" class="mbi mbi-heart"></i> <span><?= /* @escapeNotVerified */ __('Wishlist') ?></span></button>
+                                                                        data-post='<?= /* @escapeNotVerified */ $block->getAddToWishlistParams($_product); ?>'
+                                                                        class="action towishlist" data-action="add-to-wishlist"
+                                                                        title="<?= /* @escapeNotVerified */ __('Add to Wishlist') ?>"><i aria-hidden="true" class="mbi mbi-heart"></i> <span><?= /* @escapeNotVerified */ __('Wishlist') ?></span></button>
                                                             </div>
                                                         <?php endif; ?>
                                                         <?php if ($block->getAddToCompareUrl() && $showCompare): ?>
                                                             <?php $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');?>
                                                             <div class="col btn-compare">
                                                                 <button type="button" class="action tocompare"
-                                                                   data-post='<?= /* @escapeNotVerified */ $compareHelper->getPostDataParams($_product);?>'
-                                                                   title="<?= /* @escapeNotVerified */ __('Add to Compare') ?>"><i aria-hidden="true" class="mbi mbi-chart-bars"></i> <span><?= /* @escapeNotVerified */ __('Compare') ?></span></button>
+                                                                        data-post='<?= /* @escapeNotVerified */ $compareHelper->getPostDataParams($_product);?>'
+                                                                        title="<?= /* @escapeNotVerified */ __('Add to Compare') ?>"><i aria-hidden="true" class="mbi mbi-chart-bars"></i> <span><?= /* @escapeNotVerified */ __('Compare') ?></span></button>
                                                             </div>
                                                         <?php endif; ?>
                                                     </div>

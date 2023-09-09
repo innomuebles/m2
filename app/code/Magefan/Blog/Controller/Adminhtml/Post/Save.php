@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -56,7 +56,7 @@ class Save extends \Magefan\Blog\Controller\Adminhtml\Post
 
         /* Prepare images */
         $data = $model->getData();
-        foreach (['featured_img', 'og_img'] as $key) {
+        foreach (['featured_img', 'featured_list_img', 'og_img'] as $key) {
             if (isset($data[$key]) && is_array($data[$key])) {
                 if (!empty($data[$key]['delete'])) {
                     $model->setData($key, null);
@@ -67,11 +67,17 @@ class Save extends \Magefan\Blog\Controller\Adminhtml\Post
                         $imageUploader = $this->_objectManager->get(
                             \Magefan\Blog\ImageUpload::class
                         );
-                        $image = $imageUploader->moveFileFromTmp($image);
+                        $image = $imageUploader->moveFileFromTmp($image, true);
 
-                        $model->setData($key, Post::BASE_MEDIA_PATH . '/' . $image);
+                        $model->setData($key, $image);
                     } else {
-                        if (isset($data[$key][0]['name'])) {
+                        if (isset($data[$key][0]['url'])
+                            && false != ($position = strpos($data[$key][0]['url'], '/media/'))) {
+                            $model->setData(
+                                $key,
+                                substr($data[$key][0]['url'],  $position + strlen('/media/'))
+                            );
+                        } elseif (isset($data[$key][0]['name'])) {
                             $model->setData($key, $data[$key][0]['name']);
                         }
                     }
@@ -104,13 +110,49 @@ class Save extends \Magefan\Blog\Controller\Adminhtml\Post
                         $imageUploader = $this->_objectManager->get(
                             \Magefan\Blog\ImageUpload::class
                         );
-                        $image['file'] = $imageUploader->moveFileFromTmp($image['file']);
-                        $gallery[] = Post::BASE_MEDIA_PATH . '/' . $image['file'];
+                        $image['file'] = $imageUploader->moveFileFromTmp($image['file'], true);
+                        $gallery[] = $image['file'];
                     }
                 }
             }
 
             $model->setGalleryImages($gallery);
+        }
+
+        /* Prepare Tags */
+        $tagInput = trim((string)$request->getPost('tag_input'));
+        if ($tagInput) {
+            $tagInput = explode(',', $tagInput);
+
+            $tagsCollection = $this->_objectManager->create(\Magefan\Blog\Model\ResourceModel\Tag\Collection::class);
+            $allTags = [];
+            foreach ($tagsCollection as $item) {
+                if (!$item->getTitle()) {
+                    continue;
+                }
+                $allTags[((string)$item->getTitle())] = $item->getId();
+            }
+
+            $tags = [];
+            foreach ($tagInput as $tagTitle) {
+                $tagTitle = trim((string)$tagTitle);
+                if (!$tagTitle) {
+                    continue;
+                }
+                if (empty($allTags[$tagTitle])) {
+                    $tagModel = $this->_objectManager->create(\Magefan\Blog\Model\Tag::class);
+                    $tagModel->setData('title', $tagTitle);
+                    $tagModel->setData('is_active', 1);
+                    $tagModel->save();
+
+                    $tags[] = $tagModel->getId();
+                } else {
+                    $tags[] = $allTags[$tagTitle];
+                }
+            }
+            $model->setData('tags', $tags);
+        } else {
+            $model->setData('tags', []);
         }
     }
 
@@ -122,17 +164,25 @@ class Save extends \Magefan\Blog\Controller\Adminhtml\Post
     protected function filterParams($data)
     {
         /* Prepare dates */
-        $dateFilter = $this->_objectManager->create(\Magento\Framework\Stdlib\DateTime\Filter\DateTime::class);
+        $dateTimeFilter = $this->_objectManager->create(\Magento\Framework\Stdlib\DateTime\Filter\DateTime::class);
+        $dateFilter = $this->_objectManager->create(\Magento\Framework\Stdlib\DateTime\Filter\Date::class);
 
         $filterRules = [];
-        foreach (['publish_time', 'custom_theme_from', 'custom_theme_to'] as $dateField) {
+        foreach (['publish_time', 'end_time', 'custom_theme_from', 'custom_theme_to'] as $dateField) {
             if (!empty($data[$dateField])) {
                 $filterRules[$dateField] = $dateFilter;
                 $data[$dateField] = preg_replace('/(.*)(\+\d\d\d\d\d\d)(\d\d)/U', '$1$3', $data[$dateField]);
+
+                if (!preg_match('/\d{1}:\d{2}/', (string)$data[$dateField])) {
+                    /*$data[$dateField] .= " 00:00";*/
+                    $filterRules[$dateField] = $dateFilter;
+                } else {
+                    $filterRules[$dateField] = $dateTimeFilter;
+                }
             }
         }
 
-        $inputFilter = new \Zend_Filter_Input(
+        $inputFilter = $this->getFilterInput(
             $filterRules,
             [],
             $data

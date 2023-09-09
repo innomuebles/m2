@@ -10,20 +10,21 @@
 <?php
 /** @var \Magento\Wishlist\Block\Customer\Wishlist\Items $block */
 $columns = $block->getColumns();
+$mbHelper = $this->helper('MageBig\MbFrame\Helper\Data');
+$class = $mbHelper->getPageColumn();
 ?>
 
 <div class="products-grid wishlist">
-    <?php $iterator = 1; ?>
     <?php if (count($block->getItems())): ?>
     <ol class="product-items row">
         <?php foreach ($block->getItems() as $item): ?>
-        <?= /* @noEscape */ ($iterator++ == 1) ? '<li data-row="product-item" class="product-item col" id="item_' . $block->escapeHtmlAttr($item->getId()) . '">' : '</li><li class="product-item col" id="item_' . $block->escapeHtmlAttr($item->getId()) . '">' ?>
+        <li class="product-item <?= $class ?>" id="item_<?= $block->escapeHtmlAttr($item->getId()) ?>">
             <div class="product-item-info" data-container="product-grid">
                 <?php foreach ($columns as $column): ?>
                     <?php $column->setItem($item); echo $column->toHtml($item);?>
                 <?php endforeach; ?>
             </div>
-        <?= ($iterator == count($block->getItems())+1) ? '</li>' : '' ?>
+        </li>
         <?php endforeach; ?>
     </ol>
     <?php else: ?>

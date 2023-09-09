@@ -12,19 +12,19 @@
     <div class="social-login-title">
         <h2 class="create-account-title"><?php echo __('Create New Account') ?></h2>
     </div>
-    <div class="block-content" aria-labelledby="block-new-customer-heading">
+    <div class="block-content">
         <?= $block->getChildHtml('form_fields_before') ?>
         <?php /* Extensions placeholder */ ?>
         <?= $block->getChildHtml('customer.form.register.extra') ?>
         <div class="block block-new-customer">
-            <form class="form create account form-create-account" id="social-form-create" autocomplete="off">
+            <form class="form create account form-create-account" id="social-form-create" autocomplete="off" method="post">
             <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
             <fieldset class="fieldset create info">
                 <input type="hidden" name="success_url" value="<?= $block->escapeUrl($block->getSuccessUrl()) ?>">
                 <input type="hidden" name="error_url" value="<?= $block->escapeUrl($block->getErrorUrl()) ?>">
                 <?= $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Name')->setObject($block->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
                 <div class="field required">
-                    <label for="email_address" class="label"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
+                    <label for="email_address_create" class="label"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
                     <div class="control">
                         <input type="email" name="email" autocomplete="email" id="email_address_create" value="<?= $block->escapeHtmlAttr($block->getFormData()->getEmail()) ?>" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" class="input-text" data-validate="{required:true, 'validate-email':true}">
                     </div>
@@ -156,7 +156,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="field confirmation required">
                     <label for="password-confirmation" class="label"><span><?= $block->escapeHtml(__('Confirm Password')) ?></span></label>
@@ -166,15 +165,15 @@
                 </div>
                 <?= $block->getChildHtml('form_additional_info') ?>
                 <?php //echo $block->getChildHtml('create.captcha'); ?>
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button type="submit" id="button-create-social" class="action create primary" title="<?= $block->escapeHtmlAttr(__('Create an Account')) ?>"><span><?= $block->escapeHtml(__('Create an Account')) ?></span></button>
+                    </div>
+                    <div class="secondary">
+                        <button type="button" class="action back"><span><?= $block->escapeHtml(__('Go back')) ?></span></button>
+                    </div>
+                </div>
             </fieldset>
-            <div class="actions-toolbar">
-                <div class="primary">
-                    <button type="button" id="button-create-social" class="action create primary" title="<?= $block->escapeHtmlAttr(__('Create an Account')) ?>"><span><?= $block->escapeHtml(__('Create an Account')) ?></span></button>
-                </div>
-                <div class="secondary">
-                    <a class="action back" href="#"><span><?= $block->escapeHtml(__('Back')) ?></span></a>
-                </div>
-            </div>
         </form>
         </div>
     </div>

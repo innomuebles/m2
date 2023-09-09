@@ -1,0 +1,25 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<if args="isAllowed()">
+    <if args="isSalable($row())">
+        <form attr="action: getAction($row()), 'data-product-sku': getSku($row())"
+              data-bind="afterRender: getAddToCartMageInit()"
+              data-mage-init='{"catalogAddToCart": {}}' data-role="tocart-form" method="post">
+            <input type="hidden" name="product" attr="value: getId($row())">
+            <input type="hidden" name="uenc" attr="value: getUenc($row())">
+            <input name="form_key" type="hidden" attr="value: getFormKey($row())">
+            <button type="submit" attr="'title': getLabel()"
+                    class="action tocart mb-tooltip"><i class="mbi mbi-bag2" ></i></button>
+        </form>
+    </if>
+
+    <ifnot args="isSalable($row())">
+        <div class="stock unavailable">
+            <span translate="'Out of stock'"></span>
+        </div>
+    </ifnot>
+</if>

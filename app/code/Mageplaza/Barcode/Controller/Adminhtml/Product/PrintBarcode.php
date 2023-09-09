@@ -45,8 +45,13 @@ class PrintBarcode extends AbstractPrint
     {
         $params = $this->getRequest()->getParams();
         $data   = $this->processParameters($params);
+
         if ($this->hasError) {
             return $this->errorMessage($this->errorMessage);
+        }
+
+        if ($data['qty'] > 200) {
+            return $this->errorMessage('Quantity should be less than or equal to 200 units');
         }
 
         $labelData   = $this->getLabelData($data['paper_template'], $data['label_template']);

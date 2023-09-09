@@ -8,8 +8,8 @@
 
 $cfHelper   = $this->helper('MageBig\WidgetPlus\Helper\Config');
 $id         = $block->getWidgetId();
-$title      = $block->escapeHtml($block->getData('widget_title'), 'h2|h3|h4|h5|div|span|i|br|a');
-$subtitle   = $block->escapeHtml($block->getData('widget_subtitle'), 'h2|h3|h4|h5|div|span|i|br|a');
+$title      = $block->escapeHtml($block->getData('widget_title'), ['h2', 'h3', 'h4', 'h5', 'div', 'span', 'i', 'br', 'a']);
+$subtitle   = $block->escapeHtml($block->getData('widget_subtitle'), ['h2', 'h3', 'h4', 'h5', 'div', 'span', 'i', 'br', 'a']);
 $class      = $block->escapeHtmlAttr($block->getData('classes'));
 $type       = $block->getData('product_type');
 $carousel   = $block->getData('slider');
@@ -60,22 +60,25 @@ if ($count < 1 && ($type == 'related' || $type = 'crosssell' || $type = 'upsell'
             ?>
             <?php
             switch ($productStyle) {
-                case '1' :
-                    require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-01.phtml');
-                    break;
-                case '2' :
+                case '2':
                     require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-02.phtml');
                     break;
-                case '3' :
+                case '3':
                     require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-03.phtml');
                     break;
-                case '4' :
+                case '4':
                     require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-04.phtml');
                     break;
-                case '5' :
+                case '5':
                     require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-05.phtml');
                     break;
-                default :
+                case '6':
+                    require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-06.phtml');
+                    break;
+                case '7':
+                    require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-07.phtml');
+                    break;
+                default:
                     require $block->getTemplateFile('MageBig_WidgetPlus::widget/layout/product/product-style-01.phtml');
                     break;
             }
@@ -95,7 +98,7 @@ if ($count < 1 && ($type == 'related' || $type = 'crosssell' || $type = 'upsell'
         ?>
         <script type="text/x-magento-init">
             {
-                "#<?= $id ?> .owl-carousel": {
+                "#<?= $id ?>": {
                     "MageBig_WidgetPlus/js/owl.carousel-set": {
                         "autoplay"          : <?= $autoplay ?>,
                         "autoplayTimeout"   : <?= $autoplayTimeout ?>,

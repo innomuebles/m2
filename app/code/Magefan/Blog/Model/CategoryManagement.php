@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -28,7 +28,7 @@ class CategoryManagement extends AbstractManagement
     ) {
         $this->_itemFactory = $categoryFactory;
     }
-    
+
      /**
       * Retrieve list of category by page type, term, store, etc
       *
@@ -59,8 +59,7 @@ class CategoryManagement extends AbstractManagement
 
             $categories = [];
             foreach ($collection as $item) {
-                $item->initDinamicData();
-                $categories[] = $item->getData();
+                $categories[] = $this->getDynamicData($item);
             }
 
             $result = [
@@ -74,5 +73,27 @@ class CategoryManagement extends AbstractManagement
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * @param $item
+     * @return array
+     */
+    protected function getDynamicData($item)
+    {
+        $data = $item->getData();
+
+        $keys = [
+            'meta_description',
+            'meta_title',
+            'category_url',
+        ];
+
+        foreach ($keys as $key) {
+            $method = 'get' . str_replace('_', '', ucwords($key, '_'));
+            $data[$key] = $item->$method();
+        }
+
+        return $data;
     }
 }

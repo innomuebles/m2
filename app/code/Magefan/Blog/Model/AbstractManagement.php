@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -115,15 +115,21 @@ abstract class AbstractManagement implements ManagementInterface
     {
         try {
             $item = $this->_itemFactory->create();
-            $item->load($id);
+            $item->getResource()->load($item, $id);
 
             if (!$item->isVisibleOnStore($storeId)) {
                 return false;
             }
-            $item->initDinamicData();
-            return json_encode($item->getData());
+
+            return json_encode($this->getDynamicData($item));
         } catch (\Exception $e) {
             return false;
         }
     }
+
+    /**
+     * @param $item
+     * @return mixed
+     */
+    protected abstract function getDynamicData($item);
 }

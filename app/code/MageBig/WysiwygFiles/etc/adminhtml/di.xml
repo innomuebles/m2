@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 	<type name="Magento\Cms\Model\Wysiwyg\Images\Storage">
-		<plugin disabled="false" name="MageBig_WysiwygFiles_Plugin_Magento_Cms_Model_Wysiwyg_Images_Storage" sortOrder="10" type="MageBig\WysiwygFiles\Plugin\Magento\Cms\Model\Wysiwyg\Images\Storage"/>
+		<plugin name="MageBig_WysiwygFiles_Plugin_Magento_Cms_Model_Wysiwyg_Images_Storage" sortOrder="10"
+                type="MageBig\WysiwygFiles\Plugin\Magento\Cms\Model\Wysiwyg\Images\Storage"/>
 		<arguments>
 			<argument name="extensions" xsi:type="array">
 				<item name="allowed" xsi:type="array">
@@ -58,5 +59,4 @@
 			</argument>
 		</arguments>
 	</type>
-	<preference for="Magento\Framework\Image\Adapter\Gd2" type="MageBig\WysiwygFiles\Image\Adapter\Gd2" />
 </config>

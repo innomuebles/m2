@@ -6,27 +6,36 @@
 ?>
 <?php
 $cfHelper = $this->helper('MageBig\WidgetPlus\Helper\Config');
-$static   = $block->getStatic();
-$id       = $block->getWidgetId();
-$slider   = $block->getData('slider');
-$title    = $block->escapeHtml($block->getData('widget_title'), 'h2|h3|h4|h5|div|span|i|br|a');
-$class    = $block->escapeHtmlAttr($block->getData('classes'));
-$bType    = $block->getData('background_type');
-$bvType   = $block->getData('background_video_type');
-
+$static = $block->getStatic();
+$id = $block->getWidgetId();
+$slider = $block->getData('slider');
+$title = $block->escapeHtml($block->getData('widget_title'), ['h2', 'h3', 'h4', 'h5', 'div', 'span', 'i', 'br', 'a']);
+$class = $block->getData('classes');
+if ($class) {
+    $class  = ' ' . $block->escapeHtmlAttr($class);
+}
+$bType = $block->getData('background_type');
+$bvType = $block->getData('background_video_type');
+$class .= $bvType == 'fullscreen' ? ' video-fullscreen' : '';
+$vData = '';
+if ($bvType) {
+    $vData = ' data-videosrc="' . $cfHelper->getBaseMediaUrl() . $block->getData('background_video') . '"';
+}
 ?>
-<div class="widgetplus widgetplus-block slider-<?= $slider ?> <?= $class ?> <?php if ($bvType == 'fullscreen') echo 'video-fullscreen' ?>"
-     id="<?= $id ?>"
-     <?php if ($bvType) : ?>data-videosrc="<?= $cfHelper->getBaseMediaUrl() . $block->getData('background_video') ?>"<?php endif; ?> >
-    <div class="block-static <?= $slider != 0 ? 'clearfix' : '' ?>">
+<div class="widgetplus widgetplus-block lazyload slider-<?= $slider ?><?= $class ?>" id="<?= $id ?>"<?= $vData ?>>
+    <div class="block-static clearfix">
         <?php if ($title): ?>
             <div class="main-heading">
                 <h2 class="heading-title"><span><?= __($title) ?></span></h2>
             </div>
         <?php endif ?>
-        <div class="<?= $slider != 0 ? 'owl-carousel owl-theme ' : 'block-wrap' ?>">
+        <?php if ($slider != 0) : ?>
+        <div class="owl-carousel owl-theme">
             <?= $static; ?>
         </div>
+        <?php else : ?>
+            <?= $static; ?>
+        <?php endif ?>
     </div>
 
     <?php if ($bType == 1) : ?>
@@ -54,7 +63,7 @@ $bvType   = $block->getData('background_video_type');
         ?>
         <script type="text/x-magento-init">
             {
-                "#<?= $id ?> .owl-carousel": {
+                "#<?= $id ?>": {
                     "MageBig_WidgetPlus/js/owl.carousel-set": {
                         "autoplay"          : <?= $autoplay ?>,
                         "autoplayTimeout"   : <?= $autoplayTimeout ?>,

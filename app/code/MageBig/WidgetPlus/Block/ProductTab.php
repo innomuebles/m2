@@ -8,8 +8,6 @@
 
 namespace MageBig\WidgetPlus\Block;
 
-use Magento\Framework\Pricing\PriceCurrencyInterface;
-
 /**
  * Catalog Products List widget block
  * Class ProductsList.
@@ -61,7 +59,7 @@ class ProductTab extends \MageBig\WidgetPlus\Block\Product
                     $categoryModel = $this->categoryModel->load($categoryId, ['name']);
                     if ($categoryModel->getId()) {
                         $tabs[] = [
-                            'id' => 'category-'.$categoryModel->getId(),
+                            'id' => 'category-' . $categoryModel->getId(),
                             'label' => isset($labels[$index]) && $labels[$index] ? trim($labels[$index]) : $categoryModel->getName(),
                             'value' => $categoryModel->getId()
                         ];
@@ -75,7 +73,7 @@ class ProductTab extends \MageBig\WidgetPlus\Block\Product
                 }
                 foreach ($collectionNames as $index => $collectionName) {
                     $tabs[] = [
-                        'id' => 'collection-'.$collectionName,
+                        'id' => 'collection-' . $collectionName,
                         'label' => isset($labels[$index]) && $labels[$index] ? __(trim($labels[$index])) : __($collectionName),
                         'value' => $collectionName
                     ];

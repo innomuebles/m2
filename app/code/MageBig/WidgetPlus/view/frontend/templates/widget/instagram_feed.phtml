@@ -9,7 +9,7 @@ $cfHelper = $this->helper('MageBig\WidgetPlus\Helper\Config');
 $static   = $block->getStatic();
 $id       = $block->getWidgetId();
 $slider   = $block->getData('slider');
-$title    = $block->escapeHtml($block->getData('widget_title'), 'h2|h3|h4|h5|div|span|i|br|a');
+$title    = $block->escapeHtml($block->getData('widget_title'), ['h2', 'h3', 'h4', 'h5', 'div', 'span', 'i', 'br', 'a']);
 
 ?>
 <?php if ($static) : ?>

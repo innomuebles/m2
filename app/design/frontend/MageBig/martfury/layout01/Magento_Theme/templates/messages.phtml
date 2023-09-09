@@ -4,29 +4,28 @@
  * See COPYING.txt for license details.
  */
 ?>
-<div data-bind="scope: 'messages'">
+<div data-bind="scope: 'messages'" class="messages-wrap">
     <!-- ko if: cookieMessages && cookieMessages.length > 0 -->
-    <div role="alert" data-bind="foreach: { data: cookieMessages, as: 'message', afterRender: showHideMess }" class="messages">
+    <div role="alert" data-bind="foreach: { data: cookieMessages, as: 'message', afterRender: showHideMess }" class="messages cookie-mess">
         <div data-bind="attr: {
             class: 'message-' + message.type + ' ' + message.type + ' message',
             'data-ui-id': 'message-' + message.type
         }">
-            <div data-bind="html: message.text"></div>
+            <div data-bind="html: $parent.prepareMessageForHtml(message.text)"></div>
+            <span class="close-message"><i class="mbi mbi-cross"></i></span>
         </div>
-        <span class="close-message"><i class="mbi mbi-cross"></i></span>
-        <span class="close-message-bg"></span>
     </div>
     <!-- /ko -->
+
     <!-- ko if: messages().messages && messages().messages.length > 0 -->
-    <div role="alert" data-bind="foreach: { data: messages().messages, as: 'message', afterRender: showHideMess }" class="messages">
+    <div role="alert" data-bind="foreach: { data: messages().messages, as: 'message', afterRender: showHideMess }" class="messages default-mess">
         <div data-bind="attr: {
             class: 'message-' + message.type + ' ' + message.type + ' message',
             'data-ui-id': 'message-' + message.type
         }">
-            <div data-bind="html: message.text"></div>
+            <div data-bind="html: $parent.prepareMessageForHtml(message.text)"></div>
+            <span class="close-message"><i class="mbi mbi-cross"></i></span>
         </div>
-        <span class="close-message"><i class="mbi mbi-cross"></i></span>
-        <span class="close-message-bg"></span>
     </div>
     <!-- /ko -->
 </div>

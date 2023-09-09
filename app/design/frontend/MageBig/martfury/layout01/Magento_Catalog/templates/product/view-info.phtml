@@ -1,45 +1,69 @@
-<?php $_mbHelper = $this->helper('MageBig\MbFrame\Helper\Data'); ?>
+<?php
+$_mbHelper = $this->helper('MageBig\MbFrame\Helper\Data');
+$productLayout = $_mbHelper->getConfig('mbconfig/product_view/product_layout');
+$mediaWidth = $_mbHelper->getConfig('mbconfig/product_view/media_width');
+$social = $_mbHelper->getConfig('mbconfig/product_view/share_social');
+
+$class1 = 'col-lg-5';
+$class2 = 'col-lg-7';
+
+if ($mediaWidth == 1) {
+    $class1 = 'col-lg-6';
+    $class2 = 'col-lg-6';
+} elseif ($mediaWidth == 2) {
+    $class1 = 'col-lg-7';
+    $class2 = 'col-lg-5';
+}
+?>
 <div class="product-info-main-top product-info-main">
+    <?php if ($social) : ?>
     <div class="row align-items-center">
-        <div class="col-12 col-lg-8">
+        <div class="col-12 col-lg-8 col-xl-9">
             <?= $this->getChildHtml('page.main.title') ?>
             <div class="info-after-title">
                 <?= $this->getChildHtml('product.info.review') ?>
                 <?= $this->getChildHtml('product.info.sku') ?>
             </div>
         </div>
-        <?php if ($_mbHelper->getConfig('mbconfig/product_view/share_social')) : ?>
-        <div class="col-12 col-lg-4">
+        <div class="col-12 col-lg-4 col-xl-3">
             <?= $this->getChildHtml('product.info.social.share') ?>
         </div>
-        <?php endif; ?>
+    </div>
+    <?php else : ?>
+    <?= $this->getChildHtml('page.main.title') ?>
+    <div class="info-after-title">
+        <?= $this->getChildHtml('product.info.review') ?>
+        <?= $this->getChildHtml('product.info.sku') ?>
+    </div>
+    <?php endif ?>
+</div>
+<?php if ($productLayout) : ?>
+<div class="product-info-main-content">
+    <div class="row">
+        <div class="col-12 col-md-6 col-xl-4">
+            <?= $this->getChildHtml('product.info.media') ?>
+        </div>
+        <div class="col-12 col-md-6 col-xl-5">
+            <?= $this->getChildHtml('product.info.main') ?>
+            <?= $_mbHelper->getCategoryStore($block->getProduct()); ?>
+        </div>
+        <div class="col-12 col-xl-3">
+            <div class="sidebar-product-wrap">
+                <?= $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('sidebar-product')->toHtml(); ?>
+            </div>
+        </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-12 col-md-6 col-lg-5">
-        <?= $this->getChildHtml('product.info.media') ?>
-    </div>
-    <div class="col-12 col-md-6 col-lg-7">
-        <?= $this->getChildHtml('product.info.main') ?>
-
-        <?php if ($_mbHelper->getConfig('mbconfig/product_view/catalog_list')) : ?>
-            <?php
-            $_product = $block->getProduct();
-            $categoryCollection = $_product->getCategoryCollection()->addNameToResult();
-            $catLink = [];
-            foreach($categoryCollection as $category){
-                $catLink[] = '<a href="'.$category->getUrl().'">'.$category->getName().'</a>';
-            }
-            $countCat = count($catLink);
-            if ($countCat > 1) {
-                $catLable = __('Categories');
-            } else {
-                $catLable = __('Category');
-            }
-            ?>
-            <?php if ($countCat) : ?>
-            <div class="cat-links"><span><?= $catLable ?>: </span><span><?= implode(', ', $catLink) ?></span></div>
-            <?php endif ?>
-        <?php endif ?>
+<?php else : ?>
+<div class="product-info-main-content">
+    <div class="row">
+        <div class="col-12 col-md-6 <?= $class1 ?>">
+            <?= $this->getChildHtml('product.info.media') ?>
+        </div>
+        <div class="col-12 col-md-6 <?= $class2 ?>">
+            <?= $this->getChildHtml('product.info.main') ?>
+            <?= $_mbHelper->getCategoryStore($block->getProduct()); ?>
+        </div>
     </div>
 </div>
+<?php endif ?>

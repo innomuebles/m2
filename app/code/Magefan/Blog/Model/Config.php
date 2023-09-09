@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -90,17 +90,28 @@ class Config
      */
     const XML_PATH_TOP_MENU_MAX_DEPTH = 'mfblog/top_menu/max_depth';
 
-
     const XML_RELATED_POSTS_ENABLED = 'mfblog/post_view/related_posts/enabled';
     const XML_RELATED_POSTS_NUMBER = 'mfblog/post_view/related_posts/number_of_posts';
 
     const XML_RELATED_PRODUCTS_ENABLED = 'mfblog/post_view/related_products/enabled';
     const XML_RELATED_PRODUCTS_NUMBER = 'mfblog/post_view/related_products/number_of_products';
 
-
     const XML_TAG_ROBOTS = 'mfblog/tag/robots';
     const XML_SEARCH_ROBOTS = 'mfblog/search/robots';
     const XML_AUTHOR_ROBOTS = 'mfblog/author/robots';
+
+    /**
+     * Blog CSS include config path
+     */
+
+    const XML_INCLUDE_BLOG_CSS_ALL_PAGES = 'mfblog/developer/css_settings/include_all_pages';
+    const XML_INCLUDE_BLOG_CSS_HOME_PAGE = 'mfblog/developer/css_settings/include_home_page';
+    const XML_INCLUDE_BLOG_CSS_PRODUCT_PAGES = 'mfblog/developer/css_settings/include_product_page';
+
+    /**
+     * @var ScopeConfigInterface
+     */
+    protected $scopeConfig;
 
     /**
      * Config constructor.
@@ -215,5 +226,41 @@ class Config
         $displayFor = explode(',', $this->getConfig(self::XML_PATH_DISPLAY_CANONICAL_TAG_FOR));
 
         return in_array($pageType, $displayFor) || in_array(self::CANONICAL_PAGE_TYPE_ALL, $displayFor) ? true : false;
+    }
+
+    /**
+     * @param null $storeId
+     * @return bool
+     */
+    public function isBlogCssIncludeOnAll($storeId = null)
+    {
+        return (bool)$this->getConfig(
+            self::XML_INCLUDE_BLOG_CSS_ALL_PAGES,
+            $storeId
+        );
+    }
+
+    /**
+     * @param null $storeId
+     * @return bool
+     */
+    public function isBlogCssIncludeOnHome($storeId = null)
+    {
+        return (bool)$this->getConfig(
+            self::XML_INCLUDE_BLOG_CSS_HOME_PAGE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param null $storeId
+     * @return bool
+     */
+    public function isBlogCssIncludeOnProduct($storeId = null)
+    {
+        return (bool)$this->getConfig(
+            self::XML_INCLUDE_BLOG_CSS_PRODUCT_PAGES,
+            $storeId
+        );
     }
 }

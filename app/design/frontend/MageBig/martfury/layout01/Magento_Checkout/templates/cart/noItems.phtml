@@ -8,18 +8,22 @@
 ?>
 <div class="cart-empty text-center">
     <?= $block->getChildHtml('checkout_cart_empty_widget') ?>
+    <div class="no-item-cart">
+        <span class="img-native-wrap" style="padding-bottom: 53.76%">
+            <img class="img-fluid"
+                src="<?php echo $block->getViewFileUrl('images/empty-cart.svg') ?>" alt="empty cart" style="max-width: 360px;" />
+        </span>
+    </div>
     <h2><?= /* @escapeNotVerified */ __('You have no items in your shopping cart.') ?></h2>
     <p>
         <a class="action primary" href="<?= $block->escapeUrl($block->getContinueShoppingUrl()) ?>"><?= __('Continue shopping')?></a>
     </p>
     <?= $block->getChildHtml('shopping.cart.table.after') ?>
 </div>
-
-<script>
-    require([
-        'Magento_Customer/js/customer-data'
-    ], function (customerData) {
-        var sections = ['cart'];
-        customerData.invalidate(sections);
-    });
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Checkout/js/empty-cart": {}
+    }
+}
 </script>

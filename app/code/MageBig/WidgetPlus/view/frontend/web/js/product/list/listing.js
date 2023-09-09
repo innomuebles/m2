@@ -7,9 +7,11 @@ define([
     'ko',
     'underscore',
     'Magento_Ui/js/grid/listing',
-    "jquery",
-    "MageBig_WidgetPlus/js/owl.carousel"
-], function (ko, _, Listing, $) {
+    'jquery',
+    'MageBig_WidgetPlus/js/owl.carousel-set',
+    'mage/apply/main',
+    'jquery-ui-modules/tooltip'
+], function (ko, _, Listing, $, owlWidget, mage) {
     'use strict';
 
     return Listing.extend({
@@ -118,25 +120,74 @@ define([
         /**
          * Init slider
          */
-        sliderInit: function () {
-            var rtl = false;
-            if ($('body').hasClass('layout-rtl') || $('body').hasClass('rtl')) {
-                rtl =  true;
+        sliderInit: function (index) {
+            var count = this.filteredRows._latestValue.length;
+
+            if (index === count - 1) {
+                setTimeout(function () {
+                    // $("form[data-role='tocart-form']").catalogAddToCart();
+                    var rtl = false;
+                    if ($('body').hasClass('layout-rtl') || $('body').hasClass('rtl')) {
+                        rtl = true;
+                    }
+                    $('.recently-viewed').owlWidget({
+                        "autoplay": false,
+                        "autoplayTimeout": 5000,
+                        "items": 5,
+                        "margin": 30,
+                        "rewind": true,
+                        "nav": true,
+                        "navText": ['<i class="mbi mbi-chevron-left"></i>', '<i class="mbi mbi-chevron-right"></i>'],
+                        "dots": false,
+                        "responsive": {
+                            "0": {"items": 2},
+                            "576": {"items": 2},
+                            "768": {"items": 3},
+                            "992": {"items": 4},
+                            "1200": {"items": 5},
+                            "1600": {"items": 6}
+                        },
+                        "rtl": rtl
+                    });
+                    if ($(window).width() > 767) {
+                        $('.mb-tooltip').tooltip({
+                            show: null,
+                            hide: {
+                                delay: 250
+                            },
+                            position: {
+                                my: "center bottom-30",
+                                at: "center top",
+                                using: function (position, feedback) {
+                                    $(this).css(position);
+                                    $(this).addClass("magebig-tooltip");
+                                }
+                            },
+                            open: function (event, ui) {
+                                ui.tooltip.addClass('in');
+                            },
+                            close: function (event, ui) {
+                                ui.tooltip.removeClass('in');
+                                $(".ui-helper-hidden-accessible").remove();
+                            }
+                        });
+                    }
+                }, 1000);
             }
-            setTimeout(function () {
-                $('.recently-viewed .owl-carousel').owlCarousel({
-                    "autoplay"          : false,
-                    "autoplayTimeout"   : 5000,
-                    "items"             : 8,
-                    "margin"            : 30,
-                    "rewind"            : true,
-                    "nav"               : true,
-                    "navText"           : ['<i class="mbi mbi-chevron-left"></i>', '<i class="mbi mbi-chevron-right"></i>'],
-                    "dots"              : false,
-                    "responsive"        : {"0":{"items":3},"576":{"items":3},"768":{"items":4},"992":{"items":6},"1200":{"items":8}},
-                    "rtl"               : rtl
-                });
-            }, 100);
+        },
+
+        getPercentDiscount: function (row) {
+            var regular_price = row['price_info']['regular_price'],
+                special_price = row['price_info']['final_price'];
+
+            if (regular_price > special_price) {
+                var discount;
+                discount = 100 - parseInt(Math.round((special_price / regular_price) * 100));
+
+                return discount > 0 ? '-' + discount + '%' : false;
+            }
+
+            return false;
         }
     });
 });

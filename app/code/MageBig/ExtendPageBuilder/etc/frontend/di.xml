@@ -1,0 +1,8 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Filter\Template">
+        <plugin name="MageBig_ExtendPageBuilder::CMSFilter"
+                type="MageBig\ExtendPageBuilder\Plugin\Filter\CMSFilter"
+                sortOrder="1"
+                disabled="false"/>
+    </type>
+</config>

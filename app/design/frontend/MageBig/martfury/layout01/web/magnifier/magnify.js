@@ -44,32 +44,22 @@ define([
             });
         }
 
-        (function () {
-            var style = document.documentElement.style,
-                transitionEnabled = style.transition !== undefined ||
-                style.WebkitTransition !== undefined ||
-                style.MozTransition !== undefined ||
-                style.MsTransition !== undefined ||
-                style.OTransition !== undefined;
-        })();
+        transitionEnabled = document.documentElement.style.transition !== undefined ||
+            document.documentElement.style.WebkitTransition !== undefined ||
+            document.documentElement.style.MozTransition !== undefined ||
+            document.documentElement.style.MsTransition !== undefined ||
+            document.documentElement.style.OTransition !== undefined;
 
         /**
          * Return width and height of original image
-         * @param src path for original image
+         * @param img original image node
          * @returns {{rw: number, rh: number}}
          */
-        function getImageSize(src) {
-            var img = new Image(),
-                imgSize = {
-                    rw: 0,
-                    rh: 0
-                };
-
-            img.src = src;
-            imgSize.rw = img.width;
-            imgSize.rh = img.height;
-
-            return imgSize;
+        function getImageSize(img) {
+            return {
+                rw: img.naturalWidth,
+                rh: img.naturalHeight
+            };
         }
 
         /**
@@ -194,7 +184,7 @@ define([
             if (!e.data.$image || !e.data.$image.length)
                 return;
 
-            imageSize = getImageSize($(fullscreenImageSelector)[0].src);
+            imageSize = getImageSize($(fullscreenImageSelector)[0]);
             parentWidth = e.data.$image.parent().width();
             parentHeight = e.data.$image.parent().height();
             isImageSmall = parentWidth >= imageSize.rw && parentHeight >= imageSize.rh;
@@ -257,6 +247,10 @@ define([
                 bottom,
                 ratio;
 
+            if ($(gallerySelector).data('fotorama') === undefined) {
+                return false;
+            }
+
             if ($(gallerySelector).data('fotorama').fullScreen) {
                 transitionActive = true;
                 $imageContainer = $image.parent();
@@ -279,7 +273,6 @@ define([
 
                 settings = $.extend(dimentions, {
                     top: top,
-                    bottom: bottom,
                     left: left,
                     right: right
                 });
@@ -299,6 +292,10 @@ define([
                 $focus = $(':focus'),
                 index;
 
+            if (fotorama === undefined) {
+                return false;
+            }
+
             if (fotorama.fullScreen) {
 
                 $selectable.each(function (number) {
@@ -314,7 +311,7 @@ define([
                 });
 
                 if (_.isNumber(index)) {
-                    $selectable.eq(index).focus();
+                    $selectable.eq(index).trigger('focus');
                 }
             }
         }
@@ -334,7 +331,7 @@ define([
             if (allowZoomIn && (!transitionEnabled || !transitionActive) && (isTouchEnabled ||
                 !$(zoomInButtonSelector).hasClass(zoomInDisabled))) {
                 $image = $(fullscreenImageSelector);
-                imgOriginalSize = getImageSize($image[0].src);
+                imgOriginalSize = getImageSize($image[0]);
                 imageWidth = $image.width();
                 imageHeight = $image.height();
                 ratio = imageWidth / imageHeight;
@@ -345,7 +342,7 @@ define([
                     toggleZoomable($image, true);
                 }
 
-                e.preventDefault();
+                // e.preventDefault();
 
                 if (imageWidth >= imageHeight) {
                     zoomWidthStep = xStep || Math.ceil(imageWidth * parseFloat(config.magnifierOpts.fullscreenzoom) / 100);
@@ -414,7 +411,7 @@ define([
                 imageHeight = $image.height();
                 ratio = imageWidth / imageHeight;
 
-                e.preventDefault();
+                // e.preventDefault();
 
                 if (imageWidth >= imageHeight) {
                     zoomWidthStep = xStep || Math.ceil(imageWidth * parseFloat(config.magnifierOpts.fullscreenzoom) / 100);
@@ -518,14 +515,14 @@ define([
                         zoomOut(ev);
                     }
 
-                    e.preventDefault ? e.preventDefault() : e.returnValue = false;
+                    // e.preventDefault ? e.preventDefault() : e.returnValue = false;
                 }
             }
 
             if (!$fotoramaStage.hasClass('magnify-wheel-loaded')) {
                 if (fotoramaStage && fotoramaStage.addEventListener) {
                     if ('onwheel' in document) {
-                        fotoramaStage.addEventListener('wheel', onWheel);
+                        fotoramaStage.addEventListener('wheel', onWheel, { passive: true });
                     } else if ('onmousewheel' in document) {
                         fotoramaStage.addEventListener('mousewheel', onWheel);
                     } else {
@@ -553,11 +550,25 @@ define([
                 gallery = $gallery.data('fotorama'),
                 pinchDimention;
 
+            if (gallery === undefined) {
+                return false;
+            }
+
             swipeSlide = _.throttle(function (direction) {
                 $(gallerySelector).data('fotorama').show(direction);
             }, 500, {
                 trailing: false
             });
+
+            /**
+             * Returns top position value for passed jQuery object.
+             *
+             * @param $el
+             * @return {number}
+             */
+            function getTop($el) {
+                return parseInt($el.get(0).style.top);
+            }
 
             function shiftImage(dx, dy, e) {
                 var top = +imagePosY + dy,
@@ -586,16 +597,13 @@ define([
                 }
 
                 if ($image.height() > $imageContainer.height()) {
-
-                    if ($imageContainer.offset().top + $imageContainer.height() > top + $image.height()) {
-                        top = $imageContainer.offset().top + $imageContainer.height() - $image.height();
+                    if ($imageContainer.height() > $image.height() + top) {
+                        $image.css('top', $imageContainer.height() - $image.height());
                     } else {
-                        top = $imageContainer.offset().top < top ? 0 : top;
+                        top = $image.height() - getTop($image) - $imageContainer.height();
+                        dy = dy < top ? dy : top;
+                        $image.css('top', getTop($image) + dy);
                     }
-                    $image.offset({
-                        'top': top
-                    });
-                    $image.css('bottom', '');
                 }
 
                 if ($image.width() > $imageContainer.width()) {
@@ -626,7 +634,7 @@ define([
              * @param e - event object
              */
             function dblClickHandler(e) {
-                var imgOriginalSize = getImageSize($image[0].src),
+                var imgOriginalSize = getImageSize($image[0]),
                     proportions;
 
                 if (imgOriginalSize.rh < $image.parent().height() && imgOriginalSize.rw < $image.parent().width()) {
@@ -665,8 +673,8 @@ define([
                     }
                 });
             } else {
-                $image.unbind('dblclick');
-                $image.dblclick(dblClickHandler);
+                $image.off('dblclick');
+                $image.on('dblclick', dblClickHandler);
             }
 
             if (gallery.fullScreen) {
@@ -690,9 +698,7 @@ define([
                         $image.removeClass(imageDraggableClass);
                     }
                 } else if (gallery.fullScreen && (!transitionEnabled || !transitionActive)) {
-                    e.preventDefault();
-
-                    imagePosY = $image.offset().top;
+                    imagePosY = getTop($image);
                     imagePosX = $image.offset().left;
 
                     if (isTouchEnabled) {
@@ -739,7 +745,7 @@ define([
                         clientX = e.clientX || e.originalEvent.clientX;
                         clientY = e.clientY || e.originalEvent.clientY;
 
-                        e.preventDefault();
+                        // e.preventDefault();
 
                         if (isTouchEnabled) {
                             touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
@@ -748,6 +754,7 @@ define([
                         }
 
                         if (allowZoomOut) {
+                            imagePosY = getTop($(fullscreenImageSelector, $gallery));
                             shiftImage(clientX - startX, clientY - startY, e);
                         }
                     }
@@ -760,7 +767,7 @@ define([
             });
 
             if (keyboardNavigation) {
-                $(document).unbind('keydown', keyboardNavigation);
+                $(document).off('keydown', keyboardNavigation);
             }
 
             /**
@@ -773,13 +780,13 @@ define([
                     isFullScreen = $(gallerySelector).data('fotorama').fullScreen,
                     initVars = function () {
                         imagePosX = $(fullscreenImageSelector, $gallery).offset().left;
-                        imagePosY = $(fullscreenImageSelector, $gallery).offset().top;
+                        imagePosY = getTop($(fullscreenImageSelector, $gallery));
                     };
 
                 if (($focus.attr('data-gallery-role') || !$focus.length) && allowZoomOut) {
                     if (isFullScreen) {
                         imagePosX = $(fullscreenImageSelector, $(gallerySelector)).offset().left;
-                        imagePosY = $(fullscreenImageSelector, $(gallerySelector)).offset().top;
+                        imagePosY = getTop($(fullscreenImageSelector, $(gallerySelector)));
                     }
 
                     if (e.keyCode === 39) {
@@ -824,7 +831,7 @@ define([
             /**
              * @todo keyboard navigation through Fotorama Api.
              */
-            $(document).keydown(keyboardNavigation);
+            $(document).on('keydown', keyboardNavigation);
 
             $(document).on(isTouchEnabled ? 'touchend' : 'mouseup pointerup MSPointerUp', function (e) {
                 if (gallery.fullScreen) {
@@ -911,6 +918,10 @@ define([
         });
 
         $(element).on('fotorama:load fotorama:showend fotorama:fullscreenexit fotorama:ready', function (e, fotorama) {
+            if ($(gallerySelector).data('fotorama') === undefined) {
+                return false;
+            }
+
             var $activeStageFrame = $(gallerySelector).data('fotorama').activeFrame.$stageFrame;
 
             if (!$activeStageFrame.find(magnifierZoomSelector).length) {
@@ -938,14 +949,14 @@ define([
                             e.stopPropagation();
                         });
 
-                        $zoomIn.keyup(function (e) {
+                        $zoomIn.on('keyup', function (e) {
 
                             if (e.keyCode === 13) {
                                 zoomIn(e);
                             }
                         });
 
-                        $(window).keyup(function (e) {
+                        $(window).on('keyup', function (e) {
 
                             if (e.keyCode === 107 || fotorama.fullscreen) {
                                 zoomIn(e);
@@ -961,14 +972,14 @@ define([
                             e.stopPropagation();
                         });
 
-                        $zoomOut.keyup(function (e) {
+                        $zoomOut.on('keyup', function (e) {
 
                             if (e.keyCode === 13) {
                                 zoomOut(e);
                             }
                         });
 
-                        $(window).keyup(function (e) {
+                        $(window).on('keyup', function (e) {
 
                             if (e.keyCode === 109 || fotorama.fullscreen) {
                                 zoomOut(e);
@@ -998,6 +1009,10 @@ define([
                     toggleStandartNavigation();
                 })
                 .on('fotorama:load', function (e, fotorama) {
+                    if ($(gallerySelector).data('fotorama') === undefined) {
+                        return false;
+                    }
+
                     if ($(gallerySelector).data('fotorama').fullScreen) {
                         toggleZoomButtons($(fullscreenImageSelector), isTouchEnabled,
                             checkForVideo(fotorama.activeFrame.$stageFrame));

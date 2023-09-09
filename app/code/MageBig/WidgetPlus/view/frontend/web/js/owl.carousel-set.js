@@ -1,12 +1,13 @@
 define([
     'jquery',
-    'jquery/ui',
+    'jquery-ui-modules/widget',
     'MageBig_WidgetPlus/js/owl.carousel'
 ], function ($) {
     'use strict';
 
     $.widget('magebig.owlWidget', {
         options: {
+            autoplay: false,
             autoplayHoverPause: true,
             smartSpeed: 750,
             rewind: true,
@@ -14,22 +15,43 @@ define([
             animateOut: 'fadeOut',
             rtl: false
         },
-        _create: function() {
-            var owl;
+        _create: function () {
+            var self = this,
+                elm = this.element,
+                id = '#'+elm.attr('id'),
+                owl,
+                autoplay = this.options.autoplay;
 
-            if ($(this.element).hasClass('owl-carousel')) {
-                owl = $(this.element);
-            } else {
-                owl = $(this.element).find('.owl-carousel');
+            if (elm.find('[data-content-type=html]').first().length) {
+                elm.find('[data-content-type=html]').children().unwrap();
             }
 
+            owl = elm.find('.owl-carousel');
+
+            if (elm.hasClass('lazyload') && autoplay) {
+                this.options.autoplay = false;
+                self._initOwl(owl);
+
+                document.addEventListener('lazybeforeunveil', function (e) {
+                    var aa = $(e.target).filter(id);
+                    if (aa.length && autoplay) {
+                        owl.trigger('play.owl.autoplay');
+                    }
+                });
+            } else {
+                self._initOwl(owl);
+            }
+        },
+        _initOwl: function (owl) {
+            var self = this;
+
             if (owl.length) {
-                if (this.options.rtl || $('body').hasClass('layout-rtl')) {
-                    this.options.rtl = true;
+                if (self.options.rtl || $('body').hasClass('layout-rtl')) {
+                    self.options.rtl = true;
                 }
 
-                if ($(this.element).parents('.container').length) {
-                    this.options.responsiveBaseElement = '.container';
+                if ($(self.element).parents('.container').length) {
+                    self.options.responsiveBaseElement = '.container.main-container';
                 }
 
                 owl.on('initialized.owl.carousel', function (e) {
@@ -44,7 +66,7 @@ define([
                     }, 2000);
                 });
 
-                owl.owlCarousel(this.options);
+                owl.owlCarousel(self.options);
 
                 owl.on('translate.owl.carousel', function (e) {
                     var video = owl.find('.owl-item video');

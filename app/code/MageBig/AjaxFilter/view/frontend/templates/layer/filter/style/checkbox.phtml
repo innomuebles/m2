@@ -4,7 +4,7 @@
  * See LICENSE.txt for license details.
  */
 
-/** @var \MageBig\AjaxFilter\Block\Navigation\Renderer\Attribute */
+/** @var $block \MageBig\AjaxFilter\Block\Navigation\Renderer\Attribute */
 ?>
 
 <?php
@@ -12,12 +12,12 @@ $filter = $block->getFilter();
 $filterItems = $filter->getItems();
 $code = $block->getCode();
 $selectedOption = $block->getRequest()->getParam($code);
-$selectedOption = explode(',', $selectedOption);
+$selectedOption = explode(',', (string)$selectedOption);
 $filterStyle = $block->getFilterStyle();
 $helper = $this->helper('MageBig\AjaxFilter\Helper\Data');
 ?>
 <?php  if ($count = count($filterItems)) : ?>
-    <?php if ($count > 5) : ?>
+    <?php if ($count > $helper->displaySearchBox()) : ?>
     <div class="search-filter-wrap">
         <input type="text" class="search-filter">
         <label><span class="mbi mbi-magnifier"></span></label>

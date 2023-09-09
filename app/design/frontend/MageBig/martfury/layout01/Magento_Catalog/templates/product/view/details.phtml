@@ -4,13 +4,14 @@
  * See LICENSE.txt for license details.
  */
 
-// @codingStandardsIgnoreFile
+/** @var \Magento\Catalog\Block\Product\View\Details $block */
+
 $mbHelper = $this->helper('MageBig\MbFrame\Helper\Data');
 ?>
-<?php if ($detailedInfoGroup = $block->getGroupSortedChildNames('detailed_info', 'getChildHtml')):?>
+<?php if ($detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml')):?>
     <div class="product info detailed <?php if (!$mbHelper->getConfig('mbconfig/product_view/product_tabs')) echo 'vertical'; ?>">
         <?php $layout = $block->getLayout(); ?>
-        <div class="product data items" data-mage-init='{"tabs":{"openedState":"active"}}'>
+        <div class="product data items" data-mage-init='{"tabs":{"openedState":"opened", "animate": {"duration": 300}}}'>
             <?php foreach ($detailedInfoGroup as $name):?>
                 <?php
                     $html = $layout->renderElement($name);
@@ -21,18 +22,17 @@ $mbHelper = $this->helper('MageBig\MbFrame\Helper\Data');
                     $label = $block->getChildData($alias, 'title');
                 ?>
                 <div class="data item title"
-                     aria-labeledby="tab-label-<?= /* @escapeNotVerified */ $alias ?>-title"
-                     data-role="collapsible" id="tab-label-<?= /* @escapeNotVerified */ $alias ?>">
+                     data-role="collapsible" id="tab-label-<?= $block->escapeHtmlAttr($alias) ?>">
                     <a class="data switch"
                        tabindex="-1"
                        data-toggle="switch"
-                       href="#<?= /* @escapeNotVerified */ $alias ?>"
-                       id="tab-label-<?= /* @escapeNotVerified */ $alias ?>-title">
-                        <?= /* @escapeNotVerified */ $label ?>
+                       href="#<?= $block->escapeHtmlAttr($alias) ?>"
+                       id="tab-label-<?= $block->escapeHtmlAttr($alias) ?>-title">
+                        <?= /* @noEscape */ $label ?>
                     </a>
                 </div>
-                <div class="data item content" id="<?= /* @escapeNotVerified */ $alias ?>" data-role="content">
-                    <?= /* @escapeNotVerified */ $html ?>
+                <div class="data item content" id="<?= $block->escapeHtmlAttr($alias) ?>" data-role="content">
+                    <?= /* @noEscape */ $html ?>
                 </div>
             <?php endforeach;?>
         </div>

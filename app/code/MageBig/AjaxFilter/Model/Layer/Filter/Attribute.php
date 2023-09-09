@@ -51,20 +51,22 @@ class Attribute extends \Magento\CatalogSearch\Model\Layer\Filter\Attribute
 
     public function apply(\Magento\Framework\App\RequestInterface $request)
     {
-        $productCollection = $this->getLayer()->getProductCollection();
         $attributeValue = $request->getParam($this->_requestVar);
+
+        if (empty($attributeValue) && !is_numeric($attributeValue) || is_array($attributeValue)) {
+            return $this;
+        }
+
+        $productCollection = $this->getLayer()->getProductCollection();
         $attribute = $this->getAttributeModel();
         $attributeCode = $attribute->getAttributeCode();
 
-        $this->setBeforeApplyFacetedData($this->helper->getBeforeApplyFacetedData($productCollection, $attribute));
-
-        if (empty($attributeValue) && !is_numeric($attributeValue)) {
-            return $this;
-        }
+        $this->setBeforeApplyFacetedData($this->helper->getBeforeApplyFacetedData($productCollection, $attributeCode));
 
         /** @var \Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection $productCollection */
 
         $attributeValuesArray = explode(',', (string)$attributeValue);
+
         $productCollection->addFieldToFilter($attributeCode, $attributeValuesArray);
 
         $label = $this->getOptionText($attributeValue);
@@ -88,18 +90,13 @@ class Attribute extends \Magento\CatalogSearch\Model\Layer\Filter\Attribute
     protected function _getItemsData()
     {
         $attribute = $this->getAttributeModel();
-        /** @var \Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection $productCollection */
-
-        $productCollection = $this->getLayer()
-            ->getProductCollection();
         $attributeCode = $attribute->getAttributeCode();
 
-        if ($this->getBeforeApplyFacetedData()) {
-            $optionsFacetedData = $this->getBeforeApplyFacetedData();
-        } else {
-            $optionsFacetedData = $productCollection->getFacetedData($attributeCode);
+        if (!$productCollection = $this->getBeforeApplyFacetedData()) {
+            $productCollection = $this->getLayer()->getProductCollection();
         }
 
+        $optionsFacetedData = $productCollection->getFacetedData($attributeCode);
         $isAttributeFilterable =
             $this->getAttributeIsFilterable($attribute) === static::ATTRIBUTE_OPTIONS_ONLY_WITH_RESULTS;
 

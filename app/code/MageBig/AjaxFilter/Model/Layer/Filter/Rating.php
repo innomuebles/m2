@@ -6,15 +6,21 @@
 namespace MageBig\AjaxFilter\Model\Layer\Filter;
 
 use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
-use Magento\Catalog\Model\Layer\Resolver;
-use \Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\ObjectManager;
+
 /**
  * Layer attribute filter
  */
 class Rating extends AbstractFilter
 {
-    const AVG_RATING_PERCENT = 'avg_percent';
     const RATING_CODE = 'rating';
+    const STARS = [
+        1 => 20,
+        2 => 40,
+        3 => 60,
+        4 => 80,
+        5 => 100
+    ];
 
     protected $objectManager;
 
@@ -39,12 +45,34 @@ class Rating extends AbstractFilter
         $this->objectManager = ObjectManager::getInstance();
         $this->helper = $this->objectManager->get('MageBig\AjaxFilter\Helper\Data');
         $this->_requestVar = self::RATING_CODE;
-        $this->sqlFieldName = self::AVG_RATING_PERCENT;
     }
 
-    public function getName()
+    public function applyToCollection($productCollection, $request, $requestVar)
     {
-        return __('Rating');
+        $filter = $request->getParam($requestVar);
+        if (!$filter || is_array($filter)) {
+            return $productCollection;
+        }
+
+        if ($filter > 5 || $filter < 1) {
+            $filter = 5;
+        }
+        $from = self::STARS[$filter];
+        if ($this->helper->getRatingTypes() == 'interval') {
+            if ($filter == 5) {
+                $from = 91;
+                $to = 100;
+            } else {
+                $to = $from + 10;
+                $from = $from - 9;
+            }
+        } else {
+            $to = self::STARS[5];
+        }
+
+        $productCollection->addFieldToFilter(self::RATING_CODE, ['from' => $from, 'to' =>  $to]);
+
+        return $productCollection;
     }
 
     public function apply(\Magento\Framework\App\RequestInterface $request)
@@ -57,10 +85,10 @@ class Rating extends AbstractFilter
 
         $productCollection = $this->getLayer()->getProductCollection();
 
-        $productCollection->setFlag('before_apply_faceted_data_'.$this->_requestVar,
-            $this->_getRatingsData($productCollection)
-        );
-        $this->ratingFilter($productCollection, $attributeValue);
+        $attributeCode = 'rating';
+        $this->setBeforeApplyFacetedData($this->helper->getBeforeApplyFacetedData($productCollection, $attributeCode));
+
+        $this->applyToCollection($productCollection, $request, $this->_requestVar);
 
         $label = $this->_getRatingLabel($attributeValue);
         $this->getLayer()
@@ -70,68 +98,18 @@ class Rating extends AbstractFilter
         return $this;
     }
 
-    public function ratingFilter($productCollection, $attributeValue)
-    {
-        $sqlFieldName = self::AVG_RATING_PERCENT;
-        if ($this->helper->getRatingTypes() == 'interval') {
-            $maxPercent = max(0, 100 * $attributeValue / 5);
-            $minPercent = max(0, 100 * ($attributeValue - 1) / 5);
-            $productCollection->getSelect()->where("({$minPercent} < {$sqlFieldName}) AND ({$sqlFieldName} <= {$maxPercent})");
-        } else {
-            $minPercent = 100 * $attributeValue / 5;
-            $productCollection->getSelect()->where("{$sqlFieldName} >= {$minPercent}");
-        }
-        return $productCollection;
-    }
-
     protected function _getRatingLabel($score)
     {
         if ($this->helper->getRatingTypes() == 'interval') {
-            $maxScore = $score;
-            $minScore = $score - 1;
-            if ($minScore == 0) {
-                return __('1 star');
-            }
-            return __('%1 < star ≤ %2', $minScore, $maxScore);
+            return ($score > 1) ? __('%1 stars', $score) : __('%1 star', $score);
         } else {
-            return ($score < 5) ? __('%1 star and up', $score) : __('%1 star', $score);
+            return ($score > 1) ? __('from %1 stars', $score) : __('from %1 star', $score);
         }
     }
 
-    protected function _getRatingsData($collection)
+    public function getName()
     {
-        $connection = $collection->getConnection();
-        $options = [];
-        $ratingType = $this->helper->getRatingTypes();
-        if ($ratingType == 'interval') {
-            for ($i = 5; $i > 0; $i--) {
-                $maxPercent = 100 * $i / 5;
-                $minPercent = 100 * ($i-1) / 5;
-                $cloneCollection = clone $collection;
-                $cloneCollection->getSelect()->where("({$minPercent} < {$this->sqlFieldName}) AND ({$this->sqlFieldName} <= {$maxPercent})");
-                $this->helper->ratingCollection($cloneCollection);
-                $options[] = [
-                    'label' => $this->_getRatingLabel($i),
-                    'value' => $i,
-                    'count' => $connection->fetchOne($cloneCollection->getSelectCountSql())
-                ];
-            }
-        } else {
-            for ($i = 5; $i > 0; $i--) {
-                $percent = 100 * $i / 5;
-                $cloneCollection = clone $collection;
-                $cloneCollection->getSelect()->where("{$this->sqlFieldName} >= {$percent}");
-
-                $this->helper->ratingCollection($cloneCollection);
-
-                $options[] = [
-                    'label' => $this->_getRatingLabel($i),
-                    'value' => $i,
-                    'count' => $connection->fetchOne($cloneCollection->getSelectCountSql())
-                ];
-            }
-        }
-        return $options;
+        return __('Rating');
     }
 
     /**
@@ -139,14 +117,53 @@ class Rating extends AbstractFilter
      *
      * @return array
      */
-     protected function _getItemsData()
-     {
-        $productCollection = $this->getLayer()->getProductCollection();
-        if ($data = $productCollection->getFlag('before_apply_faceted_data_'.$this->_requestVar)) {
-        } else {
-            $data = $this->_getRatingsData($productCollection);
+    protected function _getItemsData()
+    {
+        if (!$productCollection = $this->getBeforeApplyFacetedData()) {
+            $productCollection = $this->getLayer()->getProductCollection();
         }
-        $this->setData('items_data', $data);
+
+        $facets = $productCollection->getFacetedData(self::RATING_CODE);
+        $data = [];
+        if ($facets > 1) {
+            $listData = [];
+
+            $allCount = 0;
+            for ($i = 5; $i >= 1; $i--) {
+                $count = isset($facets[$i]) ? $facets[$i]['count'] : 0;
+
+                $allCount += $count;
+
+                $listData[] = [
+                    'label' => $this->_getRatingLabel($i),
+                    'value' => $i,
+                    'count' => $allCount,
+                    'real_count' => $count,
+                ];
+            }
+
+            $ratingType = $this->helper->getRatingTypes();
+            if ($ratingType == 'interval') {
+                foreach ($listData as $data) {
+                    $this->itemDataBuilder->addItemData(
+                        $data['label'],
+                        $data['value'],
+                        $data['real_count']
+                    );
+                }
+            } else {
+                foreach ($listData as $data) {
+                    $this->itemDataBuilder->addItemData(
+                        $data['label'],
+                        $data['value'],
+                        $data['count']
+                    );
+                }
+            }
+
+            $data = $this->itemDataBuilder->build();
+        }
+
         return $data;
     }
 }

@@ -37,7 +37,7 @@
         <?php if ($block->getLastPageNum()>1): ?>
         <div class="pages">
             <strong class="label pages-label"><?= /* @escapeNotVerified */ __('Page') ?></strong>
-            <ul class="items pages-items" aria-labelledby="paging-label">
+            <ul class="items pages-items">
             <?php if (!$block->isFirstPage()): ?>
                 <li class="item pages-item-previous">
                     <?php $text = $block->getAnchorTextForPrevious() ? $block->getAnchorTextForPrevious() : '';?>

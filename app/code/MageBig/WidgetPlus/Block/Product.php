@@ -78,10 +78,13 @@ class Product extends \Magento\Catalog\Block\Product\AbstractProduct implements 
     protected function _construct()
     {
         parent::_construct();
-        $this->addColumnCountLayoutDepend('empty', 6)->addColumnCountLayoutDepend('1column',
-                5)->addColumnCountLayoutDepend('2columns-left', 4)->addColumnCountLayoutDepend('2columns-right',
-                4)->addColumnCountLayoutDepend('3columns', 3);
-
+        $this->addColumnCountLayoutDepend('empty', 6)->addColumnCountLayoutDepend(
+            '1column',
+            5
+        )->addColumnCountLayoutDepend('2columns-left', 4)->addColumnCountLayoutDepend(
+            '2columns-right',
+            4
+        )->addColumnCountLayoutDepend('3columns', 3);
     }
 
     /**
@@ -109,18 +112,17 @@ class Product extends \Magento\Catalog\Block\Product\AbstractProduct implements 
      */
     public function getCacheKeyInfo()
     {
-        $key = parent::getCacheKeyInfo();
-        $info = [
+        return [
             'MAGEBIG_WIDGETPLUS_PRODUCT',
-            $this->getPriceCurrency()->getCurrencySymbol(),
+            $this->getPriceCurrency()->getCurrency()->getCode(),
             $this->_storeManager->getStore()->getId(),
             $this->_design->getDesignTheme()->getId(),
             $this->httpContext->getValue(\Magento\Customer\Model\Context::CONTEXT_GROUP),
             $this->serializer->serialize($this->getRequest()->getParams()),
             $this->getWidgetId(),
+            $this->getTemplateFile(),
+            'base_url' => $this->getBaseUrl()
         ];
-
-        return array_merge($key, $info);
     }
 
     /**

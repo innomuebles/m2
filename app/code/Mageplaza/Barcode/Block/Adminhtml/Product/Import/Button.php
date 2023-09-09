@@ -22,6 +22,8 @@
 namespace Mageplaza\Barcode\Block\Adminhtml\Product\Import;
 
 use Magento\Backend\Block\Widget\Container;
+use Magento\Backend\Block\Widget\Context;
+use Mageplaza\Barcode\Helper\Data as HelperData;
 
 /**
  * Class Button
@@ -30,29 +32,51 @@ use Magento\Backend\Block\Widget\Container;
 class Button extends Container
 {
     /**
+     * @var HelperData
+     */
+    protected $_helperData;
+
+    /**
+     * Button constructor.
+     *
+     * @param Context $context
+     * @param array $data
+     * @param HelperData $helperData
+     */
+    public function __construct(
+        HelperData $helperData,
+        Context $context,
+        array $data = []
+    ) {
+        $this->_helperData = $helperData;
+        parent::__construct($context, $data);
+    }
+    /**
      * @return Container
      */
     protected function _prepareLayout()
     {
-        $buttonData = [
-            'id'             => 'mp_barcode_import_btn',
-            'label'          => __('Print Barcode'),
-            'class'          => 'add action-secondary',
-            'button_class'   => 'primary',
-            'data_attribute' => [
-                'mage-init' => [
-                    'Magento_Ui/js/form/button-adapter' => [
-                        'actions' => [
-                            [
-                                'targetName' => 'product_listing.product_listing.listing_top.listing_massaction',
-                                'actionName' => 'toggleImportBarcodeModal'
-                            ],
+        if ($this->_helperData->isEnabled()) {
+            $buttonData = [
+                'id'             => 'mp_barcode_import_btn',
+                'label'          => __('Print Barcode'),
+                'class'          => 'add action-secondary',
+                'button_class'   => 'primary',
+                'data_attribute' => [
+                    'mage-init' => [
+                        'Magento_Ui/js/form/button-adapter' => [
+                            'actions' => [
+                                [
+                                    'targetName' => 'product_listing.product_listing.listing_top.listing_massaction',
+                                    'actionName' => 'toggleImportBarcodeModal'
+                                ],
+                            ]
                         ]
                     ]
-                ]
-            ],
-        ];
-        $this->buttonList->add('mp_barcode_import_btn', $buttonData);
+                ],
+            ];
+            $this->buttonList->add('mp_barcode_import_btn', $buttonData);
+        }
 
         return parent::_prepareLayout();
     }

@@ -4,7 +4,7 @@ namespace PayU\PaymentGateway\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Model\Order;
 use PayU\PaymentGateway\Api\PayUConfigInterface;
 use PayU\PaymentGateway\Model\Ui\CardConfigProvider;
 use PayU\PaymentGateway\Model\Ui\ConfigProvider;
@@ -22,40 +22,19 @@ class AfterPlaceOrderObserver implements ObserverInterface
     const STATUS_PENDING = 'pending';
 
     /**
-     * Store key
-     */
-    const STORE = 'store';
-
-    /**
      * @var PayUConfigInterface
      */
     private $payUConfig;
 
     /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @var AfterPlaceOrderRepayEmailProcessor
-     */
-    private $emailProcessor;
-
-    /**
      * StatusAssignObserver constructor.
      *
      * @param PayUConfigInterface $payUConfig
-     * @param OrderRepositoryInterface $orderRepository
-     * @param AfterPlaceOrderRepayEmailProcessor $emailProcessor
      */
     public function __construct(
-        PayUConfigInterface $payUConfig,
-        OrderRepositoryInterface $orderRepository,
-        AfterPlaceOrderRepayEmailProcessor $emailProcessor
+        PayUConfigInterface $payUConfig
     ) {
         $this->payUConfig = $payUConfig;
-        $this->orderRepository = $orderRepository;
-        $this->emailProcessor = $emailProcessor;
     }
 
     /**
@@ -70,9 +49,6 @@ class AfterPlaceOrderObserver implements ObserverInterface
             return;
         }
         $this->assignStatus($payment);
-        if ($this->payUConfig->isRepaymentActive($method)) {
-            $this->emailProcessor->process($payment);
-        }
     }
 
     /**
@@ -83,7 +59,6 @@ class AfterPlaceOrderObserver implements ObserverInterface
     private function assignStatus(Payment $payment)
     {
         $order = $payment->getOrder();
-        $order->setState(static::STATUS_PENDING)->setStatus(static::STATUS_PENDING);
-        $this->orderRepository->save($order);
+        $order->setState(Order::STATE_NEW)->setStatus(static::STATUS_PENDING);
     }
 }

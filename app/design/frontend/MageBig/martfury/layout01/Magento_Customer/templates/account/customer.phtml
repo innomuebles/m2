@@ -4,44 +4,52 @@
  * See LICENSE.txt for license details.
  */
 
-// @codingStandardsIgnoreFile
-
+/** @var Magento\Customer\Block\Account\Customer $block */
 ?>
-<?php $wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');?>
+<?php
+$wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
+?>
 <?php if ($block->customerLoggedIn()): ?>
+    <!-- ko scope: 'customer' -->
     <li class="customer-welcome acc-topbar">
-        <div class="customer-name acc-btn" data-bind="scope: 'customer'">
-            <!-- ko if: customer().fullname  -->
-            <div><?= __("Hi,")?></div>
+        <div class="customer-name acc-btn">
+            <div><?= $block->escapeHtml(__("Hi,")) ?></div>
             <div class="name" data-bind="text: customer().firstname"></div>
-            <!-- /ko -->
+        </div>
+        <div class="customer-menu acc-list">
+            <ul>
+                <li>
+                    <a href="<?= $block->getBaseUrl() ?>customer/account/"><i class="mbi mbi-clipboard-user"></i>
+                        <span><?= $block->escapeHtml(__('My Account')) ?></span></a></li>
+                <li>
+                    <a href="<?= $block->getBaseUrl() ?>sales/order/history/"><i class="mbi mbi-menu-square"></i>
+                        <span><?= $block->escapeHtml(__('My Orders'))?></span></a></li>
+                <?php if ($wishlistHelper->isAllow()): ?>
+                    <li>
+                        <a href="<?= $block->getBaseUrl() ?>wishlist/"><i class="mbi mbi-heart"></i>
+                            <span><?= $block->escapeHtml(__('My Wishlist')) ?></span></a></li>
+                <?php endif; ?>
+                <li>
+                    <a href="<?= $block->getBaseUrl() ?>checkout/cart/"><i class="mbi mbi-cart"></i>
+                        <span><?= $block->escapeHtml(__('My Cart')) ?></span></a></li>
+                <li>
+                    <a href="<?= $block->getBaseUrl() ?>customer/account/logout/"><i class="mbi mbi-exit"></i>
+                        <span><?= $block->escapeHtml(__('Log Out')) ?></span></a></li>
+            </ul>
         </div>
         <script type="text/x-magento-init">
-        {
-            "*": {
-                "Magento_Ui/js/core/app": {
-                    "components": {
-                        "customer": {
-                            "component": "Magento_Customer/js/view/customer"
+            {
+                "*": {
+                    "Magento_Ui/js/core/app": {
+                        "components": {
+                            "customer": {
+                                "component": "Magento_Customer/js/view/customer"
+                            }
                         }
                     }
                 }
             }
-        }
         </script>
-        <div class="customer-menu acc-list">
-            <ul>
-                <li>
-                    <a href="<?= $block->getBaseUrl() ?>customer/account/"><i class="icon-user icons"></i><span><?= __('My Account') ?></span></a></li>
-                <?php if ($wishlistHelper->isAllow()): ?>
-                <li>
-                    <a href="<?= $block->getBaseUrl() ?>wishlist/"><i class="icon-heart icons"></i><span><?= __('My Wishlist') ?></span></a></li>
-                <?php endif;?>
-                <li>
-                    <a href="<?= $block->getBaseUrl() ?>checkout/cart/"><i class="icon-handbag icons"></i><span><?= __('My Cart') ?></span></a></li>
-                <li>
-                    <a href="<?= $block->getBaseUrl() ?>customer/account/logout/"><i class="icon-logout icons"></i><span><?= __('Log Out') ?></span></a></li>
-            </ul>
-        </div>
     </li>
-<?php endif;?>
+    <!-- /ko -->
+<?php endif; ?>

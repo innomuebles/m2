@@ -34,7 +34,8 @@ use Magento\Framework\UrlFactory;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use MageBig\SocialLogin\Helper\Data;
-
+use Magento\Framework\Data\Form\FormKey\Validator;
+use Magento\Customer\Api\CustomerRepositoryInterface as CustomerRepository;
 /**
  * Class Create
  *
@@ -111,7 +112,9 @@ class Create extends CreatePost
         AccountRedirect $accountRedirect,
         JsonFactory $resultJsonFactory,
         CaptchaData $captchaHelper,
-        Data $socialHelper
+        Data $socialHelper,
+        CustomerRepository $customerRepository,
+        Validator $formKeyValidator = null
     )
     {
         $this->resultJsonFactory = $resultJsonFactory;
@@ -136,7 +139,9 @@ class Create extends CreatePost
             $escaper,
             $customerExtractor,
             $dataObjectHelper,
-            $accountRedirect
+            $accountRedirect,
+            $customerRepository,
+            $formKeyValidator
         );
     }
 

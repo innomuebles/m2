@@ -10,5 +10,7 @@
         <referenceContainer name="content">
             <block class="MageBig\AjaxInfiniteScroll\Block\Init" name="ajaxinfinitescroll.init" template="MageBig_AjaxInfiniteScroll::js.phtml" after="-"/>
         </referenceContainer>
+        <referenceBlock name="category.product.type.details.renderers.configurable"
+                        template="MageBig_AjaxInfiniteScroll::product/listing/renderer.phtml" />
     </body>
 </page>

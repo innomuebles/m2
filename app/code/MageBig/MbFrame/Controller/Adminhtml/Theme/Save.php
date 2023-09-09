@@ -46,6 +46,11 @@ class Save extends \Magento\Backend\App\Action
     protected $_cache;
 
     /**
+     * @var \Magento\Framework\App\Cache\TypeListInterface
+     */
+    protected $_cacheTypeList;
+
+    /**
      * @var \Magento\Framework\Locale\Resolver
      */
     protected $_localeResolver;
@@ -67,16 +72,17 @@ class Save extends \Magento\Backend\App\Action
 
     /**
      * Save constructor.
-     * @param \Magento\Backend\App\Action\Context                     $context
-     * @param \Magento\Config\Model\ResourceModel\Config              $config
-     * @param \Magento\Framework\Indexer\IndexerRegistry              $indexer
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Config\Model\ResourceModel\Config $config
+     * @param \Magento\Framework\Indexer\IndexerRegistry $indexer
      * @param \Magento\Framework\App\Config\ReinitableConfigInterface $reinitableConfig
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface      $scopeConfig
-     * @param \MageBig\MbFrame\Framework\App\Config\Initial           $initial
-     * @param \Magento\Framework\Config\CacheInterface                $cache
-     * @param \Magento\Framework\Filesystem\Driver\File               $file
-     * @param \Magento\Framework\App\Filesystem\DirectoryList         $directoryList
-     * @param \Magento\Framework\Locale\Resolver                      $localeResolver
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \MageBig\MbFrame\Framework\App\Config\Initial $initial
+     * @param \Magento\Framework\Config\CacheInterface $cache
+     * @param \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
+     * @param \Magento\Framework\Filesystem\Driver\File $file
+     * @param \Magento\Framework\App\Filesystem\DirectoryList $directoryList
+     * @param \Magento\Framework\Locale\Resolver $localeResolver
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -86,6 +92,7 @@ class Save extends \Magento\Backend\App\Action
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \MageBig\MbFrame\Framework\App\Config\Initial $initial,
         \Magento\Framework\Config\CacheInterface $cache,
+        \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
         \Magento\Framework\Filesystem\Driver\File $file,
         \Magento\Framework\App\Filesystem\DirectoryList $directoryList,
         \Magento\Framework\Locale\Resolver $localeResolver
@@ -98,6 +105,7 @@ class Save extends \Magento\Backend\App\Action
         $this->initial          = $initial;
         $this->_objectManager   = $context->getObjectManager();
         $this->_cache           = $cache;
+        $this->_cacheTypeList   = $cacheTypeList;
         $this->_file            = $file;
         $this->_directoryList   = $directoryList;
         $this->_localeResolver  = $localeResolver;
@@ -184,14 +192,18 @@ class Save extends \Magento\Backend\App\Action
 
         $this->cleanStyle($staticPath);
         $this->cleanStyle($viewStatic);
-        $this->createLess($staticView, $dataValue);
-        if ($localeCode == 'en_US') {
+        $this->createLess($staticView, $dataValue, true);
+        if (!$website && !$store) {
             $this->createLess($localeDefault, $dataValue);
         }
         $this->createLess($localeDir, $dataValue);
-        $this->createLess($viewPath, $dataValue);
+        $this->createLess($viewPath, $dataValue, true);
 
         $this->_cache->clean();
+        $types = ['config','layout','block_html','full_page','translate'];
+        foreach ($types as $type) {
+            $this->_cacheTypeList->cleanType($type);
+        }
         $this->messageManager->addSuccessMessage(__('You have activated the theme.'));
 
 
@@ -256,21 +268,29 @@ class Save extends \Magento\Backend\App\Action
         }
     }
 
-    protected function createLess($pathDir, $dataValue)
+    protected function createLess($pathDir, $dataValue, $isStatic = false)
     {
         $section        = 'mbdesign';
         $pathToLessFile = $pathDir . '_' . $section . '.less';
 
+        if ($isStatic) {
+            $modeDir = 2775;
+            $modeFile = 2664;
+        } else {
+            $modeDir = 0775;
+            $modeFile = 0664;
+        }
+
         if (!is_dir($pathDir)) {
-            mkdir($pathDir, 0755, true);
+            mkdir($pathDir, $modeDir, true);
         }
 
         if (!is_writable($pathDir)) {
-            @chmod($pathDir, '0755');
+            @chmod($pathDir, $modeDir);
         }
 
         if (is_file($pathToLessFile) && !is_writable($pathToLessFile)) {
-            @chmod($pathToLessFile, '0644');
+            @chmod($pathToLessFile, $modeFile);
         }
 
         $file = @fopen($pathToLessFile, 'w') or die('error: Can not open ' . $pathToLessFile . ' file');
@@ -290,6 +310,7 @@ class Save extends \Magento\Backend\App\Action
                     $value = 'inherit';
                 }
                 if ($name != 'custom_css_less') {
+                    $value = str_replace('"', "'", $value);
                     $configs["@{$name}"] = "{$value}";
 
                     if ($value != 'inherit' && !(preg_match('/_file|_pattern/', $name))) {

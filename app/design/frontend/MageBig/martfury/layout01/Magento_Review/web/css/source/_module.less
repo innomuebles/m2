@@ -54,6 +54,7 @@
             }
             .review-control-vote {
                 padding: 0 30px;
+                min-width: 145px;
             }
         }
     }
@@ -82,16 +83,6 @@
                 display: none;
             }
         }
-        &-form {
-            .action.submit.primary {
-                .lib-button-revert-secondary-color();
-                .lib-button-revert-secondary-size();
-                margin: 0;
-            }
-            .actions-toolbar .actions-primary {
-                padding: 0;
-            }
-        }
         &-fieldset {}
         .fieldset &-legend.legend {
             line-height: 1.3;
@@ -102,7 +93,7 @@
             }
             strong {
                 display: block;
-                font-weight: 600;
+                font-weight: 500;
                 padding-top: 10px;
                 .font-size(14);
             }
@@ -247,9 +238,6 @@
             }
             > a > span {
                 display: none;
-                .product-info-main & {
-                    display: inline;
-                }
             }
         }
     }
@@ -362,7 +350,6 @@
             }
             .review-title {
                 .lib-heading(h3);
-                .lib-css(font-weight, @font-weight__semibold);
                 .lib-css(margin-bottom, @indent__base);
             }
             .review-content {

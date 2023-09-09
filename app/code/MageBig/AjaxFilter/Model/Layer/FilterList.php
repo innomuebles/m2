@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace MageBig\AjaxFilter\Model\Layer;
 
-use Magento\Catalog\Model\Layer\FilterableAttributeListInterface;
+use MageBig\AjaxFilter\Helper\Data as FilterHelper;
 
 class FilterList extends \Magento\Catalog\Model\Layer\FilterList
 {
@@ -30,18 +30,6 @@ class FilterList extends \Magento\Catalog\Model\Layer\FilterList
         self::RATING_FILTER   => \MageBig\AjaxFilter\Model\Layer\Filter\Rating::class
     ];
 
-    public function __construct(
-        \MageBig\AjaxFilter\Helper\Data $helper,
-        \Magento\Framework\ObjectManagerInterface $objectManager,
-        FilterableAttributeListInterface $filterableAttributes,
-        array $filters = []
-    ) {
-        parent::__construct($objectManager, $filterableAttributes, $filters);
-        $this->helper = $helper;
-        /** Override default filter type models */
-        $this->filterTypes = array_merge($this->filterTypes, $filters);
-    }
-
     /**
      * Retrieve list of filters
      *
@@ -54,15 +42,14 @@ class FilterList extends \Magento\Catalog\Model\Layer\FilterList
             foreach ($this->filterableAttributes->getList() as $attribute) {
                 $this->filters[] = $this->createAttributeFilter($attribute, $layer);
             }
-            if ($this->helper->enableRatingFilter()) {
-                $productCollection = $layer->getProductCollection();
-                $this->helper->ratingCollection($productCollection);
+            if ($this->objectManager->get(FilterHelper::class)->enableRatingFilter()) {
                 $this->filters[] = $this->objectManager->create(
                     $this->filterTypes[self::RATING_FILTER],
                     ['layer' => $layer]
                 );
             }
         }
+
         return $this->filters;
     }
 

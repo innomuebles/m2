@@ -1,36 +1,16 @@
-<script>
-    require([
-        'Magento_Ui/js/lib/view/utils/async',
-        'MageBig_SyntaxCms/js/editor',
-    ], function ($, editor) {
+<?php
+/**
+ * @var $block MageBig\SyntaxCms\Block\Adminhtml\Show
+ */
+?>
 
-        <?php foreach($block->getElements() as $element):?>
-        $.async('<?php echo $element['selector'];?>', function (elem) {
-            //if (!elem.id) return;
-            function checkForVisible() {
-                // if (!elem.getBoundingClientRect().height) {
-                //     setTimeout(checkForVisible, 300);
-                //     return;
-                // }
-
-                if (window.tinyMCE_GZ && !window.tinyMCE_GZ.loaded) {
-                    console.log("not loaded");
-                    setTimeout(checkForVisible, 300);
-                    return;
-                }
-                $(elem).addClass('hide-textarea');
-                editor.activedCM(elem,
-                    '<?= (is_array($element['type']) ? $element['type'][0] : $element['type']);?>',
-                    <?= $block->getJsonOption();?>
-                );
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "MageBig_SyntaxCms/js/editor": {
+                "elementList": "<?= $block->escapeJs($block->getElementsData()) ?>",
+                "editorOption": <?= $block->getJsonOption();?>
             }
-
-            if (window.tinyMCE_GZ)
-                setTimeout(checkForVisible, 500);
-            else
-                setTimeout(checkForVisible, 0);
-            return;
-        });
-        <?php endforeach; ?>
-    });
+        }
+    }
 </script>

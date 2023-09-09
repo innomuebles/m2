@@ -52,11 +52,6 @@ class Collection extends \Magento\Framework\Data\Collection
     protected $_categoryFactory;
 
     /**
-     * @var \Magento\Framework\Module\Manager
-     */
-    protected $_moduleManager;
-
-    /**
      * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
      */
     protected $_localeDate;
@@ -65,7 +60,6 @@ class Collection extends \Magento\Framework\Data\Collection
      * @var \Magento\Reports\Model\ResourceModel\Product\CollectionFactory
      */
     protected $_productsFactory;
-
 
     public function __construct(
         \Magento\Framework\Data\Collection\EntityFactory $entityFactory,
@@ -78,24 +72,20 @@ class Collection extends \Magento\Framework\Data\Collection
         \Magento\Framework\Registry $registry,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Catalog\Model\CategoryFactory $categoryFactory,
-        \Magento\Framework\Module\Manager $moduleManager,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,
-        CustomerSession $customerSession,
-        \MageBig\WidgetPlus\Model\Rule $rule
+        CustomerSession $customerSession
     ) {
-        $this->_resource                 = $resource;
-        $this->_customerSession          = $customerSession;
-        $this->storeManager              = $storeManager;
-        $this->_coreRegistry             = $registry;
-        $this->_checkoutSession          = $checkoutSession;
-        $this->catalogProductVisibility  = $catalogProductVisibility;
+        $this->_resource = $resource;
+        $this->_customerSession = $customerSession;
+        $this->storeManager = $storeManager;
+        $this->_coreRegistry = $registry;
+        $this->_checkoutSession = $checkoutSession;
+        $this->catalogProductVisibility = $catalogProductVisibility;
         $this->_productCollectionFactory = $productCollectionFactory;
-        $this->_catalogConfig            = $catalogConfig;
-        $this->_categoryFactory          = $categoryFactory;
-        $this->_moduleManager            = $moduleManager;
-        $this->_localeDate               = $localeDate;
-        $this->_productsFactory          = $productsFactory;
-        $this->_rule                     = $rule;
+        $this->_catalogConfig = $catalogConfig;
+        $this->_categoryFactory = $categoryFactory;
+        $this->_localeDate = $localeDate;
+        $this->_productsFactory = $productsFactory;
         parent::__construct($entityFactory);
     }
 
@@ -122,7 +112,7 @@ class Collection extends \Magento\Framework\Data\Collection
 
     /**
      * @param \Magento\Catalog\Model\ResourceModel\Product\Collection $collection
-     * @return $this
+     * @return \Magento\Catalog\Model\ResourceModel\Product\Collection
      */
     protected function _addProductAttributesAndPrices(
         \Magento\Catalog\Model\ResourceModel\Product\Collection $collection
@@ -157,9 +147,6 @@ class Collection extends \Magento\Framework\Data\Collection
                 case 'featured':
                     $collection = $this->_getIdCollection($params, $limit);
                     break;
-                case 'newcreated':
-                    $collection = $this->_getNewReleases($params, $limit);
-                    break;
                 case 'newfromdate':
                     $collection = $this->_getNewArrivals($params, $limit);
                     break;
@@ -173,7 +160,7 @@ class Collection extends \Magento\Framework\Data\Collection
                     $collection = $this->_getDiscount($params, $limit);
                     break;
                 case 'related':
-                    $collection = $this->_getRelated();
+                    $collection = $this->_getRelated($limit);
                     break;
                 case 'upsell':
                     $collection = $this->_getUpSell($limit);
@@ -237,7 +224,9 @@ class Collection extends \Magento\Framework\Data\Collection
         $collection = $this->createCollection($params);
         $collection->addIdFilter($params['product_ids']);
 
-        $collection->getSelect()->limit($limit);
+        $collection->getSelect()
+            ->order(new \Zend_Db_Expr('FIELD(e.entity_id,' . implode(',', $params['product_ids']) . ')'))
+            ->limit($limit);
         // $collection->setPageSize($limit);
 
         return $collection;
@@ -297,44 +286,48 @@ class Collection extends \Magento\Framework\Data\Collection
 
             $date = $this->_localeDate->date();
             switch ($params['period']) {
-                case 'current_year' :
-                    $from   = $date->format('Y-01-01');
-                    $to     = $date->modify('+1 year')->format('Y-01-01');
+                case 'current_year':
+                    $from = $date->format('Y-01-01');
+                    $to = $date->modify('+1 year')->format('Y-01-01');
 
                     break;
-                case 'last_year' :
-                    $from   = $date->modify('-1 year')->format('Y-01-01');
-                    $to     = $date->format('Y-01-01');
+                case 'last_year':
+                    $to = $date->format('Y-01-01');
+                    $from = $date->modify('-1 year')->format('Y-01-01');
 
                     break;
-                case 'current_month' :
-                    $from   = $date->format('Y-m-01');
-                    $to     = $date->modify('+1 month')->format('Y-m-01');
+                case 'current_month':
+                    $from = $date->format('Y-m-01');
+                    $to = $date->modify('+1 month')->format('Y-m-01');
 
                     break;
-                case 'last_month' :
-                    $from   = $date->modify('-1 month')->format('Y-m-01');
-                    $to     = $date->format('Y-m-01');
+                case 'last_month':
+                    $to = $date->format('Y-m-01');
+                    $from = $date->modify('-1 month')->format('Y-m-01');
 
                     break;
-                case  'yesterday' :
-                    $from   = $date->modify('-1 day')->format('Y-m-d');
-                    $to     = $date->format('Y-m-d');
+                case 'yesterday':
+                    $to = $date->format('Y-m-d');
+                    $from = $date->modify('-1 day')->format('Y-m-d');
 
                     break;
                 default:
-                    $from   = null;
-                    $to     = $date->modify('+1 year')->format('Y-01-01');
+                    $from = null;
+                    $to = $date->modify('+1 year')->format('Y-01-01');
 
                     break;
             }
 
+            if ($from) {
+                $joinQuery = "(oi.product_id = e.entity_id AND oi.created_at >= '{$from}' AND oi.created_at < '{$to}')";
+            } else {
+                $joinQuery = "(oi.product_id = e.entity_id AND oi.created_at < '{$to}')";
+            }
+
             $orderItems = $this->_resource->getTableName('sales_order_item');
-            $orderMain  = $this->_resource->getTableName('sales_order');
+            $orderMain = $this->_resource->getTableName('sales_order');
             $collection->getSelect()
-                ->join(['oi' => $orderItems],
-                    "(oi.product_id = e.entity_id AND oi.created_at > '{$from}' AND oi.created_at < '{$to}')",
-                    ['count' => 'SUM(oi.qty_ordered)'])
+                ->join(['oi' => $orderItems], $joinQuery, ['count' => 'SUM(oi.qty_ordered)'])
                 ->join(['om' => $orderMain], 'oi.order_id = om.entity_id', [])
                 ->where('om.status = ?', 'complete')
                 ->group('e.entity_id')
@@ -346,7 +339,6 @@ class Collection extends \Magento\Framework\Data\Collection
             $collection->getSelect()->limit($limit);
 
             return $collection;
-
         }
 
         return false;
@@ -398,7 +390,7 @@ class Collection extends \Magento\Framework\Data\Collection
         $collection = $this->createCollection2($params);
         $collection2 = clone $collection;
         // $collectionDiscount = clone $collection;
-        $connection      = $this->_resource->getConnection('core_read');
+        $connection = $this->_resource->getConnection('core_read');
         //$websiteId       = $this->storeManager->getStore(true)->getWebsite()->getId();
         //$customerGroupId = $this->_customerSession->getCustomerGroupId();
 
@@ -460,7 +452,7 @@ class Collection extends \Magento\Framework\Data\Collection
         return $ids;
     }
 
-    protected function _getRelated()
+    protected function _getRelated($limit)
     {
         $product = $this->_coreRegistry->registry('product');
 
@@ -473,15 +465,11 @@ class Collection extends \Magento\Framework\Data\Collection
             ->setPositionOrder()
             ->addStoreFilter();
 
-        if ($this->_moduleManager->isEnabled('Magento_Checkout')) {
-            $cartProductIds = $this->getCartProductIds();
-            if (!empty($cartProductIds)) {
-                $collection->addExcludeProductFilter($cartProductIds);
-            }
-            $this->_addProductAttributesAndPrices($collection);
-        }
-
         $collection->setVisibility($this->catalogProductVisibility->getVisibleInCatalogIds());
+
+        if ($limit) {
+            $collection->getSelect()->limit($limit);
+        }
 
         // $collection->load();
 
@@ -492,7 +480,7 @@ class Collection extends \Magento\Framework\Data\Collection
         return $collection;
     }
 
-    protected function _getUpSell($limit = 12)
+    protected function _getUpSell($limit)
     {
         $product = $this->_coreRegistry->registry('product');
 
@@ -505,17 +493,11 @@ class Collection extends \Magento\Framework\Data\Collection
             ->setPositionOrder()
             ->addStoreFilter();
 
-        if ($this->_moduleManager->isEnabled('Magento_Checkout')) {
-            $cartProductIds = $this->getCartProductIds();
-            if (!empty($cartProductIds)) {
-                $collection->addExcludeProductFilter($cartProductIds);
-            }
-            $this->_addProductAttributesAndPrices($collection);
-        }
-
         $collection->setVisibility($this->catalogProductVisibility->getVisibleInCatalogIds());
 
-        $collection->getSelect()->limit($limit);
+        if ($limit) {
+            $collection->getSelect()->limit($limit);
+        }
 
         //$collection->setPage(1, $limit);
         // $collection->load();
@@ -531,9 +513,9 @@ class Collection extends \Magento\Framework\Data\Collection
     {
         $collection = $this->createCollection($params);
 
-        $resource   = $this->_resource;
+        $resource = $this->_resource;
         $connection = $resource->getConnection('core_read');
-        $storeId    = $this->storeManager->getStore()->getId();
+        $storeId = $this->storeManager->getStore()->getId();
 
         $select = $connection->select()
             ->from(
@@ -561,17 +543,32 @@ class Collection extends \Magento\Framework\Data\Collection
         $collection = $this->createCollection($params);
 
         $numberOfItems = $limit;
-        $candidateIds  = $collection->getAllIds();
-        $chosenIds     = [];
-        $maxKey        = count($candidateIds) - 1;
-        while (count($chosenIds) < $numberOfItems) {
-            $randomKey             = mt_rand(0, $maxKey);
+        $candidateIds = $collection->getAllIds();
+        $chosenIds = [];
+        $count = count($candidateIds);
+
+        if (!$count) {
+            return false;
+        }
+
+        if ($count == 1) {
+            return $collection;
+        }
+
+        $maxKey = $count - 1;
+
+        if ($maxKey < $limit) {
+            $numberOfItems = $maxKey;
+        }
+
+        while (count($chosenIds) <= $numberOfItems) {
+            $randomKey = mt_rand(0, $maxKey);
             $chosenIds[$randomKey] = $candidateIds[$randomKey];
         }
-        $collection->addIdFilter($chosenIds);
 
-        $collection->getSelect()->limit($limit);
-        // $collection->setPageSize($limit);
+        $collection->getSelect()
+            ->order(new \Zend_Db_Expr('FIELD(e.entity_id,' . implode(',', $chosenIds) . ')'))
+            ->limit($limit);
 
         return $collection;
     }

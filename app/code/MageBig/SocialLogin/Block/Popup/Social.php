@@ -47,10 +47,9 @@ class Social extends Template
         $availabelSocials = [];
 
         foreach ($this->socialHelper->getSocialTypes() as $socialKey => $socialLabel) {
-            $this->socialHelper->setType($socialKey);
-            if ($this->socialHelper->isEnabled()) {
+            if ($this->socialHelper->isEnabled($socialKey)) {
                 $availabelSocials[$socialKey] = [
-                    'label'     => $socialLabel,
+                    'label' => $socialLabel,
                     'login_url' => $this->getLoginUrl($socialKey),
                 ];
             }
@@ -82,9 +81,10 @@ class Social extends Template
     public function getSocialButtonsConfig()
     {
         $availableButtons = $this->getAvailableSocials();
+
         foreach ($availableButtons as $key => &$button) {
-            $button['url']     = $this->getLoginUrl($key, ['authen' => 'popup']);
-            $button['key']     = $key;
+            $button['url'] = $this->getLoginUrl($key);
+            $button['key'] = $key;
             $button['btn_key'] = $this->getBtnKey($key);
         }
 
@@ -110,13 +110,17 @@ class Social extends Template
     }
 
     /**
-     * @param       $socialKey
-     * @param array $params
+     * @param $socialKey
      * @return string
      */
-    public function getLoginUrl($socialKey, $params = [])
+    public function getLoginUrl($socialKey)
     {
         $params['type'] = $socialKey;
+
+        if ($this->getRequest()->getFullActionName() == 'checkout_index_index') {
+            $params['is_checkout'] = 1;
+        }
+
 
         return $this->getUrl('sociallogin/social/login', $params);
     }

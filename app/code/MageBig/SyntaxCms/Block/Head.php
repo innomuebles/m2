@@ -30,9 +30,9 @@ class Head extends Template
     protected function _prepareLayout()
     {
         if ($this->isEnabled()) {
-            $this->pageConfig->addPageAsset('MageBig_SyntaxCms/cm/lib/codemirror.css');
-            $this->pageConfig->addPageAsset('MageBig_SyntaxCms/cm/lib/snm.css');
-            $this->pageConfig->addPageAsset('MageBig_SyntaxCms/js/snm_cm.js');
+            $this->pageConfig->addPageAsset('MageBig_SyntaxCms::cm/lib/codemirror.css');
+            $this->pageConfig->addPageAsset('MageBig_SyntaxCms::cm/lib/snm.css');
+            $this->pageConfig->addPageAsset('MageBig_SyntaxCms::js/snm_cm.js');
         }
         return parent::_prepareLayout();
     }

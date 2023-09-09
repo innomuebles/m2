@@ -431,7 +431,7 @@ function getCityState(val,main_id){
 
 function getCityStateShipping(val,main_id){
     emptyInput(val,main_id);
-    loadNearestStore(val);
+    //tmp_163::loadNearestStore(val);
 
 }
 

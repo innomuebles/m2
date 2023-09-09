@@ -24,10 +24,14 @@ class Page
      * @var \Magento\Cms\Model\PageFactory
      */
     protected $pageFactory;
+    protected $pageCollection;
+    protected $pageCollectionFactory;
 
     /**
-     * @param SampleDataContext              $sampleDataContext
+     * @param SampleDataContext $sampleDataContext
      * @param \Magento\Cms\Model\PageFactory $pageFactory
+     * @param \Magento\Cms\Model\ResourceModel\Page\Collection $pageCollection
+     * @param \Magento\Cms\Model\ResourceModel\Page\CollectionFactory $pageCollectionFactory
      */
     public function __construct(
         SampleDataContext $sampleDataContext,
@@ -35,10 +39,10 @@ class Page
         \Magento\Cms\Model\ResourceModel\Page\Collection $pageCollection,
         \Magento\Cms\Model\ResourceModel\Page\CollectionFactory $pageCollectionFactory
     ) {
-        $this->fixtureManager        = $sampleDataContext->getFixtureManager();
-        $this->csvReader             = $sampleDataContext->getCsvReader();
-        $this->pageFactory           = $pageFactory;
-        $this->pageCollection        = $pageCollection;
+        $this->fixtureManager = $sampleDataContext->getFixtureManager();
+        $this->csvReader = $sampleDataContext->getCsvReader();
+        $this->pageFactory = $pageFactory;
+        $this->pageCollection = $pageCollection;
         $this->pageCollectionFactory = $pageCollectionFactory;
     }
 
@@ -46,7 +50,23 @@ class Page
     {
         $path = dirname(dirname(__DIR__)) . '/datacms';
         $list = [
-            ['title', 'page_layout', 'meta_keywords', 'meta_description', 'identifier', 'content_heading', 'content', 'is_active', 'sort_order', 'layout_update_xml', 'custom_theme', 'custom_root_template', 'custom_layout_update_xml', 'custom_theme_from', 'custom_theme_to'],
+            [
+                'title',
+                'page_layout',
+                'meta_keywords',
+                'meta_description',
+                'identifier',
+                'content_heading',
+                'content',
+                'is_active',
+                'sort_order',
+                'layout_update_xml',
+                'custom_theme',
+                'custom_root_template',
+                'custom_layout_update_xml',
+                'custom_theme_from',
+                'custom_theme_to'
+            ],
         ];
 
         $this->pageCollection->addFieldToSelect('*');
@@ -72,9 +92,7 @@ class Page
     }
 
     /**
-     * @param array $datacms
-     *
-     * @throws \Exception
+     * @param bool $override
      */
     public function install($override = false)
     {
@@ -86,7 +104,7 @@ class Page
                 return;
             }
 
-            $rows   = $this->csvReader->getData($fileName);
+            $rows = $this->csvReader->getData($fileName);
             $header = array_shift($rows);
 
             foreach ($rows as $row) {
@@ -97,14 +115,12 @@ class Page
                 $row = $data;
 
                 $pageCollection = $this->pageCollectionFactory->create();
-                $oldPages       = $pageCollection->addFilter('identifier', $row['identifier'])->load();
+                $oldPages = $pageCollection->addFilter('identifier', $row['identifier'])->load();
 
-                if ($override && $oldPages->count()) {
+                if ($override && $oldPages) {
                     foreach ($oldPages as $oldPage) {
                         $oldPage->delete();
                     }
-                } elseif ($oldPages->count() > 0) {
-                    continue;
                 }
 
                 $this->pageFactory->create()

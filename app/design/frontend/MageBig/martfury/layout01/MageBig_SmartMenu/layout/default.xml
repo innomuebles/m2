@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="root">
+            <block class="MageBig\SmartMenu\Block\SmartMenu" name="navbar" as="navbar" after="-" template="MageBig_SmartMenu::html/navbar.phtml" >
+                <block class="Magento\Theme\Block\Html\Header\Logo" name="logo-nav" template="MageBig_SmartMenu::html/logo.phtml">
+                    <arguments>
+                        <argument name="logoPathResolver" xsi:type="object">Magento\Theme\ViewModel\Block\Html\Header\LogoPathResolver</argument>
+                        <argument name="logo_size_resolver" xsi:type="object">Magento\Theme\ViewModel\Block\Html\Header\LogoSizeResolver</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

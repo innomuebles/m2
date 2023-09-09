@@ -8,26 +8,30 @@
     ],
     "config": {
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "magento/magento-composer-installer": true,
+            "magento/inventory-composer-installer": true,
+            "laminas/laminas-dependency-plugin": true
+        }
     },
     "require": {
-        "facebook/php-business-sdk": "^9.0",
-        "hybridauth/hybridauth": "^2.14",
-        "innomuebles/core": "*",
-        "mage2pro/core": "*",
-        "magento/product-community-edition": "2.3.1",
-        "mageplaza/magento-2-spanish-language-pack": "dev-master"
+        "hybridauth/hybridauth": "^3.7",
+        "mage2pro/core": "^8.0",
+        "magento/product-community-edition": "2.4.3",
+        "mageplaza/magento-2-spanish-language-pack": "dev-master",
+        "mageplaza/module-core": "^1.5"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "~2.13.0",
+        "allure-framework/allure-phpunit": "~1.4",        
+        "friendsofphp/php-cs-fixer": "~2.18.1",
         "lusitanian/oauth": "~0.8.10",
-        "magento/magento2-functional-testing-framework": "~2.3.13",
-        "pdepend/pdepend": "2.5.2",
-        "phpmd/phpmd": "@stable",
-        "phpunit/phpunit": "~6.5.0",
-        "sebastian/phpcpd": "~3.0.0",
-        "squizlabs/php_codesniffer": "3.3.1",
-        "allure-framework/allure-phpunit": "~1.2.0"
+        "magento/magento2-functional-testing-framework": "^3.0",
+        "pdepend/pdepend": "~2.7.1",
+        "phpmd/phpmd": "^2.8.0",
+        "phpunit/phpunit": "^9",
+        "sebastian/phpcpd": "^6.0.3",
+        "squizlabs/php_codesniffer": "~3.5.4"
     },
     "conflict": {
         "gene/bluefoot": "*"

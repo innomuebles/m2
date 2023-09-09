@@ -1,4 +1,5 @@
 <?php
+
 namespace MageBig\WysiwygFiles\Helper;
 
 use Magento\Framework\App\Helper\Context;
@@ -8,7 +9,6 @@ use Magento\Framework\App\Helper\Context;
  */
 class Settings extends \Magento\Framework\App\Helper\AbstractHelper
 {
-
     const CONFIG_PATH_FILETYPES = 'wysiwyg/filetypes';
 
     public $configPathModule = 'cms';
@@ -31,10 +31,8 @@ class Settings extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * Set a specified store ID value
-     *
-     * @param int $store
-     * @return $this
+     * @return int
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getStoreId()
     {
@@ -45,9 +43,7 @@ class Settings extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * Set a specified store ID value
-     *
-     * @param int $store
+     * @param $store
      * @return $this
      */
     public function setStoreId($store)
@@ -68,17 +64,25 @@ class Settings extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
+    /**
+     * Get extra file types
+     *
+     * @return array|string[]
+     */
     public function getExtraFiletypes()
     {
-        $filetypes = array();
-        $settings  = json_decode($this->getConfigValue(self::CONFIG_PATH_FILETYPES));
-        if ($settings) {
-            foreach ($settings as $setting) {
-                $filetypes[] =  $setting->extension;
+        $filetypes = [];
+        $value = $this->getConfigValue(self::CONFIG_PATH_FILETYPES);
+        if ($value) {
+            $settings = json_decode($this->getConfigValue(self::CONFIG_PATH_FILETYPES));
+            if ($settings) {
+                foreach ($settings as $setting) {
+                    $filetypes[] = $setting->extension;
+                }
             }
         }
-        $defaultFiletypes = array('doc', 'docm', 'docx', 'csv', 'xml', 'xls', 'xlsx', 'pdf', 'zip', 'tar', 'mp4', 'webm', 'rar', 'ogg');
-        return array_merge($filetypes, $defaultFiletypes);
-    }
 
+        $files = ['doc', 'docm', 'docx', 'csv', 'xml', 'xls', 'xlsx', 'pdf', 'zip', 'tar', 'mp4', 'webp', 'rar', 'ogg'];
+        return array_merge($filetypes, $files);
+    }
 }

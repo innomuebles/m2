@@ -11,9 +11,9 @@
             <block name="category.products.list.container" class="Magento\Framework\View\Element\Template" template="MageBig_AjaxFilter::config.phtml" />
         </referenceContainer>
         <move element="search.result" destination="category.products.list.container" before="-" />
-        <referenceBlock name="catalog.navigation.state" template="MageBig_AjaxFilter::layer/state.phtml" />
-        <referenceBlock name="catalog.leftnav" template="MageBig_AjaxFilter::layer/view.phtml">
-            <block class="MageBig\AjaxFilter\Block\Navigation\FilterRenderer" name="catalog.navigation.renderer" as="renderer" >
+        <referenceBlock name="catalogsearch.navigation.state" template="MageBig_AjaxFilter::layer/state.phtml" />
+        <referenceBlock name="catalogsearch.leftnav" template="MageBig_AjaxFilter::layer/view.phtml">
+            <block class="MageBig\AjaxFilter\Block\Navigation\FilterRenderer" name="catalogsearch.navigation.renderer" as="renderer" >
                 <block class="MageBig\AjaxFilter\Block\Navigation\Renderer\PriceSlider"
                        name="catalog.navigation.renderer.price.slider"
                        template="MageBig_AjaxFilter::layer/filter/style/slider.phtml" />

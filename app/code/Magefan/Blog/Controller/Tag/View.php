@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
  *
  * Glory to Ukraine! Glory to the heroes!
  */
@@ -14,6 +14,13 @@ use Magento\Store\Model\ScopeInterface;
  */
 class View extends \Magefan\Blog\App\Action\Action
 {
+    /**
+     * Store manager
+     *
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    private $_storeManager;
+
     /**
      * View blog author action
      *
@@ -45,14 +52,31 @@ class View extends \Magefan\Blog\App\Action\Action
      */
     protected function _initTag()
     {
-        $id = $this->getRequest()->getParam('id');
-
-        $tag = $this->_objectManager->create(\Magefan\Blog\Model\Tag::class)->load($id);
-
-        if (!$tag->isActive()) {
+        $id = (int)$this->getRequest()->getParam('id');
+        if (!$id) {
             return false;
         }
 
+        $storeId = $this->getStoreManager()->getStore()->getId();
+        $tag = $this->_objectManager->create(\Magefan\Blog\Model\Tag::class)->load($id);
+
+        if (!$tag->isVisibleOnStore($storeId)) {
+            return false;
+        }
+
+        $tag->setStoreId($storeId);
+
         return $tag;
+    }
+
+    /**
+     * @return \Magento\Store\Model\StoreManagerInterface|mixed
+     */
+    private function getStoreManager()
+    {
+        if (null === $this->_storeManager) {
+            $this->_storeManager = $this->_objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
+        }
+        return $this->_storeManager;
     }
 }
