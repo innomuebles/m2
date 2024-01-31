@@ -36,14 +36,13 @@ class ForDirective implements DirectiveProcessorInterface
     }
 
     /**
-     * Filter the string as template.
-     *
      * @param array $construction
      * @param Template $filter
      * @param array $templateVariables
+     *
      * @return string
      */
-    public function process(array $construction, Template $filter, array $templateVariables): string
+    private function resolve(array $construction, Template $filter, array $templateVariables): string
     {
         if (!$this->isValidLoop($construction)) {
             return $construction[0];
@@ -65,6 +64,16 @@ class ForDirective implements DirectiveProcessorInterface
         }
 
         return $construction[0];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function process(array $construction, Template $filter, array $templateVariables): string
+    {
+        $result = $this->resolve($construction, $filter, $templateVariables);
+
+        return str_replace(['{', '}'], '', (string) $result);
     }
 
     /**

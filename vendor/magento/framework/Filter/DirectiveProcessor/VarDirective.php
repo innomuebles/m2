@@ -55,6 +55,8 @@ class VarDirective implements DirectiveProcessorInterface
             $result = $this->filterApplier->applyFromRawParam($construction['filters'], $result);
         }
 
+        $result = str_replace(['{', '}'], '', (string) $result);
+
         return $result;
     }
 

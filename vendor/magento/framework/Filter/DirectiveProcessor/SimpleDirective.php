@@ -68,7 +68,7 @@ class SimpleDirective implements DirectiveProcessorInterface
                 ->get($construction['directiveName']);
         } catch (\InvalidArgumentException $e) {
             // This directive doesn't have a SimpleProcessor
-            return $construction[0];
+            return '';
         }
 
         $parameters = $this->extractParameters($construction, $filter, $templateVariables);
@@ -78,6 +78,8 @@ class SimpleDirective implements DirectiveProcessorInterface
             $parameters,
             !empty($construction['content']) ? $filter->filter($construction['content']) : null
         );
+
+        $value = str_replace(['{', '}'], '', (string) $value);
 
         $value = $this->filterApplier->applyFromRawParam(
             $construction['filters'] ?? '',

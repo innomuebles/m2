@@ -32,9 +32,13 @@ class DependDirective implements DirectiveProcessorInterface
     }
 
     /**
-     * @inheritdoc
+     * @param array $construction
+     * @param Template $filter
+     * @param array $templateVariables
+     *
+     * @return string
      */
-    public function process(array $construction, Template $filter, array $templateVariables): string
+    private function resolve(array $construction, Template $filter, array $templateVariables): string
     {
         if (empty($templateVariables)) {
             // If template processing
@@ -46,6 +50,16 @@ class DependDirective implements DirectiveProcessorInterface
         } else {
             return $filter->filter($construction[2]);
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function process(array $construction, Template $filter, array $templateVariables): string
+    {
+        $result = $this->resolve($construction, $filter, $templateVariables);
+
+        return str_replace(['{', '}'], '', (string) $result);
     }
 
     /**
