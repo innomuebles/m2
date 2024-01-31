@@ -21,6 +21,9 @@
 # "How to fix the «Invalid template file» / «require_js.phtml» failure of Magento 2.3.x in Windows?"
 # https://mage2.pro/t/5774
 !/vendor/magento/framework/View/Element/Template/File/Validator.php
+# 2024-01-31 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+# "Add the modified Magento files to the source control": https://github.com/innomuebles/m2/issues/25
+!/vendor/magento/framework/Locale/Format.php
 # 2021-05-14 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # 1) «Broken reference: the 'view.addto.compare' tries to reorder itself towards 'view.addto.wishlist',
 # but their parents are different: 'product.info.addto' and 'product.info.addtocart' respectively»:
@@ -29,6 +32,9 @@
 # but their parents are different: 'skip_gallery_before.wrapper' and 'product.info.media' respectively»:
 # https://github.com/innomuebles/m2/issues/19
 !/vendor/magento/module-catalog/view/frontend/layout/catalog_product_view.xml
+# 2024-01-31 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+# "Add the modified Magento files to the source control": https://github.com/innomuebles/m2/issues/25
+!/vendor/magento/zendframework1/library/Zend/Locale/Data/es_CR.xml
 /dev
 /vendor/codeception
 /vendor/magento/framework/Test
