@@ -1,4 +1,4 @@
-# 2020-12-01 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+# 2020-12-01 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # http://stackoverflow.com/questions/987142
 # http://stackoverflow.com/questions/9162919
 # http://stackoverflow.com/questions/8024924#comment15884195_8025106
@@ -12,16 +12,16 @@
 !/app/design/frontend/MageBig/**/*
 !/app/etc/config.php
 !/le_connector/**/*
-# 2021-05-09 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+# 2021-05-09 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # "Reimplement the changes made by someone since my last work (between 2021-01-22 and 2021-05-08)":
 # https://github.com/innomuebles/m2/issues/16
 !/lib/internal/Mageplaza/**/*
 /update/
-# 2020-12-01 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+# 2020-12-01 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # "How to fix the «Invalid template file» / «require_js.phtml» failure of Magento 2.3.x in Windows?"
 # https://mage2.pro/t/5774
 !/vendor/magento/framework/View/Element/Template/File/Validator.php
-# 2021-05-14 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+# 2021-05-14 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # 1) «Broken reference: the 'view.addto.compare' tries to reorder itself towards 'view.addto.wishlist',
 # but their parents are different: 'product.info.addto' and 'product.info.addtocart' respectively»:
 # https://github.com/innomuebles/m2/issues/18
