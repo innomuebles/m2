@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+-->
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="magefan_gtm_session">
+        <column xsi:type="int"      name="id" identity="true"  unsigned="true" nullable="false" padding="10" comment="ID"/>
+        <column xsi:type="varchar"  name="client_id"    nullable="false" comment="Client Id"/>
+        <column xsi:type="timestamp"  name="session_id"    nullable="false" comment="Session Id"/>
+        <column xsi:type="int"      name="session_count"     nullable="false" default="1" comment="Session Count"/>
+        <column xsi:type="mediumtext"  name="session_data"    nullable="false" comment="Session Data"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="CLIENT_ID_LINK_REFERENCE" indexType="btree">
+            <column name="client_id"/>
+        </index>
+    </table>
+
+    <table name="sales_order">
+        <column name="mf_gtm_client_id" nullable="true" xsi:type="varchar" comment="Magefan Gtm Client Id" length="255"/>
+        <column name="mf_gtm_session_id" nullable="true" xsi:type="varchar" comment="Magefan Gtm Session Id" length="255"/>
+    </table>
+
+    <table name="quote">
+        <column name="mf_gtm_client_id" nullable="true" xsi:type="varchar" comment="Magefan Gtm Client Id" length="255"/>
+        <column name="mf_gtm_session_id" nullable="true" xsi:type="varchar" comment="Magefan Gtm Session Id" length="255"/>
+    </table>
+</schema>

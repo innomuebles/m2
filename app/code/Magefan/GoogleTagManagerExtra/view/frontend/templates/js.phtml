@@ -1,0 +1,84 @@
+<?php
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+?>
+<?php
+/**
+ * @var $block \Magefan\GoogleTagManager\Block\GtmCode
+ * @var $mfSecureRenderer \Magefan\Community\Api\SecureHtmlRendererInterface
+ * @var $mfHyvaThemeDetection \Magefan\Community\Api\HyvaThemeDetectionInterface
+ * @var $mfBreezeThemeDetection \Magefan\Community\Api\BreezeThemeDetectionInterface
+ */
+
+use Magefan\GoogleTagManagerPlus\Model\GetCustomerData;
+?>
+<?php if (!$mfHyvaThemeDetection->execute()) { ?>
+    <?php $script = "
+        if (window.require) require(['jquery'], function($) {
+            $(document).on('ajaxComplete', function (event, xhr, settings) {
+                if (typeof settings == 'undefined' && xhr.settings) {
+                    settings = xhr.settings;
+                };
+                
+                function getQueryParam(url, key) {
+                    let queryStartPos = url.indexOf('?');
+                    if (queryStartPos === -1) {
+                        return;
+                    }
+                    let params = url.substring(queryStartPos + 1).split('&');
+                    for (var i = 0; i < params.length; i++) {
+                        var pairs = params[i].split('=');
+                        if (decodeURIComponent(pairs.shift()) == key) {
+                            return decodeURIComponent(pairs.join('='));
+                        }
+                    }
+                };
+
+                let term = '';
+                let dataLayer = {};
+                if (settings.url.indexOf('?q=') !== -1) {
+                    term = getQueryParam(settings.url, 'q');
+                } else if (settings.url.indexOf('?search_string=') !== -1) {
+                    term = getQueryParam(settings.url, 'search_string');
+                } else if (settings.url.indexOf('/search/') !== -1) {
+                    let substringAfter = function (str, pattern) {
+                        return str.slice(str.indexOf(pattern) + pattern.length);
+                    };
+                    let substringBefore = function (str, pattern) {
+                        return str.slice(0, str.indexOf(pattern));
+                    };
+                    let after = substringAfter(settings.url, '/search/');
+                    term = substringBefore(after, '?');
+                };
+                if (term) {
+                    dataLayer.event = 'search';
+                    const customerData = getMfGtmCustomerData();
+
+                    for (let key in customerData) {
+                        if (!dataLayer.hasOwnProperty(key) && customerData[key]) {
+                            dataLayer.key = customerData[key];
+                        }
+                    }
+
+                    dataLayer.search_term = term;
+                    dataLayer.ecomm_pagetype = 'searchresults';
+
+                    let dynamicKeys = " . json_encode(array_keys(GetCustomerData::CUSTOMER_DATA)) . ";
+                    for (let x=0; x<dynamicKeys.length;x++) {
+                        let key = dynamicKeys[x];
+                        let value = getMfGtmCustomerData()[key];
+                        if (value) {
+                            dataLayer[key] = value;
+                        };
+                    };
+
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push(dataLayer);
+                }
+            });
+        });
+    "; ?>
+    <?= /* @noEscape */ $mfSecureRenderer->renderTag('script', [], $script, false) ?>
+<?php } ?>

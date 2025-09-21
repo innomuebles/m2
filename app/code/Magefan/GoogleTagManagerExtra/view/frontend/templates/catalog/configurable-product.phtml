@@ -1,0 +1,82 @@
+<?php
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+?>
+<?php
+/**
+ * @var $block \Magefan\GoogleTagManagerExtra\Block\Catalog\ConfigurableProduct
+ * @var $mfSecureRenderer \Magefan\Community\Api\SecureHtmlRendererInterface
+ * @var $mfHyvaThemeDetection \Magefan\Community\Api\HyvaThemeDetectionInterface
+ * @var $mfBreezeThemeDetection \Magefan\Community\Api\BreezeThemeDetectionInterface
+ */
+?>
+<?php if (!$mfHyvaThemeDetection->execute()) { ?>
+    <?php $script = "
+        if (window.require) require(['jquery'], function($) {
+        
+            let childProductIdentifiers = {};
+            let productTimeout = {};
+
+            $('#product_addtocart_form [name^=super_attribute]').change(function (e) {
+                setTimeout(initGTMCustomizeProduct, 200);
+            });
+            
+            /* Customize Product */
+            $('[class*=\"swatch-opt\"]').on('click', '.swatch-select', function (e) {
+                setTimeout(initGTMCustomizeProduct, 200);
+            });
+    
+            $('[class*=\"swatch-opt\"]').on('click', '.swatch-option', function (e) {
+                setTimeout(initGTMCustomizeProduct, 200);
+            });
+    
+            function initGTMCustomizeProduct() {
+                
+                let swatchRenderer = $('[data-role=swatch-options]').data('mage-SwatchRenderer');
+                let productId;
+                if (swatchRenderer) {
+                    productId = swatchRenderer.getProductId();
+                } else {
+                    productId = $('#product_addtocart_form [name=selected_configurable_option]').val();
+                }
+                if (!productId) return;
+                if (productId && (!productTimeout[productId] || Date.now() - productTimeout[productId] > 2000)) {
+                    productTimeout[productId] = Date.now();
+                    if (childProductIdentifiers[productId]) {
+                        pushDataLayer(productId);
+                    } else {
+                        let parentProductId = $(\"#product_addtocart_form input[name='product']\").attr('value');
+                        if (!parentProductId) return;
+                        $.ajax({
+                           url: atob('" . base64_encode($block->getUrl('mfgoogletagmanagerextra/configurableproduct/identifiers')) . "'),
+                           data: {
+                               product_id: productId,
+                               parent_product_id: parentProductId
+                           },
+                           type: 'POST',
+                           dataType: 'json',
+                           success: function (response) {
+                               if (response.success) {
+                                   childProductIdentifiers[productId] = JSON.parse(response.childProductDataLayer);
+                                   pushDataLayer(productId);
+                               } else {
+                                   console.error(response.message);
+                               }
+                           }
+                        });
+                    }
+                }
+            };
+    
+            function pushDataLayer(productId) {
+                if (productId && childProductIdentifiers[productId]) {
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push(childProductIdentifiers[productId]);
+                }
+            };
+        });
+    "; ?>
+    <?= /* @noEscape */ $mfSecureRenderer->renderTag('script', [], $script, false) ?>
+<?php } ?>

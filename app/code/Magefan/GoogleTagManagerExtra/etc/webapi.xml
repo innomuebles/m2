@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <!-- Example: curl -X POST "http://mystore.com/index.php/rest/V1/mfgtm/dlp" \
+      -H "Content-Type:application/json" \
+      -d '{"data":"{\"title\":\"value_1\",\"content\":\"Test\",\"is_active\":1,\"store_ids\":\"0\"}"}'
+      -d '{"data":"{\"gtm.start\":\"value\",\"event\":\"value\"},{\"event\":\"view_cart\",\"ecommerce\":{\"currency\":\"USD\",\"value\":\"0.00\",\"items\":[]},\"items_count\":\"0\",\"items_qty\":\"0\",\"coupon_code\":\"null\"}' -->
+    <route url="/V1/mfgtm/dlp" method="POST">
+        <service class="Magefan\GoogleTagManagerExtra\Api\Events\PushInterface" method="execute"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+
+    <route url="/V1/mfgtm/dlp/:cartId/order-begin" method="POST">
+        <service class="Magefan\GoogleTagManagerExtra\Api\Events\OrderBeginInterface" method="execute"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+
+    <route url="/V1/mfgtm/dlp/:productId/view-item" method="POST">
+        <service class="Magefan\GoogleTagManagerExtra\Api\Events\ViewItemInterface" method="execute"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+
+    <route url="/V1/mfgtm/dlp/:listType/view-item-list/:productIdentifiers" method="POST">
+        <service class="Magefan\GoogleTagManagerExtra\Api\Events\ViewItemListInterface" method="execute"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+
+    <route url="/V1/mfgtm/dlp/:quoteId/add-shipping-info/:shippingMethod" method="POST">
+        <service class="Magefan\GoogleTagManagerExtra\Api\Events\AddShippingInfoInterface" method="execute"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+
+    <route url="/V1/mfgtm/dlp/:quoteId/add-billing-info/:paymentMethod" method="POST">
+        <service class="Magefan\GoogleTagManagerExtra\Api\Events\AddBillingInfoInterface" method="execute"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+
+    <route url="/V1/mfgtm/dlp/:quoteId/view-cart" method="POST">
+        <service class="Magefan\GoogleTagManagerExtra\Api\Events\ViewCartInterface" method="execute"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+
+    <route url="/V1/mfgtm/dlp/:searchTerm/search" method="POST">
+        <service class="Magefan\GoogleTagManagerExtra\Api\Events\SearchInterface" method="execute"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+</routes>

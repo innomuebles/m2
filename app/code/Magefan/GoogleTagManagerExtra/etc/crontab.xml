@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job instance="Magefan\GoogleTagManagerExtra\Cron\PushMissingTransactions" method="execute" name="magefan_gtm_extra_push_missing_transactions">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job instance="Magefan\GoogleTagManagerExtra\Cron\DeleteOldSessions" method="execute" name="magefan_gtm_extra_delete_old_sessions">
+            <schedule>30 3 * * *</schedule>
+        </job>
+    </group>
+</config>

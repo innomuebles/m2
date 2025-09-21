@@ -1,0 +1,34 @@
+<?php
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+?>
+<?php
+/**
+ * @var $block \Magefan\GoogleTagManagerExtra\Block\Checkout\TrackPurchaseEvent
+ * @var $mfSecureRenderer \Magefan\Community\Api\SecureHtmlRendererInterface
+ * @var $mfHyvaThemeDetection \Magefan\Community\Api\HyvaThemeDetectionInterface
+ */
+
+?>
+<?= $block->getLayout()->createBlock(\Magefan\Community\Block\JsScript::class)->setMethod('ajax')->toHtml() ?>
+<?= $block->getLayout()->createBlock(\Magefan\Community\Block\JsScript::class)->setMethod('objToUrlParams')->toHtml() ?>
+<?php $script = "
+    window.mfTrackPurchase = {};
+
+    window.mfTrackPurchase.GA4Blocked = function () {
+        console.log('GA4 blocked');
+    };
+
+    window.mfTrackPurchase.GA4NotBlocked = function () {
+        console.log('GA4 un-blocked');
+
+        MagefanJs.ajax({
+            type: 'POST',
+            url: '{$block->escapeUrl($block->getTrackingUrl())}',
+            data: MagefanJs.objToUrlParams({'transaction_id' : '{$block->escapeUrl($block->getTransactionId())}'})
+        });
+    };
+"; ?>
+<?= /* @noEscape */ $mfSecureRenderer->renderTag('script', [], $script, false) ?>

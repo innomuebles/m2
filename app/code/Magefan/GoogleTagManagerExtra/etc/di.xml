@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magefan\GoogleTagManagerExtra\Api\ServerTrackerInterface" type="Magefan\GoogleTagManagerExtra\Model\ServerTracker" />
+    <preference for="Magefan\GoogleTagManagerExtra\Api\DataLayer\LoginInterface" type="Magefan\GoogleTagManagerExtra\Model\DataLayer\Login" />
+    <preference for="Magefan\GoogleTagManagerExtra\Api\DataLayer\SignUpInterface" type="Magefan\GoogleTagManagerExtra\Model\DataLayer\SignUp" />
+    <preference for="Magefan\GoogleTagManagerExtra\Api\DataLayer\SearchTermInterface" type="Magefan\GoogleTagManagerExtra\Model\DataLayer\SearchTerm" />
+    <preference for="Magefan\GoogleTagManagerExtra\Api\Events\PushInterface" type="Magefan\GoogleTagManagerExtra\Model\Events\Push" />
+    <preference for="Magefan\GoogleTagManagerExtra\Api\Events\OrderBeginInterface" type="Magefan\GoogleTagManagerExtra\Model\Events\OrderBegin" />
+    <preference for="Magefan\GoogleTagManagerExtra\Api\Events\ViewItemInterface" type="Magefan\GoogleTagManagerExtra\Model\Events\ViewItem" />
+    <preference for="Magefan\GoogleTagManagerExtra\Api\Events\ViewItemListInterface" type="Magefan\GoogleTagManagerExtra\Model\Events\ViewItemList" />
+    <preference for="Magefan\GoogleTagManagerExtra\Api\Events\SearchInterface" type="Magefan\GoogleTagManagerExtra\Model\Events\Search" />
+    <preference for="Magefan\GoogleTagManagerExtra\Api\Events\ViewCartInterface" type="Magefan\GoogleTagManagerExtra\Model\Events\ViewCart" />
+    <preference for="Magefan\GoogleTagManagerExtra\Api\Events\AddShippingInfoInterface" type="Magefan\GoogleTagManagerExtra\Model\Events\AddShippingInfo" />
+    <preference for="Magefan\GoogleTagManagerExtra\Api\Events\AddBillingInfoInterface" type="Magefan\GoogleTagManagerExtra\Model\Events\AddBillingInfo" />
+    <preference for="Magefan\GoogleTagManagerExtra\Api\DataLayer\RefundInterface" type="Magefan\GoogleTagManagerExtra\Model\DataLayer\Refund" />
+    <type name="Magento\Customer\CustomerData\Customer">
+        <plugin name="Magefan_GTM_Plugin_Magento_Customer_CustomerData_Customer" type="Magefan\GoogleTagManagerExtra\Plugin\Magento\Customer\CustomerData\CustomerPlugin" sortOrder="10" disabled="false"/>
+    </type>
+
+    <type name="Magefan\GoogleTagManager\Model\WebContainer">
+        <plugin name="Magefan_GTM_Plugin_GoogleTagManager_Extra_Model_Container" type="Magefan\GoogleTagManagerExtra\Plugin\Magefan\GoogleTagManager\Model\WebContainerPlugin" sortOrder="15" disabled="false"/>
+    </type>
+    <type name="Magefan\GoogleTagManagerPlus\Api\SessionManagerInterface">
+        <plugin name="Magefan_GTM_Plugin_Magefan_GoogleTagManagerPlus_Api_SessionManagerInterfacePlugin" type="Magefan\GoogleTagManagerExtra\Plugin\Magefan\GoogleTagManagerPlus\Api\SessionManagerInterfacePlugin" sortOrder="20" disabled="false"/>
+    </type>
+    <type name="Magefan\GoogleTagManager\Block\DataLayer\Purchase">
+        <plugin name="Magefan_GTM_Plugin_Magefan_Block_DataLayer_PurchasePlugin" type="Magefan\GoogleTagManagerExtra\Plugin\Magefan\GoogleTagManager\Block\DataLayer\PurchasePlugin" sortOrder="20" disabled="false"/>
+    </type>
+    <type name="Magefan\GoogleTagManagerExtra\Api\ServerTrackerInterface">
+        <plugin name="Plugin_Magefan_GoogleTagManagerExtra_Api_ServerTrackerInterface" type="Magefan\GoogleTagManagerExtra\Plugin\Magefan\GoogleTagManagerExtra\Api\ServerTrackerInterfacePlugin" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magento\Sales\Model\Service\OrderService">
+        <plugin name="Magefan_GTM_Plugin_Magento_Sales_Model_Service_OrderServicePlugin" type="Magefan\GoogleTagManagerExtra\Plugin\Magento\Sales\Model\Service\OrderServicePlugin" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magento\Sales\Api\CreditmemoManagementInterface">
+        <plugin name="Magefan_GTM_Plugin_Magento_Sales_Api_CreditmemoManagementPlugin" type="Magefan\GoogleTagManagerExtra\Plugin\Magento\Sales\Api\CreditmemoManagementPlugin" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magefan\GoogleTagManagerExtra\Model\ServerTracker">
+        <arguments>
+            <argument name="trackerPool" xsi:type="array">
+                <item name="ga4" xsi:type="object">Magefan\GoogleTagManagerExtra\Model\ServerTracker\Ga4Tracker</item>
+                <item name="gtm" xsi:type="object">Magefan\GoogleTagManagerExtra\Model\ServerTracker\GtmTracker</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magefan\GoogleTagManager\Model\DataLayer\Purchase">
+        <plugin name="Magefan_GoogleTagManagerExtra_Plugin_Magefan_GoogleTagManager_Model_DataLayer_Purchase" type="Magefan\GoogleTagManagerExtra\Plugin\Magefan\GoogleTagManager\Model\DataLayer\Purchase" sortOrder="10" disabled="false"/>
+    </type>
+</config>

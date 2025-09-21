@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+	<event name="customer_login">
+		<observer name="mfgtm_extra_customer_login" instance="Magefan\GoogleTagManagerExtra\Observer\Customer\Login"/>
+	</event>
+	<event name="customer_register_success">
+		<observer name="mfgtm_extra_customer_register_success" instance="Magefan\GoogleTagManagerExtra\Observer\Customer\RegisterSuccess"/>
+	</event>
+    <event name="checkout_submit_all_after">
+        <observer name="google_tag_manager_checkout_submit_all_after" instance="Magefan\GoogleTagManagerExtra\Observer\SalesOrderSaveAfter" />
+    </event>
+    <event name="paypal_express_place_order_success">
+        <observer name="google_tag_manager_checkout_submit_all_after" instance="Magefan\GoogleTagManagerExtra\Observer\SalesOrderSaveAfter" />
+    </event>
+    <event name="affirm_place_order_success">
+        <observer name="google_tag_manager_affirm_place_order_success" instance="Magefan\GoogleTagManagerExtra\Observer\SalesOrderSaveAfter" />
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="google_tag_manager_sales_order_save_after" instance="Magefan\GoogleTagManagerExtra\Observer\SalesOrderSaveAfter" />
+    </event>
+</config>

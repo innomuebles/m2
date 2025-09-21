@@ -1,0 +1,163 @@
+<?php
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+?>
+<?php
+/**
+ * @var $block \Magefan\GoogleTagManagerExtra\Block\ServerTracker\Js
+ * @var $mfSecureRenderer \Magefan\Community\Api\SecureHtmlRendererInterface
+ */
+?>
+<?= $block->getLayout()->createBlock(\Magefan\Community\Block\JsScript::class)->setMethod('ajax')->toHtml() ?>
+
+<?php
+if (!$block->getConfig()->isWebContainerEnabled() || !$block->getConfig()->getPublicId()) {
+    $pageViewEventDataLayerPush = "
+        const customerData = getMfGtmCustomerData();
+        const pageViewDataLayer = {event: 'page_view'};
+        for (let key in customerData) {
+            pageViewDataLayer[key] = customerData[key];
+        }
+    
+        window.dataLayer.push(pageViewDataLayer);
+    
+        let userEngaged = false;
+        function pushUserEngagement() {
+            if (!userEngaged) {
+                userEngaged = true;
+                window.dataLayer.push({'event': 'user_engagement'});
+            }
+        }
+        window.addEventListener('scroll', pushUserEngagement, { once: true });
+        window.addEventListener('click', pushUserEngagement, { once: true });
+        setTimeout(pushUserEngagement, 10000);
+    ";
+} else {
+    $pageViewEventDataLayerPush = '';
+}
+
+$restUrl = $block->getRestMfGtmUrl();
+?>
+<?php if ($block->getConfig()->isProtectCustomerDataEnabled()) { ?>
+    <?= $block->getLayout()->createBlock(\Magefan\Community\Block\JsScript::class)
+        ->setMethod('isCustomerConsentProvided')
+        ->setScriptAttributes(['data-rocketjavascript' => 'false'])
+        ->toHtml()
+    ?>
+<?php } ?>
+<?php $script = "
+    (function(){
+        var ajaxTimeout;
+        var pendingData = [];
+        window.dataLayer =  window.dataLayer || [];
+        window.dataLayer.mfGtmOriginPush = window.dataLayer.push;
+        
+        window.dataLayer.push = function(data) {
+
+            window.dataLayer.mfGtmOriginPush(data);
+
+            if (data.event == 'gtm.load' || data.event == 'gtm.dom' || data.event == 'gtm.js') {
+                return;
+            }
+
+            if (data[0] && data[0] == 'consent'
+                || data[0] && data[0] == 'set' && data[1] && (data[1] == 'ads_data_redaction' || data[1] == 'url_passthrough')
+            ) {
+                return;
+            }
+
+            pendingData.push(data);
+            if (ajaxTimeout) clearTimeout(ajaxTimeout);
+            ajaxTimeout = setTimeout(function (){
+
+                var _pData = pendingData;
+                pendingData = [];
+                const urlSearchParams = new URLSearchParams(window.location.search);
+                " . ($block->getConfig()->isProtectCustomerDataEnabled()
+                    ? "const consent = MagefanJs.isCustomerConsentProvided();"
+                    : "const consent = true;") . "
+                for (var i=0; i<_pData.length;i++) {
+                    _pData[i].dl = window.location.toString();
+                    _pData[i].dt = document.title;
+                    _pData[i].uafvl = navigator.userAgent;
+                    _pData[i].ul = navigator.language ? navigator.language.toLowerCase() : '';
+                    _pData[i].sr = screen.width+'x'+screen.height;
+                    _pData[i].dr = document.referrer;
+                    _pData[i].consent = consent;
+                    ['utm_source', 'utm_medium', 'utm_campaign'].forEach( (key) => {
+                        if (urlSearchParams.get(key)) {
+                            _pData[i][key] = urlSearchParams.get(key);
+                        }
+                    });
+                }
+
+                MagefanJs.ajax({
+                    type: 'POST',
+                    url: '{$block->escapeUrl($restUrl)}',
+                    data: JSON.stringify(_pData),
+                    requestHeader: {
+                        'Content-type' : 'application/json'
+                    }
+                });
+
+            }, data.mftimeout ? data.mftimeout : 1000);
+        };
+
+        {$pageViewEventDataLayerPush}
+    })();
+"; ?>
+<?= /* @noEscape */ $mfSecureRenderer->renderTag('script', [], $script, false) ?>
+
+<?php $script = "
+    document.addEventListener('DOMContentLoaded', function() {
+        function scrollTrack(direction) {
+            let triggered = {};
+            function pushScrollData(breakpointPercent) {
+                var customerData = getMfGtmCustomerData();
+                window.dataLayer =  window.dataLayer || [];
+                window.dataLayer.push({
+                'event': 'scroll_depth_'+ breakpointPercent,
+                    'ecommerce': {
+                        'scrollDirection': direction,
+                        'scrollThreshold': breakpointPercent,
+                        'scrollUnits': 'percent'
+                    },
+                    'customer_city': customerData.customer_city,
+                    'customer_country_id': customerData.customer_country_id,
+                    'customer_dob': customerData.customer_dob,
+                    'customer_email': customerData.customer_email,
+                    'customer_firstname': customerData.customer_firstname,
+                    'customer_gender': customerData.customer_gender,
+                    'customerGroup': customerData.customer_group,
+                    'customer_identifier': customerData.customer_identifier,
+                    'customer_lastname': customerData.customer_lastname,
+                    'customer_postcode': customerData.customer_postcode,
+                    'customer_region': customerData.customer_region,
+                    'customer_telephone': customerData.customer_telephone
+                });
+            };
+
+            window.addEventListener('scroll', function() {
+                const breakpoints = [25, 50, 75, 100];
+                if (direction == 'horizontal') {
+                    var endScroll = (window.scrollX / (document.documentElement.scrollWidth - window.innerWidth)) * 100;
+                } else {
+                    var endScroll = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+                };
+                
+                for (let i = 0; i < breakpoints.length; i++) {
+                    let value = breakpoints[i];
+                    if (endScroll >= value && !triggered[value]) {
+                        pushScrollData(value);
+                        triggered[value] = 1;
+                    }
+                }
+            });
+        };
+        /* new scrollTrack('horizontal'); */
+        new scrollTrack('vertical'); 
+    });
+"; ?>
+<?= /* @noEscape */ $mfSecureRenderer->renderTag('script', [], $script, false) ?>
