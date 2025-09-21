@@ -27,6 +27,7 @@
 # started to commit subfolders which are git repositories (for an unknown reason).
 # 2025-04-03 https://g.co/gemini/share/8935d11b67a5
 /_my
+/dev
 /update/
 # 2024-01-31 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # "Implement the security update APSB22-12": https://github.com/innomuebles/m2/issues/26
