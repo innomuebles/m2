@@ -1,0 +1,49 @@
+<?php
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+/**
+ * @var $mfSecureRenderer \Magefan\Community\Api\SecureHtmlRendererInterface
+ */
+?>
+
+<?php
+$script = "
+var mfGtmShippingMethod = '';
+var mfGtmShippingMethodData = '';
+
+var mfGtmPaymentMethod = '';
+var mfGtmPaymentMethodData = '';
+['Shipping', 'Payment'].forEach((type) => {
+    window.addEventListener('checkout:' + type.toLowerCase() + ':method-activate', event => {
+        if (event.detail.method != window['mfGtm' + type + 'Method']) {
+            if (!window['mfGtm' + type + 'MethodData']) {
+                window['mfGtm' + type + 'MethodData'] = [];
+                for (let i = 0; i < dataLayer.length; i++) {
+                    if (dataLayer[i].event === 'begin_checkout') {
+                        window['mfGtm' + type + 'MethodData'] = JSON.stringify(dataLayer[i]);
+                    }
+                }
+            };
+
+            if (window['mfGtm' + type + 'MethodData']) {
+                window['mfGtm' + type + 'Method'] = event.detail.method;
+
+                let data = JSON.parse(window['mfGtm' + type + 'MethodData']);
+                data.event = 'add_' + type.toLowerCase() + '_info';
+                let keys = {
+                    'Shipping': 'shipping_tier',
+                    'Payment': 'payment_type'
+                };
+                data.ecommerce[keys[type]] = event.detail.method;
+
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push(data);
+            }
+        }
+    });
+});";
+?>
+
+<?= /* @noEscape */ $mfSecureRenderer->renderTag('script', [], $script, false) ?>

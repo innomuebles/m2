@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_cart_product_add_after">
+        <observer name="magefanGTMCartProductAddAfter" instance="Magefan\GoogleTagManagerPlus\Observer\ProductAddToCartAfter" />
+    </event>
+    <event name="checkout_cart_save_after">
+        <observer name="magefanGTMSalesCartSaveAfter" instance="Magefan\GoogleTagManagerPlus\Observer\CartSaveAfter" />
+    </event>
+    <event name="wishlist_add_product">
+        <observer name="magefanGTMWishlistProductAdd" instance="Magefan\GoogleTagManagerPlus\Observer\ProductAddToWishlist" />
+    </event>
+    <event name="sales_quote_remove_item">
+        <observer name="magefanGTMSalesQuoteRemoveItem" instance="Magefan\GoogleTagManagerPlus\Observer\QuoteRemoveItem" />
+    </event>
+</config>

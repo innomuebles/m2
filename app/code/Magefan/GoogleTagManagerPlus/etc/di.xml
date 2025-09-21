@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magefan\GoogleTagManagerPlus\Api\DataLayer\AddToCartInterface" type="Magefan\GoogleTagManagerPlus\Model\DataLayer\AddToCart" />
+    <preference for="Magefan\GoogleTagManagerPlus\Api\DataLayer\RemoveFromCartInterface" type="Magefan\GoogleTagManagerPlus\Model\DataLayer\RemoveFromCart" />
+    <preference for="Magefan\GoogleTagManagerPlus\Api\DataLayer\AddToWishlistInterface" type="Magefan\GoogleTagManagerPlus\Model\DataLayer\AddToWishlist" />
+    <preference for="Magefan\GoogleTagManagerPlus\Api\DataLayer\ViewItemListInterface" type="Magefan\GoogleTagManagerPlus\Model\DataLayer\ViewItemList" />
+    <preference for="Magefan\GoogleTagManagerPlus\Api\DataLayer\Wishlist\ItemInterface" type="Magefan\GoogleTagManagerPlus\Model\DataLayer\Wishlist\Item" />
+
+    <preference for="Magefan\GoogleTagManagerPlus\Api\SessionManagerInterface" type="Magefan\GoogleTagManagerPlus\Model\SessionManager" />
+
+    <type name="Magento\Checkout\CustomerData\Cart">
+        <plugin name="Magefan_GTM_Plugin_Magento_Checkout_CustomerData_Cart" type="Magefan\GoogleTagManagerPlus\Plugin\Magento\Checkout\CustomerData\CartPlugin" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magento\Wishlist\CustomerData\Wishlist">
+        <plugin name="Magefan_GTM_Plugin_Magento_Wishlist_CustomerData_Wishlist" type="Magefan\GoogleTagManagerPlus\Plugin\Magento\Wishlist\CustomerData\WishlistPlugin" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magefan\GoogleTagManager\Model\WebContainer">
+        <plugin name="Magefan_GTM_Plugin_GoogleTagManager_Model_Container" type="Magefan\GoogleTagManagerPlus\Plugin\Magefan\GoogleTagManager\Model\WebContainerPlugin" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magefan\GoogleTagManager\Model\DataLayer\Purchase">
+        <plugin name="Magefan_GTM_Plugin_Magento_Model_DataLayer_Purchase" type="Magefan\GoogleTagManagerPlus\Plugin\Magefan\GoogleTagManager\Model\DataLayer\PurchasePlugin" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magefan\GoogleTagManager\Model\AbstractDataLayer">
+        <plugin name="begin_checkout_customer_data" type="Magefan\GoogleTagManagerPlus\Plugin\Magefan\GoogleTagManager\Model\DataLayer\AddCustomerDataPlugin" sortOrder="10" disabled="false"/>
+        <plugin name="abstract_order_remarketing_data" type="Magefan\GoogleTagManagerPlus\Plugin\Magefan\GoogleTagManager\Model\DataLayer\RemarketingDataPlugin" sortOrder="10" disabled="false"/>
+    </type>
+</config>

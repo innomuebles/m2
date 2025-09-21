@@ -1,0 +1,164 @@
+<?php
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+/**
+ * @var $block \Magefan\GoogleTagManager\Block\GtmCode
+ * @var $mfSecureRenderer \Magefan\Community\Api\SecureHtmlRendererInterface
+ * @var $mfHyvaThemeDetection \Magefan\Community\Api\HyvaThemeDetectionInterface
+ */
+
+use Magefan\GoogleTagManagerPlus\Model\GetCustomerData;
+?>
+<?php $script = "
+    function mfGtmGetEcommPageType() {
+        var body = document.getElementsByTagName('body')[0];
+        var ept = 'other';
+        
+        if (body.className.indexOf('cms-index-index') > -1) {
+            ept = 'home';
+        } else if (body.className.indexOf('catalog-category-view') > -1) {
+            ept = 'category';
+        } else if (body.className.indexOf('catalog-product-view') > -1) {
+            ept = 'product';
+        } else if (body.className.indexOf('checkout-cart-index') > -1) {
+            ept = 'cart';
+        } else if (body.className.indexOf('checkout-index-index') > -1) {
+            ept = 'checkout';
+        } else if (body.className.indexOf('contact-index-index') > -1) {
+            ept = 'contact';
+        } else if (body.className.indexOf('catalogsearch-result-index') > -1) {
+            ept = 'searchresults';
+        } else if (body.className.indexOf('cms-page-view') > -1) {
+            ept = 'cmspage';
+        };
+        return ept;  
+    };
+"; ?>
+<?= /* @noEscape */ $mfSecureRenderer->renderTag('script', ['data-mfmofile' => 'true'], $script, false) ?>
+
+<?php if (!$mfHyvaThemeDetection->execute()) { ?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "mfGtmCustomerDataLayer": {}
+        }
+    }
+</script>
+<?php } else { ?>
+    <?php $script = "
+    function mfHyvaGtmCustomerDataLayer(event) {
+        let data, eventFired, i, j, k;
+        let sections = event.detail.data;
+        for ( j in sections) {
+            data = sections[j];
+            if (!data.mf_datalayer) continue;
+            
+            for (i = 0; i < data.mf_datalayer.length; i++) {
+                window.dataLayer = window.dataLayer || [];
+                eventFired = false;
+                for (k = 0; k < window.dataLayer.length; k++) {
+                    if (data.mf_datalayer[i].magefanUniqueEventId
+                        && data.mf_datalayer[i].magefanUniqueEventId == window.dataLayer[k].magefanUniqueEventId
+                    ) {
+                        eventFired = true;
+                        break;
+                    }
+                }
+                if (!eventFired) {
+                    /*
+                    if (!data.mf_datalayer[i].customer_identifier
+                        || (data.mf_datalayer[i].customer_identifier.indexOf('getMfGtmCustomerIdentifier') != -1)
+                    ) {
+                        data.mf_datalayer[i].customer_identifier = getMfGtmCustomerIdentifier();
+                    }
+                    */
+                    
+                    var ept = data.mf_datalayer[i].ecomm_pagetype;
+                    if ('other' === ept) {
+                        ept = mfGtmGetEcommPageType();
+                        data.mf_datalayer[i].ecomm_pagetype = ept;
+                        if (data.mf_datalayer[i].google_tag_params) {
+                            data.mf_datalayer[i].google_tag_params.ecomm_pagetype = ept;
+                        }
+                    };
+                    window.dataLayer.push(data.mf_datalayer[i]);
+                }
+            }
+            
+            delete event.detail.data[j].mf_datalayer;
+            let mcs = localStorage.getItem('mage-cache-storage');
+            if (mcs) {
+                mcs = JSON.parse(mcs);
+                if (mcs && mcs[j] && mcs[j].mf_datalayer) {
+                    delete mcs[j].mf_datalayer;
+                    localStorage.setItem('mage-cache-storage', JSON.stringify(mcs));
+                }
+            }
+        }
+    };
+    window.addEventListener('private-content-loaded', mfHyvaGtmCustomerDataLayer);
+"; ?>
+    <?= /* @noEscape */ $mfSecureRenderer->renderTag('script', [], $script, false) ?>
+<?php } ?>
+
+<?php $script = '
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll("a").forEach(function(link) {
+            link.addEventListener("click", function(event) {
+                let url = link.href;
+                let items, j, x, newDataLayer, dli, index;
+                if (url && window.dataLayer && window.dataLayer.length) {
+                    for (let i=0; i<window.dataLayer.length; i++) {
+                        dli = window.dataLayer[i];
+                        if (dli.event == "view_item_list"
+                            && dli.ecommerce
+                            && dli.ecommerce.items
+                            && dli.ecommerce.items.length
+                        ) {
+                            items = dli.ecommerce.items;
+                            newDataLayer = false;
+                            index = -1;
+                            for (j=0; j<items.length; j++) {
+                                index++;
+                                if (items[j].item_url == url) {
+                                    newDataLayer = {
+                                        "event": "select_item",
+                                        "ecommerce": {
+                                            "item_list_id": dli.ecommerce.item_list_id,
+                                            "item_list_name": dli.ecommerce.item_list_name,
+                                            "items": [items[j]]
+                                        },
+                                        "magefanUniqueEventId": "select_item_" + dli.magefanUniqueEventId,
+                                        "ecomm_pagetype": dli.ecomm_pagetype,
+                                        "google_tag_params": {
+                                            "ecomm_pagetype": dli.google_tag_params.ecomm_pagetype
+                                        }
+                                    };
+                                    
+                                    let dynamicKeys = ' . json_encode(array_keys(GetCustomerData::CUSTOMER_DATA)) . ';
+                                    for (x=0; x<dynamicKeys.length;x++) {
+                                        let key = dynamicKeys[x];
+                                        newDataLayer[key] = dli[key];
+                                    }
+                                    
+                                    newDataLayer.ecommerce.items[0].index = index;
+                                    break;
+                                };
+                            };
+
+                            if (newDataLayer) {
+                                window.dataLayer.push(newDataLayer);
+
+                                //window.location = url;
+                                //return false;
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    });
+'; ?>
+<?= /* @noEscape */ $mfSecureRenderer->renderTag('script', [], $script, false) ?>
