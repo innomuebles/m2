@@ -8,6 +8,7 @@ namespace Magefan\AdminUserGuide\Block\Adminhtml;
 use Magento\Framework\View\Element\Template;
 use Magefan\AdminUserGuide\Model\XmlReader;
 use Magefan\AdminUserGuide\Model\Config;
+use Magento\Framework\AuthorizationInterface;
 
 class Help extends \Magento\Framework\View\Element\Template
 {
@@ -22,20 +23,29 @@ class Help extends \Magento\Framework\View\Element\Template
     private $config;
 
     /**
+     * @var AuthorizationInterface
+     */
+    private $authorization;
+
+    /**
+     * Help constructor.
      * @param Template\Context $context
      * @param XmlReader $xmlReader
      * @param Config $config
+     * @param AuthorizationInterface $authorization
      * @param array $data
      */
     public function __construct(
         Template\Context $context,
         XmlReader $xmlReader,
         Config $config,
+        AuthorizationInterface $authorization,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->xmlReader = $xmlReader;
         $this->config = $config;
+        $this->authorization = $authorization;
     }
 
     /**
@@ -45,6 +55,9 @@ class Help extends \Magento\Framework\View\Element\Template
     public function getPageHelp()
     {
         $data = [];
+        if (!$this->authorization->isAllowed('Magefan_AdminUserGuide::help')) {
+            return $data;
+        }
 
         if ($this->config->isEnabled()) {
             $guideData = $this->xmlReader->get();
@@ -84,6 +97,17 @@ class Help extends \Magento\Framework\View\Element\Template
                         if (!count($links)) {
                             continue;
                         }
+
+                        foreach ($links as $klink => $link) {
+                            if (false !== strpos($link, 'magefan.com') && false === strpos($link, 'utm_source')) {
+                                $linkInfo = explode('#', $link);
+                                $linkInfo[0] .= (false !== strpos($linkInfo[0], '?')) ? '&' : '?';
+                                $linkInfo[0] .= 'utm_source=admin&utm_medium=admin-user-guide&utm_campaign=admin-user-guide';
+                                $link = implode('#', $linkInfo);
+                                $links[$klink] = $link;
+                            }
+                        }
+
                         $data[] = [
                             'title' => $item['title'],
                             'links' => $links
