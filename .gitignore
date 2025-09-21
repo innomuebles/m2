@@ -47,6 +47,9 @@
 /vendor/magento/framework/Test
 /vendor/magento/magento2-base
 /vendor/tubalmartin
+# 2025-09-21 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+# "Add the modified core files to the source control": https://github.com/innomuebles/m2/issues/44
+!/app/etc/di.xml
 # 2024-01-31 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # "Implement the security update APSB22-12": https://github.com/innomuebles/m2/issues/26
 !/vendor/magento/framework/Filter/DirectiveProcessor/DependDirective.php
