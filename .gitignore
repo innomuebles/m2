@@ -42,6 +42,8 @@
 #/vendor/*
 # 2025-08-31 https://g.co/gemini/share/ece13e39c278
 /vendor/**/tests/
+# 2025-05-23 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+/vendor/mage2pro
 # 2024-01-31 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # "Implement the security update APSB22-12": https://github.com/innomuebles/m2/issues/26
 !/vendor/magento/framework/Filter/DirectiveProcessor/DependDirective.php
