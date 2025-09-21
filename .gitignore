@@ -41,7 +41,7 @@
 # 		git restore --staged .
 #/vendor/*
 # 2025-08-31 https://g.co/gemini/share/ece13e39c278
-#/vendor/**/tests/
+/vendor/**/tests/
 # 2025-05-23 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 /vendor/mage2pro
 /vendor/magento/framework/Test
