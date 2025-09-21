@@ -279,10 +279,17 @@ class Image implements LocalInterface
      */
     private function getImageInfo()
     {
-        $path = $this->getModule()
-            . DIRECTORY_SEPARATOR . $this->getMiscPath()
-            . DIRECTORY_SEPARATOR . $this->getFilePath();
-        return preg_replace('|\Q'. DIRECTORY_SEPARATOR . '\E+|', DIRECTORY_SEPARATOR, $path);
+		# 2025-09-21 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+		# 1) "Adapt the website to Windows-based servers": https://github.com/innomuebles/m2/issues/45
+		# 2) "How to adapt `Magento\Catalog\Model\View\Asset\Image::getImageInfo()` to Windows
+		# in Magento ≥ 2.3.0?": https://mage2.pro/t/6412
+		# 3.1) "The `Swissup_Pagespeed` module breaks URLs of images in Windows":
+		# https://github.com/mydreamday-fi/site/issues/19
+		# 3.2) "The `Swissup_Pagespeed` module breaks URLs of products' images in Windows":
+		# https://github.com/mydreamday-fi/site/issues/18
+		# 3.3) "The `Swissup_Pagespeed` module breaks URLs of categories' images in Windows":
+		# https://github.com/mydreamday-fi/site/issues/17
+        return "{$this->getModule()}/{$this->getMiscPath()}" . $this->getFilePath();
     }
 
     /**
