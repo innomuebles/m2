@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magefan\GoogleTagManager\Api\DataLayer\BeginCheckoutInterface" type="Magefan\GoogleTagManager\Model\DataLayer\BeginCheckout" />
+    <preference for="Magefan\GoogleTagManager\Api\DataLayer\PurchaseInterface" type="Magefan\GoogleTagManager\Model\DataLayer\Purchase" />
+    <preference for="Magefan\GoogleTagManager\Api\DataLayer\ViewCartInterface" type="Magefan\GoogleTagManager\Model\DataLayer\ViewCart" />
+    <preference for="Magefan\GoogleTagManager\Api\DataLayer\ViewItemInterface" type="Magefan\GoogleTagManager\Model\DataLayer\ViewItem" />
+    <preference for="Magefan\GoogleTagManager\Api\DataLayer\Cart\ItemInterface" type="Magefan\GoogleTagManager\Model\DataLayer\Cart\Item" />
+    <preference for="Magefan\GoogleTagManager\Api\DataLayer\Order\ItemInterface" type="Magefan\GoogleTagManager\Model\DataLayer\Order\Item" />
+    <preference for="Magefan\GoogleTagManager\Api\DataLayer\Product\ItemInterface" type="Magefan\GoogleTagManager\Model\DataLayer\Product\Item" />
+    <preference for="Magefan\GoogleTagManager\Api\Transaction\LogInterface" type="Magefan\GoogleTagManager\Model\Transaction\Log" />
+    <type name="Magefan\GoogleTagManager\Api\DataLayer\PurchaseInterface">
+        <plugin name="Plugin_Magefan_GoogleTagManager_Api_DataLayer_PurchaseInterface" type="Magefan\GoogleTagManager\Plugin\Magefan\GoogleTagManager\Api\DataLayer\PurchaseInterface" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magefan\GoogleTagManager\Controller\Adminhtml\WebContainer\Generate">
+        <arguments>
+            <argument name="container" xsi:type="object">Magefan\GoogleTagManager\Model\WebContainer</argument>
+        </arguments>
+    </type>
+</config>

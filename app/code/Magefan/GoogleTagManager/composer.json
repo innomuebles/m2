@@ -1,0 +1,24 @@
+{
+    "name": "magefan/module-google-tag-manager",
+    "description": "Magento 2 Google Tag Manager and Google Analytics 4",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Magefan",
+            "email": "support@magefan.com"
+        }
+    ],
+    "version": "2.7.2",
+    "require": {
+        "magefan/module-community" : ">=2.2.17"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Magefan\\GoogleTagManager\\": ""
+        }
+    }
+}
