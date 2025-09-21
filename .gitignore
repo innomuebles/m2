@@ -9,7 +9,13 @@
 !/composer.json
 !/readme.md
 !/app/code/**/*
-!/app/design/frontend/MageBig/**/*
+# 2025-04-02 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+# https://chatgpt.com/c/67ecb56c-c39c-8003-b84d-201ec94aec0b
+# https://gemini.google.com/u/1/app/6b203ee6c0eac7d7
+# https://grok.com/chat/821bd013-e733-4dd3-b3c2-8a338cef1c99
+# https://claude.ai/chat/6a88d2c5-6bde-4086-86bb-b7928f5b6336
+!/app/design/frontend/**/*
+/app/design/frontend/Magento/
 !/app/etc/config.php
 !/le_connector/**/*
 # 2021-05-09 Dmitrii Fediuk https://upwork.com/fl/mage2pro
