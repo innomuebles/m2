@@ -29,6 +29,19 @@
 /_my
 /dev
 /update/
+# 2025-04-03 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+# https://g.co/gemini/share/8935d11b67a5
+# 2025-05-21 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+# 1) https://g.co/gemini/share/e0a1ce59ec79
+# 2) https://chatgpt.com/share/682d5158-5c18-8003-b315-57a4ae068d30
+# 2025-08-31
+# To find out why Git wants to commit the `vendor folder`:
+# 		git add .
+# 		git status
+# 		git restore --staged .
+#/vendor/*
+# 2025-08-31 https://g.co/gemini/share/ece13e39c278
+/vendor/**/tests/
 # 2024-01-31 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # "Implement the security update APSB22-12": https://github.com/innomuebles/m2/issues/26
 !/vendor/magento/framework/Filter/DirectiveProcessor/DependDirective.php
