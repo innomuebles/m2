@@ -45,6 +45,7 @@
 # 2025-05-23 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 /vendor/mage2pro
 /vendor/magento/framework/Test
+/vendor/magento/magento2-base
 # 2024-01-31 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # "Implement the security update APSB22-12": https://github.com/innomuebles/m2/issues/26
 !/vendor/magento/framework/Filter/DirectiveProcessor/DependDirective.php
@@ -85,6 +86,5 @@
 # 2.2) https://github.com/innomuebles/m2/blob/2024-01-31/vendor/magento/zendframework1/library/Zend/Locale/Data/es_CR.xml#L19-L25
 !/vendor/magento/zendframework1/library/Zend/Locale/Data/es_CR.xml
 /vendor/codeception
-/vendor/magento/magento2-base
 /vendor/magento/magento2-functional-testing-framework
 /vendor/tubalmartin
