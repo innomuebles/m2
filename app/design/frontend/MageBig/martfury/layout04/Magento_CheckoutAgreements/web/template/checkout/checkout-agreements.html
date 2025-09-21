@@ -1,0 +1,39 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div data-role="checkout-agreements">
+    <div class="checkout-agreements fieldset" data-bind="visible: isVisible">
+        <!-- ko foreach: agreements -->
+            <!-- ko if: ($parent.isAgreementRequired($data)) -->
+             <div style="width: 75%; height: 120px; border: 1px solid #000; padding: 5px 7px; overflow: auto;">
+                    <span data-bind="html: content"></span>
+            </div>
+            <div class="checkout-agreement field choice required ">
+                <input type="checkbox" class="required-entry"
+                       data-bind="attr: {
+                                    'id': $parent.getCheckboxId($parentContext, agreementId),
+                                    'name': 'agreement[' + agreementId + ']',
+                                    'value': agreementId
+                                    }"/>
+                <label class="label" data-bind="attr: {'for': $parent.getCheckboxId($parentContext, agreementId)}">
+                    <span data-bind="html: checkboxText"></span>
+                </label>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: ($parent.isAgreementRequired($data)) -->
+            <div class="checkout-agreement">
+                <div style="width: 75%; height: 120px; border: 1px solid #000; padding: 5px 7px; overflow: auto;">
+                    <span data-bind="html: content"></span>
+                </div>
+                <button type="button" class="action action-show"
+                        data-bind="click: function(data, event) { return $parent.showContent(data, event) }">
+                    <span data-bind="html: checkboxText"></span>
+                </button>
+            </div>
+            <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
