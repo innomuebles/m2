@@ -1,0 +1,37 @@
+<?php
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * Please visit Magefan.com for license details (https://magefan.com/end-user-license-agreement).
+ */
+?>
+<?php
+/**
+ * @var $block \Magefan\Community\Block\JsScript
+ * @var $mfSecureRenderer \Magefan\Community\Api\SecureHtmlRendererInterface
+ */
+?>
+<?php $script = "
+    window.MagefanJs = window.MagefanJs || {};
+    window.MagefanJs.ajax = function(options) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200) {
+                var data = xmlhttp.responseText;
+                if (options.success) options.success(data);
+            }
+        };
+
+        xmlhttp.open(options.type, options.url, true);
+
+        var requestHeader = Object.assign({}, {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-type': 'application/x-www-form-urlencoded'
+        }, options.requestHeader ? options.requestHeader : {});
+
+        for (var header in requestHeader) {
+            xmlhttp.setRequestHeader(header, requestHeader[header]);
+        }
+        xmlhttp.send(options.data);
+    };
+"; ?>
+<?= /* @noEscape */ $mfSecureRenderer->renderTag('script', $block->getScriptAttributes() ?: [], $script, false) ?>

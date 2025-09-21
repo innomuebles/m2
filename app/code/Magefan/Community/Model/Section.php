@@ -24,10 +24,23 @@ final class Section
 
     const TYPE = 'mftype';
 
+    const ACTIVE = 'mfactive';
+
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     private $scopeConfig;
+
+    /**
+     * @var \Magefan\Community\Model\GetModuleVersion
+     */
+    private $getModuleVersion;
+
+    /**
+     * @var \Magefan\Community\Model\HyvaThemeDetection
+     */
+
+    private $hyvaThemeDetection;
 
     /**
      * @var string
@@ -46,20 +59,25 @@ final class Section
 
 
     /**
-     * Section constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param ProductMetadataInterface $metadata
-     * @param null $name
-     * @param null $key
+     * @param \Magefan\Community\Model\GetModuleVersion $getModuleVersion
+     * @param \Magefan\Community\Model\HyvaThemeDetection $hyvaThemeDetection
+     * @param $name
+     * @param $key
      */
     final public function __construct(
         ScopeConfigInterface $scopeConfig,
         ProductMetadataInterface $metadata,
+        GetModuleVersion $getModuleVersion,
+        HyvaThemeDetection $hyvaThemeDetection,
         $name = null,
         $key = null
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->metadata = $metadata;
+        $this->getModuleVersion = $getModuleVersion;
+        $this->hyvaThemeDetection = $hyvaThemeDetection;
         $this->name = $name;
         $this->key = $key;
     }
@@ -69,15 +87,34 @@ final class Section
      */
     final public function isEnabled()
     {
-        return (bool) $this->getConfig(self::ENABLED);
+        return (bool)$this->getConfig(self::ENABLED);
     }
 
     /**
-     * @return string
+     * @param false $e
+     * @return false|string
      */
-    final public function getModule()
+    final public function getModuleName($e = false)
     {
-        $module = (string) $this->getConfig(self::MODULE);
+        $fs = $e ? [self::MODULE] : [self::MODULE . 'e', self::MODULE . 'p', self::MODULE];
+        foreach ($fs as $f) {
+            $module = (string)$this->getConfig($f);
+            if ($module) {
+                break;
+            }
+        }
+
+        return $module;
+    }
+
+    /**
+     * @param false $e
+     * @return false|string
+     */
+    final public function getModule($e = false)
+    {
+        $module = $this->getModuleName();
+
         $url = $this->scopeConfig->getValue(
             'web/unsecure/base' . '_' . 'url',
             ScopeInterface::SCOPE_STORE,
@@ -85,15 +122,28 @@ final class Section
         );
 
         if (\Magefan\Community\Model\UrlChecker::showUrl($url)) {
-            if ($module
-                && (!$this->getConfig(self::TYPE)
-                    || $this->getConfig(self::TYPE) && $this->metadata->getEdition() != 'C' . 'omm' . 'un' . 'ity'
-                )
+            if ($module && $this->getType()) {
+                return $module;
+            }
+
+            if ($module == ('B' . 'l' . 'o' . 'g')
+                && version_compare($this->getModuleVersion->execute('Ma' . 'ge' . 'fa' . 'n_' . $module), '2.' . '11' . '.4', '>=')
+                && $this->hyvaThemeDetection->execute()
             ) {
                 return $module;
             }
         }
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    final public function getType()
+    {
+        return (!$this->getConfig(self::TYPE)
+            || $this->getConfig(self::TYPE) && $this->metadata->getEdition() != 'C' . 'omm' . 'un' . 'ity'
+        );
     }
 
     /**
@@ -127,16 +177,17 @@ final class Section
             return !empty($data[$this->getModule()]);
         }
 
-        $id = $this->getModule();
         $k = $this->getKey();
 
-        $result = $this->validateIDK($id, $k);
-        if (!$result) {
-            $id .= 'Plus';
-            $result = $this->validateIDK($id, $k);
+        foreach ([$this->getModule(), $this->getModule(true)] as $id) {
+            foreach (['', 'Plus', 'Extra'] as $e) {
+                if ($result = $this->validateIDK($id . $e, $k)) {
+                    return true;
+                }
+            }
         }
 
-        return $result;
+        return false;
     }
 
     /**

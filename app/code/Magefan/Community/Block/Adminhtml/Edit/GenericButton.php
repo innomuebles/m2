@@ -10,9 +10,6 @@ use Magento\Backend\Block\Widget\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\AuthorizationInterface;
 
-/**
- * Class GenericButton
- */
 class GenericButton
 {
     /**
@@ -52,7 +49,7 @@ class GenericButton
     }
 
     /**
-     * Generate url by route and parameters
+     * Generate URL by route and parameters
      *
      * @param   string $route
      * @param   array $params
@@ -60,6 +57,9 @@ class GenericButton
      */
     public function getUrl($route = '', $params = [])
     {
+        if ($storeId = $this->context->getRequest()->getParam('store')) {
+            $params['store'] = (int)$storeId;
+        }
         return $this->context->getUrlBuilder()->getUrl($route, $params);
     }
 }

@@ -160,7 +160,12 @@ class BuilderPlugin
         if (null === $this->configSections) {
             $sections = [];
             $this->configSections = [];
-            $tabs = $this->structure->getTabs();
+
+            try {
+                $tabs = $this->structure->getTabs();
+            } catch (\Exception $e) {
+                $tabs = [];
+            }
 
             foreach ($tabs as $tab) {
                 if (in_array($tab->getId(), ['magefan', 'mf_extensions_list'])) {
@@ -285,7 +290,7 @@ class BuilderPlugin
         $subItems = [];
         if (!empty($items)) {
             foreach ($items as $item) {
-                if (isset($item['module']) &&  0 === strpos($item['module'], 'Magefan_')
+                if (isset($item['module']) && 0 === strpos($item['module'], 'Magefan_')
                     || !isset($item['module']) && isset($item['id']) && 0 === strpos($item['id'], 'Magefan_')
                 ) {
                     if ('Magefan_Community::elements' != $item['id']) {

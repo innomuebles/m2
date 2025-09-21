@@ -7,4 +7,26 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magefan\Community\Api\GetModuleVersionInterface" type="Magefan\Community\Model\GetModuleVersion" />
+    <preference for="Magefan\Community\Api\GetModuleInfoInterface" type="Magefan\Community\Model\GetModuleInfo" />
+    <preference for="Magefan\Community\Api\GetCategoryByProductInterface" type="Magefan\Community\Model\GetCategoryByProduct"/>
+
+    <preference for="Magefan\Community\Api\GetParentProductIdsInterface" type="Magefan\Community\Model\GetParentProductIds"/>
+    <preference for="Magefan\Community\Api\GetWebsitesMapInterface" type="Magefan\Community\Model\GetWebsitesMap"/>
+    <preference for="Magefan\Community\Api\HyvaThemeDetectionInterface" type="Magefan\Community\Model\HyvaThemeDetection"/>
+    <preference for="Magefan\Community\Api\BreezeThemeDetectionInterface" type="Magefan\Community\Model\BreezeThemeDetection"/>
+    <preference for="Magefan\Community\Api\SecureHtmlRendererInterface" type="Magefan\Community\Model\View\Helper\SecureHtmlRenderer"/>
+    <type name="Magento\Framework\View\TemplateEngine\Php">
+        <plugin name="Magefan_Community_Plugin_Magento_Framework_View_TemplateEngine_Php" type="Magefan\Community\Plugin\Magento\Framework\View\TemplateEngine\Php" sortOrder="10" disabled="false"/>
+    </type>
+
+    <!-- Add blockVariables to FireMultimedia since to override Magento\Framework\View\TemplateEngine\Php -->
+     <type name="FireMultimedia\DevHelper\Framework\View\TemplateEngine\Processor">
+        <arguments>
+            <argument name="blockVariables" xsi:type="array">
+                <item name="mfSecureRenderer" xsi:type="object">Magefan\Community\Model\View\Helper\SecureHtmlRenderer\Proxy</item>
+                <item name="mfHyvaThemeDetection" xsi:type="object">Magefan\Community\Model\HyvaThemeDetection\Proxy</item>
+                <item name="mfBreezeThemeDetection" xsi:type="object">Magefan\Community\Model\HyvaThemeDetection\Proxy</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
