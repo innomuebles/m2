@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingOutOfStockLastNoTest"
+          extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Position checking"/>
+            <description
+                value="Check that Sort Out of Stock Last works correctly on Category Page And Search Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-20"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+            <group value="impsortdev"/>
+        </annotations>
+
+        <before>
+            <updateData createDataKey="createSimpleProductA4" entity="UpdateOutOfStockProduct"
+                        stepKey="updateProductStockProductA4"/>
+            <updateData createDataKey="createSimpleProductA7" entity="UpdateOutOfStockProduct"
+                        stepKey="updateProductStockProductA7"/>
+            <magentoCLI command="config:set cataloginventory/options/show_out_of_stock 1"
+                        stepKey="enableShowOutOfStockProduct"/>
+            <magentoCLI command="config:set amsorting/general/out_of_stock_last 0" stepKey="configOutOfStockLast"/>
+            <magentoCLI command="indexer:reindex" arguments="inventory" stepKey="reindex"/>
+            <magentoCLI command="cache:clean" arguments="config" stepKey="cleanCache"/>
+        </before>
+
+        <after>
+            <magentoCLI command="config:set cataloginventory/options/show_out_of_stock 0"
+                        stepKey="disableShowOutOfStockProduct"/>
+        </after>
+
+        <!-- Navigate to Search Result Page and sort page by Relevance. Check the result/-->
+        <amOnPage url="{{StorefrontCatalogSearchPage.url}}?q=redtst" stepKey="navigateToSRP"/>
+        <selectOption userInput="Relevance"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOptionOnSRP"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceLast('Product A9','Product A4','Product A7')}}"
+            stepKey="seeProductsSequenceOnSRP"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}"
+               stepKey="setAscDescConfigurationOnSRP"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceLast('Product A3','Product A7','Product A4')}}"
+            stepKey="seeProductsSequenceTwoOnSRP"/>
+    </test>
+</tests>

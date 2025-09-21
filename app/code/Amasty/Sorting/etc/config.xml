@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <amsorting>
+            <general>
+                <desc_attributes>bestsellers,revenue,rating_summary,reviews_count,most_viewed,wished,new,saving</desc_attributes>
+            </general>
+            <default_sorting>
+                <search_1>relevance</search_1>
+                <category_1>position</category_1>
+            </default_sorting>
+            <bestsellers>
+                <exclude>canceled</exclude>
+                <best_period>183</best_period>
+            </bestsellers>
+            <revenue>
+                <exclude>canceled</exclude>
+                <period>183</period>
+            </revenue>
+            <most_viewed>
+                <viewed_period>90</viewed_period>
+            </most_viewed>
+            <advanced>
+                <global />
+                <global_direction>asc</global_direction>
+            </advanced>
+            <cron>
+                <frequency>D</frequency>
+                <time>04,00,00</time>
+            </cron>
+        </amsorting>
+        <crontab>
+            <index>
+                <jobs>
+                    <amsorting>
+                        <schedule>
+                            <cron_expr>0 4 * * *</cron_expr>
+                        </schedule>
+                    </amsorting>
+                </jobs>
+            </index>
+        </crontab>
+    </default>
+</config>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByNowInWishlistsCheckingTest" extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Now in Wishlists checking"/>
+            <description
+                value="Check that Sort by Now in Wishlists works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-6"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+            <group value="sortbynowinwl"/>
+        </annotations>
+
+        <before>
+            <remove keyForRemoval="createSimpleProductA6"/>
+            <remove keyForRemoval="createSimpleProductA7"/>
+            <remove keyForRemoval="createSimpleProductA8"/>
+            <remove keyForRemoval="createSimpleProductA9"/>
+            <remove keyForRemoval="createSimpleProductB1"/>
+            <createData entity="Simple_US_Customer" stepKey="createTestCustomerA1"/>
+            <createData entity="Simple_US_Customer_NY" stepKey="createTestCustomerA2"/>
+            <createData entity="Simple_US_Customer_CA" stepKey="createTestCustomerA3"/>
+            <createData entity="Simple_US_CA_Customer" stepKey="createTestCustomerA4"/>
+            <createData entity="ISTestWishlistA1" stepKey="createWishlistA1">
+                <requiredEntity createDataKey="createTestCustomerA1"/>
+                <requiredEntity createDataKey="createSimpleProductA2"/>
+            </createData>
+            <createData entity="ISTestWishlistA2" stepKey="createWishlistA2">
+                <requiredEntity createDataKey="createTestCustomerA2"/>
+                <requiredEntity createDataKey="createSimpleProductA2"/>
+            </createData>
+            <createData entity="ISTestWishlistA3" stepKey="createWishlistA3">
+                <requiredEntity createDataKey="createTestCustomerA3"/>
+                <requiredEntity createDataKey="createSimpleProductA2"/>
+            </createData>
+            <createData entity="ISTestWishlistA4" stepKey="createWishlistA4">
+                <requiredEntity createDataKey="createTestCustomerA4"/>
+                <requiredEntity createDataKey="createSimpleProductA2"/>
+            </createData>
+            <createData entity="ISTestWishlistA5" stepKey="createWishlistA5">
+                <requiredEntity createDataKey="createTestCustomerA1"/>
+                <requiredEntity createDataKey="createSimpleProductA4"/>
+            </createData>
+            <createData entity="ISTestWishlistA6" stepKey="createWishlistA6">
+                <requiredEntity createDataKey="createTestCustomerA2"/>
+                <requiredEntity createDataKey="createSimpleProductA4"/>
+            </createData>
+            <createData entity="ISTestWishlistA7" stepKey="createWishlistA7">
+                <requiredEntity createDataKey="createTestCustomerA3"/>
+                <requiredEntity createDataKey="createSimpleProductA4"/>
+            </createData>
+            <createData entity="ISTestWishlistA8" stepKey="createWishlistA8">
+                <requiredEntity createDataKey="createTestCustomerA1"/>
+                <requiredEntity createDataKey="createSimpleProductA3"/>
+            </createData>
+            <createData entity="ISTestWishlistA9" stepKey="createWishlistA9">
+                <requiredEntity createDataKey="createTestCustomerA2"/>
+                <requiredEntity createDataKey="createSimpleProductA3"/>
+            </createData>
+            <createData entity="ISTestWishlistB1" stepKey="createWishlistB1">
+                <requiredEntity createDataKey="createTestCustomerA1"/>
+                <requiredEntity createDataKey="createSimpleProductA1"/>
+            </createData>
+            <magentoCLI command="indexer:reindex" arguments="amasty_sorting_wished" stepKey="reindex1"/>
+        </before>
+
+        <after>
+            <deleteData stepKey="deleteTestCustomerA1" createDataKey="createTestCustomerA1"/>
+            <deleteData stepKey="deleteTestCustomerA2" createDataKey="createTestCustomerA2"/>
+            <deleteData stepKey="deleteTestCustomerA3" createDataKey="createTestCustomerA3"/>
+            <deleteData stepKey="deleteTestCustomerA4" createDataKey="createTestCustomerA4"/>
+            <remove keyForRemoval="deleteSimpleProductA6"/>
+            <remove keyForRemoval="deleteSimpleProductA7"/>
+            <remove keyForRemoval="deleteSimpleProductA8"/>
+            <remove keyForRemoval="deleteSimpleProductA9"/>
+            <remove keyForRemoval="deleteSimpleProductB1"/>
+        </after>
+
+        <!-- Navigate to Category Page and sort page by Now in Wishlists. Check the result/-->
+
+        <selectOption userInput="Now in Wishlists"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequence('Product A2','Product A4','Product A3')}}"
+            stepKey="seeProductsSequence"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}"
+               stepKey="setAscDescConfiguration"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequence('Product A5','Product A1','Product A3')}}"
+            stepKey="seeProductsSequenceTwo"/>
+
+    </test>
+</tests>

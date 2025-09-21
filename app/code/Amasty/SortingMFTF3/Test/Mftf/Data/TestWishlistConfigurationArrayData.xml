@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+
+    <entity name="ISTestWishlistA1" type="ISTestWishlist">
+        <var key="product" entityType="product" entityKey="id"/>
+        <var key="customer_email" entityType="customer" entityKey="email"/>
+        <var key="customer_password" entityType="customer" entityKey="password"/>
+    </entity>
+    <entity name="ISTestWishlistA2" type="ISTestWishlist" extends="ISTestWishlistA1">
+    </entity>
+    <entity name="ISTestWishlistA3" type="ISTestWishlist" extends="ISTestWishlistA1">
+    </entity>
+    <entity name="ISTestWishlistA4" type="ISTestWishlist" extends="ISTestWishlistA1">
+    </entity>
+    <entity name="ISTestWishlistA5" type="ISTestWishlist" extends="ISTestWishlistA1">
+    </entity>
+    <entity name="ISTestWishlistA6" type="ISTestWishlist" extends="ISTestWishlistA1">
+    </entity>
+    <entity name="ISTestWishlistA7" type="ISTestWishlist" extends="ISTestWishlistA1">
+    </entity>
+    <entity name="ISTestWishlistA8" type="ISTestWishlist" extends="ISTestWishlistA1">
+    </entity>
+    <entity name="ISTestWishlistA9" type="ISTestWishlist" extends="ISTestWishlistA1">
+    </entity>
+    <entity name="ISTestWishlistB1" type="ISTestWishlist" extends="ISTestWishlistA1">
+    </entity>
+</entities>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<operations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataOperation.xsd">
+
+    <operation name="CreateISTestWishlist" dataType="ISTestWishlist" type="create" auth="customerFormKey"
+               url="/wishlist/index/add/"
+               method="POST" successRegex="" returnRegex="~\/wishlist_id\/(\d*?)\/~">
+        <contentType>application/x-www-form-urlencoded</contentType>
+            <field key="product">integer</field>
+            <field key="customer_email">string</field>
+            <field key="customer_password">string</field>
+    </operation>
+
+</operations>

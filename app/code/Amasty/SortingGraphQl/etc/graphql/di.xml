@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Amasty Improved Sorting GraphQl for Magento 2 (System)
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Block\Product\ProductList\Toolbar">
+        <plugin name="Amasty_SortingGraphQl::catalogToolbar" type="Amasty\Sorting\Plugin\Catalog\Product\ProductList\Toolbar"/>
+    </type>
+    <type name="Magento\Catalog\Model\ResourceModel\Product\Collection">
+        <plugin name="Amasty_SortingGraphQl::SortingMethodsProcessor"
+                type="Amasty\Sorting\Plugin\Catalog\Product\Collection"/>
+    </type>
+
+    <type name="Amasty\Sorting\Plugin\CatalogSearch\Model\ResourceModel\Fulltext\Collection\ApplySorting">
+        <arguments>
+            <argument name="isFulltextCollection" xsi:type="boolean">true</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection">
+        <plugin name="Amasty_SortingGraphQl::SortingMethodsProcessor"
+                type="Amasty\Sorting\Plugin\CatalogSearch\Model\ResourceModel\Fulltext\Collection\ApplySorting"/>
+    </type>
+    <type name="Amasty\Shopby\Model\ResourceModel\Fulltext\Collection">
+        <plugin name="Amasty_SortingGraphQl::SortingMethodsProcessor"
+                type="Amasty\Sorting\Plugin\CatalogSearch\Model\ResourceModel\Fulltext\Collection\ApplySorting"/>
+    </type>
+    <type name="Amasty\ShopbyLite\Model\ResourceModel\Fulltext\Collection">
+        <plugin name="Amasty_SortingGraphQl::SortingMethodsProcessor"
+                type="Amasty\Sorting\Plugin\CatalogSearch\Model\ResourceModel\Fulltext\Collection\ApplySorting"/>
+    </type>
+
+    <!--    fix stock status for GraphQl-->
+    <type name="Magento\Catalog\Model\ResourceModel\Product\Collection">
+        <plugin name="Amasty_SortingGraphQl::add_stock_information"
+                type="Amasty\SortingGraphQl\Plugin\Catalog\Model\ResourceModel\Product\CollectionPlugin"/>
+    </type>
+
+    <type name="Amasty\Sorting\Block\Widget\Featured">
+        <plugin name="Amasty_SortingGraphQl::addConfig" type="Amasty\SortingGraphQl\Plugin\Block\Widget\Featured\AddWidgetParams" />
+    </type>
+
+    <type name="Magento\CatalogGraphQl\Model\Resolver\Product\MediaGallery\Url">
+        <plugin name="Amasty_SortingGraphQl::get-relative-path" type="Amasty\SortingGraphQl\Plugin\CatalogGraphQl\Model\Resolver\Product\MediaGallery\Url\CutBaseUrl" />
+    </type>
+
+    <!-- fix for elastic engine; because when elastic sorting is double! in elastic and after in mysql -->
+    <type name="Magento\CatalogGraphQl\DataProvider\Product\SearchCriteriaBuilder">
+        <plugin name="Amasty_SortingGraphQl::add-default-orders" type="Amasty\SortingGraphQl\Plugin\CatalogGraphQl\DataProvider\Product\SearchCriteriaBuilder\AddDefaultOrders" sortOrder="10" />
+    </type>
+    <type name="Magento\CatalogGraphQl\DataProvider\Product\SearchCriteriaBuilder">
+        <plugin name="Amasty_SortingGraphQl::fix-order-code" type="Amasty\SortingGraphQl\Plugin\CatalogGraphQl\DataProvider\Product\SearchCriteriaBuilder\FixSortOrderCode" sortOrder="11" />
+    </type>
+    <type name="Amasty\Sorting\Model\MethodProvider">
+        <plugin name="Amasty_SortingGraphQl::fix-method-code" type="Amasty\SortingGraphQl\Plugin\Sorting\Model\MethodProvider\FixMethodCode" />
+    </type>
+    <type name="Amasty\Sorting\Model\Method\GetAttributeCodesForSorting">
+        <plugin name="Amasty_SortingGraphQl::disable-code-map"
+                type="Amasty\SortingGraphQl\Plugin\Sorting\Model\Method\GetAttributeCodesForSorting\DisableCodeMap" />
+    </type>
+
+    <type name="Magento\CatalogGraphQl\Model\Resolver\Products\Query\Search">
+        <plugin name="Amasty_SortingGraphQl::detect-search-page" type="Amasty\SortingGraphQl\Plugin\CatalogGraphQl\Model\Resolver\Products\Query\Search\SetSearchFlag" />
+    </type>
+    <type name="Amasty\Sorting\Model\IsSearchPage">
+        <plugin name="Amasty_SortingGraphQl::detect-search-page" type="Amasty\SortingGraphQl\Plugin\Sorting\Model\IsSearchPage\DetectSearchPage" />
+    </type>
+
+    <type name="Magento\Catalog\Model\Category\Attribute\Source\Sortby">
+        <plugin name="Amasty_SortingGraphQl::SortingAllOptions" type="Amasty\SortingGraphQl\Plugin\Catalog\Model\Category\Attribute\Source\Sortby"/>
+    </type>
+</config>

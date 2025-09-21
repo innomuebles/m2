@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/sectionSchema.xsd">
+
+    <section name="StorefrontPageElementsSection">
+        <element name="ProductsSequence" type="block"
+                 selector="//*[@class='item product product-item'][contains(string(), '{{var1}}')]/following::*[@class='item product product-item'][contains(string(), '{{var2}}')]/following::*[@class='item product product-item'][contains(string(), '{{var3}}')]"
+                 parameterized="true"/>
+        <element name="ProductsSequenceFirst" type="block"
+                 selector="//*[@class='item product product-item'][1][contains(string(), '{{var1}}')]/following::*[@class='item product product-item'][contains(string(), '{{var2}}')]/following::*[@class='item product product-item'][contains(string(), '{{var3}}')]"
+                 parameterized="true"/>
+        <element name="ProductsSequenceLast" type="block"
+                 selector="//*[@class='item product product-item'][contains(string(), '{{var1}}')]/following::*[@class='item product product-item'][contains(string(), '{{var2}}')]/following::*[@class='item product product-item'][last()][contains(string(), '{{var3}}')]"
+                 parameterized="true"/>
+        <element name="sortByDropdownSelectedValue" type="select" timeout="30"
+                 selector=".//*[@class='toolbar toolbar-products'][1]//*[@id='sorter']/option[@selected='selected']"/>
+        <element name="ProductsSequenceFour" type="block"
+                 selector="//*[@class='item product product-item'][contains(string(), '{{var1}}')]/following::*[@class='item product product-item'][contains(string(), '{{var2}}')]/following::*[@class='item product product-item'][contains(string(), '{{var3}}')]/following::*[@class='item product product-item'][contains(string(), '{{var4}}')]"
+                 parameterized="true"/>
+        <element name="ProdAvailableStockMsg" type="block"
+                 selector="//div[@class='product-item-info'][contains(string(), '{{productName}}')]//div[contains(@class, 'stock available') and contains(string(), 'Less than {{stock}} in stock')]"
+                 parameterized="true"/>
+    </section>
+
+</sections>

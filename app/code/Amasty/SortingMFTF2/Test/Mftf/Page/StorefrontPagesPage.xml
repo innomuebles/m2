@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 2 for Magento 2 (System)
+ */-->
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/pageSchema.xsd">
+
+    <page name="SearchResultPage" url="/catalogsearch/result/index/?q={{var1}}" area="storefront"
+          module="Sorting" parameterized="true">
+        <section name="StorefrontPageElementsSection"/>
+    </page>
+
+</pages>

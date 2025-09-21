@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 2 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByRelevanceCheckingTest" extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Relevance checking"/>
+            <description
+                    value="Check that Sort by Relevance works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-12"/>
+            <group value="impsort"/>
+            <group value="impsortsmoke"/>
+            <group value="sortbyrelevance"/>
+        </annotations>
+
+        <!-- Navigate to Search Result Page and sort page by Relevance. Check the result/-->
+
+        <amOnPage url="{{SearchResultPage.url('redtst')}}" stepKey="navigateToRequiredPage1"/>
+        <selectOption userInput="Relevance"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption1"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A5','Product A3','Product A1')}}"
+                stepKey="seeProductsSequence1"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}"
+               stepKey="setAscDescConfiguration1"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A9','Product A8','Product B1')}}"
+                stepKey="seeProductsSequence2"/>
+
+    </test>
+</tests>

@@ -1,0 +1,67 @@
+type Query {
+    amfeaturedWidget (
+        sortBy: String! @doc(description: "Order code."),
+        amsortingSortOrder: String! @doc(description: "Order direction."),
+        productsCount: Int! @doc(description: "Products count."),
+        conditions: String! @doc(description: "Conditions serialized."),
+        showPager: Boolean @doc(description: "Determine is pager enabled."),
+        productsPerPage: Int @doc(description: "Number of Products per Page"),
+        currentPage: Int @doc(description: "Current Page Nubmer.")
+    ): [ProductData] @resolver(class: "Amasty\\SortingGraphQl\\Model\\Resolver\\FeaturedList")
+    amOrderList: [SortingOrder] @resolver(class: "Amasty\\SortingGraphQl\\Model\\Resolver\\GetAvailableOrders")
+    defaultSorting(
+        pageType: PageTypeEnum! @doc(description: "Page type.")
+    ): [SortingOrder] @resolver(class: "Amasty\\SortingGraphQl\\Model\\Resolver\\GetDefaultOrders")
+}
+
+type SortingOrder {
+    attribute: String! @doc(description: "Order code."),
+    id: String! @doc(description: "Order id."),
+    text: String! @doc(description: "Order label."),
+    sortDirection: String! @doc(desctiption: "Default direction.")
+}
+
+type ProductData {
+    id: Int @doc(description: "Item id.")
+    sku: String! @doc(description: "Product SKU")
+    productUrl: String @doc(description: "Product URL.")
+    thumbnail: ProductImage @doc(description: "The relative path to the product's thumbnail image.") @resolver(class: "Amasty\\SortingGraphQl\\Model\\Resolver\\Product\\Image")
+    small_image: ProductImage @doc(description: "The relative path to the product's small image.") @resolver(class: "Amasty\\SortingGraphQl\\Model\\Resolver\\Product\\Image")
+    name: String @doc(description: "Product name.")
+    price_range: PriceRange! @doc(description: "A PriceRange object, indicating the range of prices for the product") @resolver(class: "Magento\\CatalogGraphQl\\Model\\Resolver\\Product\\PriceRange")
+    isSalable: Boolean @doc(description: "Product is salable.")
+    hasRequiredOptions: Boolean @doc(description: "Product has required options.")
+    addToCartUrl: String @doc(description: "Product add to cart URL.")
+    addToCompareParams: String @doc(description: "Product add to compare params.")
+}
+
+input ProductSortInput @doc(description: "ProductSortInput specifies the attribute to use for sorting.") {
+    bestsellers: SortEnum @doc(description: "Is product bestsellers.")
+    revenue: SortEnum @doc(description: "Revenue.")
+    rating_summary: SortEnum @doc(description: "The product rating_summary.")
+    reviews_count: SortEnum @doc(description: "The product reviews_count.")
+    most_viewed: SortEnum @doc(description: "The product most_viewed.")
+    wished: SortEnum @doc(description: "Is product wished.")
+    new: SortEnum @doc(description: "Is product new.")
+    saving: SortEnum @doc(description: "The product saving.")
+    price_asc: SortEnum @doc(description: "The product price_asc.")
+    price_desc: SortEnum @doc(description: "The product price_desc.")
+}
+
+input ProductAttributeSortInput @doc(description: "ProductAttributeSortInput specifies the attribute to use for sorting.") {
+    bestsellers: SortEnum @doc(description: "Is product bestsellers.")
+    revenue: SortEnum @doc(description: "Revenue.")
+    rating_summary: SortEnum @doc(description: "The product rating_summary.")
+    reviews_count: SortEnum @doc(description: "The product reviews_count.")
+    most_viewed: SortEnum @doc(description: "The product most_viewed.")
+    wished: SortEnum @doc(description: "Is product wished.")
+    new: SortEnum @doc(description: "Is product new.")
+    saving: SortEnum @doc(description: "The product saving.")
+    price_asc: SortEnum @doc(description: "The product price_asc.")
+    price_desc: SortEnum @doc(description: "The product price_desc.")
+}
+
+enum PageTypeEnum {
+    CATEGORY
+    SEARCH
+}

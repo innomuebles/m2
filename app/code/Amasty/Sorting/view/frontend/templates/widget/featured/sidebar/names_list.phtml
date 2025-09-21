@@ -1,0 +1,39 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting for Magento 2
+ */
+/**
+ * @var \Amasty\Sorting\Block\Widget\Featured $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+
+<?php if (($_products = $block->getProductCollection()) && $_products->getSize()): ?>
+    <div class="block widget amsorting block-featured-products-names">
+        <?php if ($block->getTitle()): ?>
+            <div class="block-title">
+                <strong><?= $escaper->escapeHtml(__($block->getTitle())) ?></strong>
+            </div>
+        <?php endif ?>
+        <div class="block-content">
+            <?php $suffix = $block->getNameInLayout(); ?>
+            <ol id="widget-new-products-<?= $escaper->escapeHtmlAttr($suffix) ?>"
+                class="product-items product-items-names">
+                <?php foreach ($_products->getItems() as $product): ?>
+                    <li class="product-item">
+                        <strong class="product-item-name">
+                            <a href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
+                               title="<?= $escaper->escapeHtmlAttr($block->getProductName($product)) ?>"
+                               class="product-item-link">
+                               <?= $escaper->escapeHtml($block->getProductName($product)) ?>
+                            </a>
+                        </strong>
+                    </li>
+                <?php endforeach; ?>
+            </ol>
+            <?= $block->getPagerHtml() ?>
+        </div>
+    </div>
+<?php endif; ?>

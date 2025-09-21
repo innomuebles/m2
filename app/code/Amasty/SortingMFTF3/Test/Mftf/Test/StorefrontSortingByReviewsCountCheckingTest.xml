@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByReviewsCountCheckingTest" extends="StorefrontSortingByTopRatedCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Reviews Count checking"/>
+            <description
+                    value="Check that Sort by Reviews Count works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-7"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+            <group value="sortbyrevcount"/>
+        </annotations>
+
+        <!-- Navigate to Category Page and sort page by Reviews Count. Check the result/-->
+        <actionGroup ref="StorefrontProductReviewCreationActionGroup" after="fillThirdReviewInfo"
+                     stepKey="createFirstProdReviewSecondTime">
+            <argument name="productUrl" value="$$createSimpleProductA1.custom_attributes[url_key]$$"/>
+            <argument name="ratingName" value="Rating"/>
+            <argument name="stars" value="{{number.three}}"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddProductReviewActionGroup" after="createFirstProdReviewSecondTime"
+                     stepKey="fillFirstProdReviewSecondTime">
+            <argument name="review" value="fourthReview"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontProductReviewCreationActionGroup" after="fillFirstProdReviewSecondTime"
+                     stepKey="createThirdProdReviewSecondTime">
+            <argument name="productUrl" value="$$createSimpleProductA3.custom_attributes[url_key]$$"/>
+            <argument name="ratingName" value="Rating"/>
+            <argument name="stars" value="{{number.two}}"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddProductReviewActionGroup" after="createThirdProdReviewSecondTime"
+                     stepKey="fillThirdProdReviewSecondTime">
+            <argument name="review" value="fifthReview"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontProductReviewCreationActionGroup" after="fillThirdProdReviewSecondTime"
+                     stepKey="createThirdProdReviewThirdTime">
+            <argument name="productUrl" value="$$createSimpleProductA3.custom_attributes[url_key]$$"/>
+            <argument name="ratingName" value="Rating"/>
+            <argument name="stars" value="{{number.two}}"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddProductReviewActionGroup" after="createThirdProdReviewThirdTime"
+                     stepKey="fillThirdProdReviewThirdTime">
+            <argument name="review" value="sixthReview"/>
+        </actionGroup>
+        <actionGroup ref="AdminProductReviewEnablingActionGroup" after="approveThirdProduct"
+                     stepKey="approveFirstProdSecondTime">
+            <argument name="review" value="fourthReview.nickname"/>
+        </actionGroup>
+        <actionGroup ref="AdminProductReviewEnablingActionGroup" after="approveFirstProdSecondTime"
+                     stepKey="approveThirdProdSecondTime">
+            <argument name="review" value="fifthReview.nickname"/>
+        </actionGroup>
+        <actionGroup ref="AdminProductReviewEnablingActionGroup" after="approveThirdProdSecondTime"
+                     stepKey="approveThirdProdThirdTime">
+            <argument name="review" value="sixthReview.nickname"/>
+        </actionGroup>
+        <selectOption userInput="Reviews Count" selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption"/>
+        <seeElement selector="{{StorefrontPageElementsSection.ProductsSequence('Product A3','Product A1','Product A2')}}"
+                stepKey="seeProductsSequence"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}" stepKey="setAscDescConfiguration"/>
+        <seeElement selector="{{StorefrontPageElementsSection.ProductsSequence('Product A2','Product A1','Product A3')}}"
+                stepKey="seeProductsSequenceTwo"/>
+    </test>
+</tests>

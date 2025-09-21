@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+
+    <entity name="fourthReview" type="review">
+        <data key="nickname" unique="suffix">user</data>
+        <data key="title">Product review</data>
+        <data key="detail">New review product</data>
+    </entity>
+    <entity name="fifthReview" extends="fourthReview" type="review">
+        <data key="nickname" unique="suffix">user</data>
+    </entity>
+    <entity name="sixthReview" extends="fourthReview" type="review">
+        <data key="nickname" unique="suffix">user</data>
+    </entity>
+</entities>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByFirstSortingOnSearchPageTest" extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="First sort by checking"/>
+            <description
+                value="Check that First Sort by works correctly on Search Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-21"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+        </annotations>
+
+        <before>
+            <magentoCLI command="config:set amsorting/default_sorting/search_1 price"
+                        stepKey="setFirstSortByConfiguration"/>
+        </before>
+
+        <after>
+            <magentoCLI command="config:set amsorting/default_sorting/search_1 relevance"
+                        stepKey="setFirstSortByDefaultConfiguration"/>
+        </after>
+
+        <!-- Navigate to Search Result Page. Check the result/-->
+
+        <remove keyForRemoval="selectSortByOption"/>
+        <remove keyForRemoval="setAscDescConfiguration"/>
+        <remove keyForRemoval="seeProductsSequenceTwo"/>
+        <amOnPage url="{{StorefrontCatalogSearchPage.url}}?q=redtst" stepKey="navigateToRequiredPage"/>
+        <see selector="{{StorefrontPageElementsSection.sortByDropdownSelectedValue}}" userInput="Price"
+             after="navigateToRequiredPage" stepKey="seeSelectedPrice"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceFirst('Product A7','Product A2','Product A9')}}"
+            stepKey="seeProductsSequence"/>
+    </test>
+</tests>

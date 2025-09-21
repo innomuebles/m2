@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 2 for Magento 2 (System)
+ */-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/sectionSchema.xsd">
+
+    <section name="AdminReviewsGridElementsSection">
+        <element name="ReviewCheckbox" type="checkbox"
+                 selector="//tr[contains(string(), '{{var1}}')]//label[@class='data-grid-checkbox-cell-inner']"
+                 parameterized="true"/>
+        <element name="MassActionDropdown" type="checkbox"
+                 selector="//*[@id='reviwGrid_massaction-select']"/>
+        <element name="SelectStatusDropDown" type="select"
+                 selector="//*[@name='status'][@id='status']"/>
+        <element name="MassActionDropdownOption" type="checkbox"
+                 selector="//*[@id='reviwGrid_massaction-select']//*[contains(text(), '{{var1}}')]"
+                 parameterized="true"/>
+    </section>
+
+</sections>

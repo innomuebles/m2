@@ -1,0 +1,23 @@
+{
+    "name": "amasty/improved-sorting-graphql",
+    "description": "Sorting Graphql By Amasty",
+    "require": {
+        "php": ">=7.3",
+        "amasty/base": ">=1.15.0",
+        "amasty/sorting": ">=2.9.1",
+        "magento/module-graph-ql": "*"
+    },
+    "type": "magento2-module",
+    "version": "1.1.6",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\SortingGraphQl\\": ""
+        }
+    }
+}

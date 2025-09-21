@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Amasty Improved Sorting GraphQl for Magento 2 (System)
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Amasty_SortingGraphQl" setup_version="1.0.0">
+        <sequence>
+            <module name="Magento_GraphQl"/>
+            <module name="Amasty_Sorting"/>
+        </sequence>
+    </module>
+</config>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByRevenueCheckingTest" extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Revenue checking"/>
+            <description
+                value="Check that Sort by Revenue works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-13"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+            <group value="sortbyrevenue"/>
+        </annotations>
+
+        <before>
+            <createData entity="Simple_US_Customer" stepKey="createCustomer"/>
+            <!-- Create Order -->
+            <actionGroup ref="NavigateToNewOrderPageExistingCustomerActionGroup" stepKey="navigateToNewOrderPage">
+                <argument name="customer" value="$createCustomer$"/>
+            </actionGroup>
+            <actionGroup ref="AddSimpleProductToOrderActionGroup" stepKey="addFirstProduct">
+                <argument name="product" value="$createSimpleProductA5$"/>
+                <argument name="productQty" value="2"/>
+            </actionGroup>
+            <actionGroup ref="AddSimpleProductToOrderActionGroup" stepKey="addSecondProduct">
+                <argument name="product" value="$createSimpleProductA4$"/>
+                <argument name="productQty" value="3"/>
+            </actionGroup>
+            <actionGroup ref="FillOrderCustomerInformationActionGroup" stepKey="fillCustomerInfo">
+                <argument name="customer" value="$createCustomer$"/>
+                <argument name="address" value="US_Address_TX"/>
+            </actionGroup>
+            <actionGroup ref="OrderSelectFlatRateShippingActionGroup" stepKey="selectFlatRate"/>
+            <click selector="{{OrdersGridSection.submitOrder}}" stepKey="submitOrder"/>
+            <waitForPageLoad stepKey="waitForSubmitOrderPage"/>
+            <see stepKey="seeSuccessMessageForOrder" userInput="You created the order."/>
+            <magentoCLI command="indexer:reindex" arguments="amasty_sorting_revenue inventory" stepKey="reindex"/>
+        </before>
+
+        <after>
+            <deleteData createDataKey="createCustomer" stepKey="deleteCustomer"/>
+        </after>
+
+        <!-- Navigate to Category Page and sort page by Revenue. Check the result/-->
+
+        <selectOption userInput="Revenue"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceFirst('Product A5','Product A4','Product A1')}}"
+            stepKey="seeProductsSequence"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}"
+               stepKey="setAscDescConfiguration"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceLast('Product B1','Product A4','Product A5')}}"
+            stepKey="seeProductsSequenceTwo"/>
+
+    </test>
+</tests>

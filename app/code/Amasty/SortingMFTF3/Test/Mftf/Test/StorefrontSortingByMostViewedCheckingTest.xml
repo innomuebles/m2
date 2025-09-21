@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByMostViewedCheckingTest" extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Most Viewed checking"/>
+            <description
+                    value="Check that Sort by Most Viewed works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-5"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+            <group value="sortbymostview"/>
+        </annotations>
+
+        <before>
+            <magentoCLI command="config:set reports/options/enabled 1" stepKey="setEnableReports"
+                        after="loginAsAdmin"/>
+            <remove keyForRemoval="createSimpleProductA6"/>
+            <remove keyForRemoval="createSimpleProductA7"/>
+            <remove keyForRemoval="createSimpleProductA8"/>
+            <remove keyForRemoval="createSimpleProductA9"/>
+            <remove keyForRemoval="createSimpleProductB1"/>
+            <amOnPage url="$createSimpleProductA5.custom_attributes[url_key]$.html" stepKey="navigateToRequiredPDP1"/>
+            <magentoCLI command="cache:clean" arguments="full_page" stepKey="cleanCache1"/>
+            <magentoCLI command="indexer:reindex" arguments="amasty_sorting_most_viewed" stepKey="reindex1"/>
+            <amOnPage url="$createSimpleProductA5.custom_attributes[url_key]$.html" stepKey="navigateToRequiredPDP2"/>
+            <magentoCLI command="cache:clean" arguments="full_page" stepKey="cleanCache2"/>
+            <magentoCLI command="indexer:reindex" arguments="amasty_sorting_most_viewed" stepKey="reindex2"/>
+            <amOnPage url="$createSimpleProductA5.custom_attributes[url_key]$.html" stepKey="navigateToRequiredPDP3"/>
+            <magentoCLI command="cache:clean" arguments="full_page" stepKey="cleanCache3"/>
+            <magentoCLI command="indexer:reindex" arguments="amasty_sorting_most_viewed" stepKey="reindex3"/>
+            <amOnPage url="$createSimpleProductA5.custom_attributes[url_key]$.html" stepKey="navigateToRequiredPDP4"/>
+            <magentoCLI command="cache:clean" arguments="full_page" stepKey="cleanCache4"/>
+            <magentoCLI command="indexer:reindex" arguments="amasty_sorting_most_viewed" stepKey="reindex4"/>
+            <amOnPage url="$createSimpleProductA3.custom_attributes[url_key]$.html" stepKey="navigateToRequiredPDP5"/>
+            <magentoCLI command="cache:clean" arguments="full_page" stepKey="cleanCache5"/>
+            <magentoCLI command="indexer:reindex" arguments="amasty_sorting_most_viewed" stepKey="reindex5"/>
+            <amOnPage url="$createSimpleProductA3.custom_attributes[url_key]$.html" stepKey="navigateToRequiredPDP6"/>
+            <magentoCLI command="cache:clean" arguments="full_page" stepKey="cleanCache6"/>
+            <magentoCLI command="indexer:reindex" arguments="amasty_sorting_most_viewed" stepKey="reindex6"/>
+            <amOnPage url="$createSimpleProductA3.custom_attributes[url_key]$.html" stepKey="navigateToRequiredPDP7"/>
+            <magentoCLI command="cache:clean" arguments="full_page" stepKey="cleanCache7"/>
+            <magentoCLI command="indexer:reindex" arguments="amasty_sorting_most_viewed" stepKey="reindex7"/>
+            <amOnPage url="$createSimpleProductA1.custom_attributes[url_key]$.html" stepKey="navigateToRequiredPDP8"/>
+            <magentoCLI command="cache:clean" arguments="full_page" stepKey="cleanCache8"/>
+            <magentoCLI command="indexer:reindex" arguments="amasty_sorting_most_viewed" stepKey="reindex8"/>
+            <amOnPage url="$createSimpleProductA1.custom_attributes[url_key]$.html" stepKey="navigateToRequiredPDP9"/>
+            <magentoCLI command="cache:clean" arguments="full_page" stepKey="cleanCache9"/>
+            <magentoCLI command="indexer:reindex" arguments="amasty_sorting_most_viewed" stepKey="reindex9"/>
+            <amOnPage url="$createSimpleProductA2.custom_attributes[url_key]$.html" stepKey="navigateToRequiredPDP10"/>
+            <magentoCLI command="cache:clean" arguments="full_page" stepKey="cleanCache10"/>
+            <magentoCLI command="indexer:reindex" arguments="amasty_sorting_most_viewed" stepKey="reindex10"/>
+        </before>
+
+        <after>
+            <magentoCLI command="config:set reports/options/enabled 0"
+                        stepKey="setEnableReports1"
+                        before="deleteTestCategory1"/>
+            <remove keyForRemoval="deleteSimpleProductA6"/>
+            <remove keyForRemoval="deleteSimpleProductA7"/>
+            <remove keyForRemoval="deleteSimpleProductA8"/>
+            <remove keyForRemoval="deleteSimpleProductA9"/>
+            <remove keyForRemoval="deleteSimpleProductB1"/>
+        </after>
+
+        <!-- Navigate to Category Page and sort page by Most Viewed. Check the result/-->
+
+        <selectOption userInput="most_viewed"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A5','Product A3','Product A1')}}"
+                stepKey="seeProductsSequence"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}"
+               stepKey="setAscDescConfiguration"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A4','Product A2','Product A1')}}"
+                stepKey="seeProductsSequenceTwo"/>
+
+    </test>
+</tests>

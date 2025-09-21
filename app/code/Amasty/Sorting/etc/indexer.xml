@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Indexer/etc/indexer.xsd">
+    <indexer id="amasty_sorting_bestseller" view_id="amasty_sorting_bestseller" class="Amasty\Sorting\Model\Indexer\Bestsellers\BestsellersIndexer">
+        <title translate="true">Amasty Improved Sorting - Bestsellers</title>
+        <description translate="true">Index Bestsellers. 'Update on Save' - to execute once a day by cron</description>
+    </indexer>
+    <indexer id="amasty_sorting_revenue" view_id="amasty_sorting_revenue" class="Amasty\Sorting\Model\Indexer\Revenue\RevenueIndexer">
+        <title translate="true">Amasty Improved Sorting - Revenue</title>
+        <description translate="true">Index Revenues. 'Update on Save' - to execute once a day by cron</description>
+    </indexer>
+    <indexer id="amasty_sorting_most_viewed" view_id="amasty_sorting_most_viewed" class="Amasty\Sorting\Model\Indexer\MostViewed\MostViewedIndexer">
+        <title translate="true">Amasty Improved Sorting - Most Viewed</title>
+        <description translate="true">Index Product Views. 'Update on Save' - to execute once a day by cron</description>
+    </indexer>
+    <indexer id="amasty_sorting_wished" view_id="amasty_sorting_wished" class="Amasty\Sorting\Model\Indexer\Wished\WishedIndexer">
+        <title translate="true">Amasty Improved Sorting - Wishlists</title>
+        <description translate="true">Index Wishlists. 'Update on Save' - to execute once a day by cron</description>
+    </indexer>
+
+    <indexer id="catalogsearch_fulltext">
+        <dependencies>
+            <indexer id="amasty_sorting_bestseller" />
+            <indexer id="amasty_sorting_most_viewed" />
+            <indexer id="amasty_sorting_wished" />
+        </dependencies>
+    </indexer>
+</config>

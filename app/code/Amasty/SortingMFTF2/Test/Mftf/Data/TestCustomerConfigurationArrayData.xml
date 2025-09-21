@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 2 for Magento 2 (System)
+ */-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+
+    <entity name="ISTestCustomerA1" type="is_test_customer">
+        <data key="firstname">Test</data>
+        <data key="lastname">Customer1</data>
+        <data key="email">test.customer@example.com</data>
+        <data key="password">amTest123!</data>
+        <requiredEntity type="addresses_array">AddressesArray</requiredEntity>
+    </entity>
+    <entity name="ISTestCustomerA2" type="is_test_customer" extends="ISTestCustomerA1">
+        <data key="lastname">Customer2</data>
+        <data key="email">test.customer2@example.com</data>
+    </entity>
+    <entity name="ISTestCustomerA3" type="is_test_customer" extends="ISTestCustomerA1">
+        <data key="lastname">Customer3</data>
+        <data key="email">test.customer3@example.com</data>
+    </entity>
+    <entity name="ISTestCustomerA4" type="is_test_customer" extends="ISTestCustomerA1">
+        <data key="lastname">Customer4</data>
+        <data key="email">test.customer4@example.com</data>
+    </entity>
+
+    <entity name="AddressesArray" type="addresses_array">
+        <data key="firstname">Test</data>
+        <data key="lastname">Customer1</data>
+        <array key="street">
+            <item>123 Test Street Address</item>
+        </array>
+        <data key="city">Test City</data>
+        <data key="country_id">US</data>
+        <data key="region">Texas</data>
+        <data key="region_id">1</data>
+        <data key="postcode">12345</data>
+        <data key="telephone">123 456 789</data>
+        <data key="default_shipping">true</data>
+        <data key="default_billing">true</data>
+    </entity>
+
+</entities>

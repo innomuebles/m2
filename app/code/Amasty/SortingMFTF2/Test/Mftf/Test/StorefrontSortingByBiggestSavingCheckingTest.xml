@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 2 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByBiggestSavingCheckingTest" extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Biggest Saving checking"/>
+            <description
+                    value="Check that Sort by Biggest Saving works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-9"/>
+            <group value="impsort"/>
+            <group value="impsortsmoke"/>
+            <group value="sortbybigsave"/>
+        </annotations>
+
+        <before>
+            <updateData createDataKey="createSimpleProductA1"
+                        entity="ISUpdateSpecPriceTestSimpleProductA1"
+                        stepKey="updateProductSpecPriceA1"
+                        after="createSimpleProductA1"/>
+            <updateData createDataKey="createSimpleProductA2"
+                        entity="ISUpdateSpecPriceTestSimpleProductA2"
+                        stepKey="updateProductSpecPriceA2"
+                        after="createSimpleProductA2"/>
+            <updateData createDataKey="createSimpleProductA3"
+                        entity="ISUpdateSpecPriceTestSimpleProductA3"
+                        stepKey="updateProductSpecPriceA3"
+                        after="createSimpleProductA3"/>
+            <updateData createDataKey="createSimpleProductA4"
+                        entity="ISUpdateSpecPriceTestSimpleProductA4"
+                        stepKey="updateProductSpecPriceA4"
+                        after="createSimpleProductA4"/>
+            <updateData createDataKey="createSimpleProductA5"
+                        entity="ISUpdateSpecPriceTestSimpleProductA5"
+                        stepKey="updateProductSpecPriceA5"
+                        after="createSimpleProductA5"/>
+            <updateData createDataKey="createSimpleProductA6"
+                        entity="ISUpdateSpecPriceTestSimpleProductA6"
+                        stepKey="updateProductSpecPriceA6"
+                        after="createSimpleProductA6"/>
+            <updateData createDataKey="createSimpleProductA7"
+                        entity="ISUpdateSpecPriceTestSimpleProductA7"
+                        stepKey="updateProductSpecPriceA7"
+                        after="createSimpleProductA7"/>
+            <updateData createDataKey="createSimpleProductA8"
+                        entity="ISUpdateSpecPriceTestSimpleProductA8"
+                        stepKey="updateProductSpecPriceA8"
+                        after="createSimpleProductA8"/>
+            <updateData createDataKey="createSimpleProductA9"
+                        entity="ISUpdateSpecPriceTestSimpleProductA9"
+                        stepKey="updateProductSpecPriceA9"
+                        after="createSimpleProductA9"/>
+            <updateData createDataKey="createSimpleProductB1"
+                        entity="ISUpdateSpecPriceTestSimpleProductB1"
+                        stepKey="updateProductSpecPriceB1"
+                        after="createSimpleProductB1"/>
+        </before>
+
+        <!-- Navigate to Category Page and sort page by Biggest Saving. Check the result/-->
+
+        <selectOption userInput="Biggest Saving"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption1"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A8','Product A5','Product B1')}}"
+                stepKey="seeProductsSequence1"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}"
+               stepKey="setAscDescConfiguration1"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A9','Product A4','Product A1')}}"
+                stepKey="seeProductsSequence2"/>
+
+    </test>
+</tests>

@@ -1,0 +1,16 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting for Magento 2
+ */ /** @var \Amasty\Sorting\Block\Direction $block */ ?>
+
+<script type="text/x-magento-init">
+        {
+            "[data-role='sorter']": {
+                "Amasty_Sorting/js/direction": {
+                    "permanentDirectionMethods": <?= /** @noEscape */ $block->getPermanentDirectionAttributesJson() ?>
+                }
+            }
+        }
+</script>

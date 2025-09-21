@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByProductQtyTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Assert sorting according to Qty Sorting Range Step setting on storefront"/>
+            <description value="Assert sorting according to Qty Sorting Range Step setting on storefront"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="254916"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+        </annotations>
+
+        <before>
+            <createData entity="_defaultCategory" stepKey="createCategory"/>
+            <createData entity="ISTestSimpleProductStock1" stepKey="createFirstProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <createData entity="ISTestSimpleProductStock1111" stepKey="createSecondProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <createData entity="ISTestSimpleProductStock777" stepKey="createThirdProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <createData entity="ISTestSimpleProductStock25" stepKey="createFourthProduct">
+                <requiredEntity createDataKey="createCategory"/>
+            </createData>
+            <magentoCLI command="config:set amsorting/general/qty_step 10" stepKey="setQtySortingRangeStep"/>
+            <magentoCLI command="config:set amsorting/general/show_qty 1" stepKey="setShowProdRangeQtyOnFrontend"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+        </before>
+
+        <after>
+            <deleteData createDataKey="createCategory" stepKey="deleteCategory"/>
+            <deleteData createDataKey="createFirstProduct" stepKey="deleteFirstProduct"/>
+            <deleteData createDataKey="createSecondProduct" stepKey="deleteSecondProduct"/>
+            <deleteData createDataKey="createThirdProduct" stepKey="deleteThirdProduct"/>
+            <deleteData createDataKey="createFourthProduct" stepKey="deleteFourthProduct"/>
+            <magentoCLI command="config:set amsorting/general/show_qty 0" stepKey="setShowProdRangeQtyOnFrontend"/>
+        </after>
+
+        <actionGroup ref="StorefrontNavigateCategoryPageActionGroup" stepKey="navigateToCategoryPage">
+            <argument name="category" value="$createCategory$"/>
+        </actionGroup>
+        <selectOption userInput="Stock Quantity"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceFour($createFirstProduct.name$,$createFourthProduct.name$,$createThirdProduct.name$,$createSecondProduct.name$)}}"
+            stepKey="assertDefProductsSequence"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProdAvailableStockMsg($createFirstProduct.name$, '10')}}"
+            stepKey="assertFirstProdAvailableStockMsg"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProdAvailableStockMsg($createSecondProduct.name$, '1120')}}"
+            stepKey="assertSecondProdAvailableStockMsg"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProdAvailableStockMsg($createThirdProduct.name$, '780')}}"
+            stepKey="assertThirdProdAvailableStockMsg"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProdAvailableStockMsg($createFourthProduct.name$, '30')}}"
+            stepKey="assertFourthProdAvailableStockMsg"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionAsc}}"
+               stepKey="setDescProductSequence"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceFour($createSecondProduct.name$,$createThirdProduct.name$,$createFourthProduct.name$,$createFirstProduct.name$)}}"
+            stepKey="assertDescProductsSequence"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}"
+               stepKey="setAscProductSequence"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceFour($createFirstProduct.name$,$createFourthProduct.name$,$createThirdProduct.name$,$createSecondProduct.name$)}}"
+            stepKey="assertAscProductsSequence"/>
+    </test>
+</tests>

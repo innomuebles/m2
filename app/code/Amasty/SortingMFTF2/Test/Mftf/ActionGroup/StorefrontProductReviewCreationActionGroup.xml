@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 2 for Magento 2 (System)
+ */-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <actionGroup name="StorefrontProductReviewCreationActionGroup">
+        <amOnPage url="{{ProductUrl3.value}}.html"
+                  stepKey="navigateToRequiredPDP1"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.ReviewsTab}}"
+               stepKey="clickOnReviewsTab1"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.RatingStar('1')}}"
+               stepKey="clickOnRatingStar1"/>
+        <fillField userInput="Test Nickname1"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('nickname')}}"
+                   stepKey="fillNicknameField1"/>
+        <fillField userInput="Test Summary1"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('summary')}}"
+                   stepKey="fillSummaryField1"/>
+        <fillField userInput="Test Review1"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('review')}}"
+                   stepKey="fillReviewField1"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.SubmitButton('Submit Review')}}"
+               stepKey="clickOnSubmitReviewButton1"/>
+        <amOnPage url="{{ProductUrl3.value}}.html"
+                  stepKey="navigateToRequiredPDP2"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.ReviewsTab}}"
+               stepKey="clickOnReviewsTab2"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.RatingStar('1')}}"
+               stepKey="clickOnRatingStar2"/>
+        <fillField userInput="Test Nickname2"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('nickname')}}"
+                   stepKey="fillNicknameField2"/>
+        <fillField userInput="Test Summary2"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('summary')}}"
+                   stepKey="fillSummaryField2"/>
+        <fillField userInput="Test Review2"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('review')}}"
+                   stepKey="fillReviewField2"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.SubmitButton('Submit Review')}}"
+               stepKey="clickOnSubmitReviewButton2"/>
+        <amOnPage url="{{ProductUrl3.value}}.html"
+                  stepKey="navigateToRequiredPDP3"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.ReviewsTab}}"
+               stepKey="clickOnReviewsTab3"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.RatingStar('1')}}"
+               stepKey="clickOnRatingStar3"/>
+        <fillField userInput="Test Nickname3"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('nickname')}}"
+                   stepKey="fillNicknameField3"/>
+        <fillField userInput="Test Summary3"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('summary')}}"
+                   stepKey="fillSummaryField3"/>
+        <fillField userInput="Test Review3"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('review')}}"
+                   stepKey="fillReviewField3"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.SubmitButton('Submit Review')}}"
+               stepKey="clickOnSubmitReviewButton3"/>
+        <amOnPage url="{{ProductUrl.value}}.html"
+                  stepKey="navigateToRequiredPDP4"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.ReviewsTab}}"
+               stepKey="clickOnReviewsTab4"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.RatingStar('1')}}"
+               stepKey="clickOnRatingStar4"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.RatingStar('2')}}"
+               stepKey="clickOnRatingStar5"/>
+        <fillField userInput="Test Nickname4"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('nickname')}}"
+                   stepKey="fillNicknameField4"/>
+        <fillField userInput="Test Summary4"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('summary')}}"
+                   stepKey="fillSummaryField4"/>
+        <fillField userInput="Test Review4"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('review')}}"
+                   stepKey="fillReviewField4"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.SubmitButton('Submit Review')}}"
+               stepKey="clickOnSubmitReviewButton4"/>
+        <amOnPage url="{{ProductUrl.value}}.html"
+                  stepKey="navigateToRequiredPDP5"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.ReviewsTab}}"
+               stepKey="clickOnReviewsTab5"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.RatingStar('1')}}"
+               stepKey="clickOnRatingStar6"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.RatingStar('2')}}"
+               stepKey="clickOnRatingStar7"/>
+        <fillField userInput="Test Nickname5"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('nickname')}}"
+                   stepKey="fillNicknameField5"/>
+        <fillField userInput="Test Summary5"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('summary')}}"
+                   stepKey="fillSummaryField5"/>
+        <fillField userInput="Test Review5"
+                   selector="{{StorefrontPDPReviewElementsSection.ReviewDataField('review')}}"
+                   stepKey="fillReviewField5"/>
+        <click selector="{{StorefrontPDPReviewElementsSection.SubmitButton('Submit Review')}}"
+               stepKey="clickOnSubmitReviewButton5"/>
+    </actionGroup>
+
+</actionGroups>

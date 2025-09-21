@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Catalog:etc/product_types.xsd">
+    <type name="configurable" label="Configurable Product" modelInstance="Magento\ConfigurableProduct\Model\Product\Type\Configurable">
+        <stockIndexerModel instance="Amasty\Sorting\Model\Indexer\Stock\Configurable" />
+    </type>
+</config>

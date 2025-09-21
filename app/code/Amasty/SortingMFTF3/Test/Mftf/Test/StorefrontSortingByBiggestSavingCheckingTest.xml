@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByBiggestSavingCheckingTest" extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Biggest Saving checking"/>
+            <description
+                    value="Check that Sort by Biggest Saving works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-9"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+            <group value="sortbybigsave"/>
+        </annotations>
+
+        <before>
+            <updateData createDataKey="createSimpleProductA1"
+                        entity="ISUpdateSpecPriceTestSimpleProductA1"
+                        stepKey="updateProductSpecPriceA1"
+                        after="createSimpleProductA1"/>
+            <updateData createDataKey="createSimpleProductA2"
+                        entity="ISUpdateSpecPriceTestSimpleProductA2"
+                        stepKey="updateProductSpecPriceA2"
+                        after="createSimpleProductA2"/>
+            <updateData createDataKey="createSimpleProductA3"
+                        entity="ISUpdateSpecPriceTestSimpleProductA3"
+                        stepKey="updateProductSpecPriceA3"
+                        after="createSimpleProductA3"/>
+            <updateData createDataKey="createSimpleProductA4"
+                        entity="ISUpdateSpecPriceTestSimpleProductA4"
+                        stepKey="updateProductSpecPriceA4"
+                        after="createSimpleProductA4"/>
+            <updateData createDataKey="createSimpleProductA5"
+                        entity="ISUpdateSpecPriceTestSimpleProductA5"
+                        stepKey="updateProductSpecPriceA5"
+                        after="createSimpleProductA5"/>
+            <updateData createDataKey="createSimpleProductA7"
+                        entity="ISUpdateSpecPriceTestSimpleProductA7"
+                        stepKey="updateProductSpecPriceA7"
+                        after="createSimpleProductA7"/>
+            <updateData createDataKey="createSimpleProductA8"
+                        entity="ISUpdateSpecPriceTestSimpleProductA8"
+                        stepKey="updateProductSpecPriceA8"
+                        after="createSimpleProductA8"/>
+            <updateData createDataKey="createSimpleProductA9"
+                        entity="ISUpdateSpecPriceTestSimpleProductA9"
+                        stepKey="updateProductSpecPriceA9"
+                        after="createSimpleProductA9"/>
+            <updateData createDataKey="createSimpleProductB1"
+                        entity="ISUpdateSpecPriceTestSimpleProductB1"
+                        stepKey="updateProductSpecPriceB1"
+                        after="createSimpleProductB1"/>
+            <createData entity="CatalogRuleToPercent" stepKey="createCatalogPriceRule"/>
+            <actionGroup ref="OpenCatalogPriceRuleActionGroup" stepKey="openCatalogPriceRule">
+                <argument name="ruleName" value="$createCatalogPriceRule.name$"/>
+            </actionGroup>
+            <actionGroup ref="AdminCatalogPriceRuleAddSkuConditionActionGroup" stepKey="addProductSkuBasedCondition">
+                <argument name="productSku" value="$$createSimpleProductA6.sku$$"/>
+            </actionGroup>
+            <actionGroup ref="AdminCatalogPriceRuleSaveAndApplyActionGroup" stepKey="saveAndApplyCatalogPriceRule"/>
+        </before>
+
+        <!-- Navigate to Category Page and sort page by Biggest Saving. Check the result/-->
+
+        <selectOption userInput="Biggest Saving"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A8','Product A5','Product B1')}}"
+                stepKey="seeProductsSequence"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceLast('Product A7','Product A2','Product A6')}}"
+            after="seeProductsSequence" stepKey="seeLastProductsSequence"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}"
+               stepKey="setAscDescConfiguration"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A6','Product A2','Product A7')}}"
+                stepKey="seeProductsSequenceTwo"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceLast('Product B1','Product A5','Product A8')}}"
+            stepKey="seeLastProductsSequenceTwo"/>
+    </test>
+</tests>

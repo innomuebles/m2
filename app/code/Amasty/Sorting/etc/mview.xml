@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Mview/etc/mview.xsd">
+    <view id="amasty_sorting_bestseller" class="Amasty\Sorting\Model\Indexer\Bestsellers\BestsellersIndexer" group="indexer"/>
+    <view id="amasty_sorting_revenue" class="Amasty\Sorting\Model\Indexer\Revenue\RevenueIndexer" group="indexer"/>
+    <view id="amasty_sorting_most_viewed" class="Amasty\Sorting\Model\Indexer\MostViewed\MostViewedIndexer" group="indexer"/>
+    <view id="amasty_sorting_wished" class="Amasty\Sorting\Model\Indexer\Wished\WishedIndexer" group="indexer"/>
+    <view id="catalogsearch_fulltext" class="\Magento\CatalogSearch\Model\Indexer\Mview\Action" group="indexer">
+        <subscriptions>
+            <table name="amasty_sorting_reviews_link" entity_column="product_id" />
+        </subscriptions>
+    </view>
+</config>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 2 for Magento 2 (System)
+ */-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/sectionSchema.xsd">
+
+    <section name="StorefrontPageElementsSection">
+        <element name="ProductsSequence" type="block"
+                 selector="//*[@class='item product product-item'][contains(string(), '{{var1}}')]/following::*[@class='item product product-item'][contains(string(), '{{var2}}')]/following::*[@class='item product product-item'][contains(string(), '{{var3}}')]"
+                 parameterized="true"/>
+    </section>
+
+    <section name="StorefrontPDPReviewElementsSection">
+        <element name="ReviewsTab" type="block"
+                 selector="//*[@id='tab-label-reviews-title']"/>
+        <element name="RatingStar" type="select"
+                 selector="//*[@id='Rating_{{var1}}_label']" parameterized="true"/>
+        <element name="ReviewDataField" type="input"
+                 selector="//*[@id='{{var1}}_field']" parameterized="true"/>
+        <element name="SubmitButton" type="button"
+                 selector="//button[contains(string(), '{{var1}}')]" parameterized="true"/>
+    </section>
+
+</sections>

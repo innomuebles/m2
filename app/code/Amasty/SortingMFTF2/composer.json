@@ -1,0 +1,22 @@
+{
+  "name": "amasty/module-sorting-mftf-2",
+  "description": "Improved Sorting MFTF v. 2.6.x by Amasty",
+  "require": {
+    "php": "^7.3.0",
+    "amasty/sorting": ">2.10.0",
+    "magento/magento2-functional-testing-framework": "~2.6.4||~2.7"
+  },
+  "type": "magento2-module",
+  "version": "1.0.1",
+  "license": [
+    "Commercial"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Amasty\\SortingMFTF2\\": ""
+    }
+  }
+}

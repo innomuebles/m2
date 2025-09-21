@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 2 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByTopRatedCheckingTest" extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Top Rated checking"/>
+            <description
+                    value="Check that Sort by Top Rated works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-8"/>
+            <group value="impsort"/>
+            <group value="impsortsmoke"/>
+            <group value="sortbytoprat"/>
+        </annotations>
+
+        <before>
+            <remove keyForRemoval="createSimpleProductA4"/>
+            <remove keyForRemoval="createSimpleProductA5"/>
+            <remove keyForRemoval="createSimpleProductA6"/>
+            <remove keyForRemoval="createSimpleProductA7"/>
+            <remove keyForRemoval="createSimpleProductA8"/>
+            <remove keyForRemoval="createSimpleProductA9"/>
+            <remove keyForRemoval="createSimpleProductB1"/>
+            <actionGroup ref="StorefrontProductReviewCreationActionGroup"
+                         stepKey="CreateProductReviews1"/>
+            <actionGroup ref="AdminProductReviewEnablingActionGroup"
+                         stepKey="ApproveProductReviews1"/>
+            <magentoCLI command="indexer:reindex" stepKey="reindex1"/>
+        </before>
+
+        <after>
+            <remove keyForRemoval="deleteSimpleProductA4"/>
+            <remove keyForRemoval="deleteSimpleProductA5"/>
+            <remove keyForRemoval="deleteSimpleProductA6"/>
+            <remove keyForRemoval="deleteSimpleProductA7"/>
+            <remove keyForRemoval="deleteSimpleProductA8"/>
+            <remove keyForRemoval="deleteSimpleProductA9"/>
+            <remove keyForRemoval="deleteSimpleProductB1"/>
+        </after>
+
+        <!-- Navigate to Category Page and sort page by Top Rated. Check the result/-->
+
+        <selectOption userInput="Top Rated"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption1"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A1','Product A3','Product A2')}}"
+                stepKey="seeProductsSequence1"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}"
+               stepKey="setAscDescConfiguration1"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A2','Product A3','Product A1')}}"
+                stepKey="seeProductsSequence2"/>
+
+    </test>
+</tests>

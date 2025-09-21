@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <actionGroup name="AdminSetAdvancedSortingConfigActionGroup">
+        <arguments>
+            <argument name="adminSetting" defaultValue="bestsellerGlobalSorting"/>
+        </arguments>
+        <amOnPage url="{{AdminSortingConfigPage.url}}" stepKey="navigateToConfiguration"/>
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+        <conditionalClick selector="{{AdminConfigurationsSortingSection.AdvancedSortingTab}}"
+                          dependentSelector="{{AdminConfigurationsSortingSection.GlobalSortingByInput}}"
+                          visible="false" stepKey="openTab" />
+        <fillField selector="{{AdminConfigurationsSortingSection.GlobalSortingByInput}}"
+                   userInput="{{adminSetting.value}}" stepKey="setGlobalSorting"/>
+        <selectOption selector="{{AdminConfigurationsSortingSection.GlobalSortingByDirectionSelect}}"
+                      userInput="{{adminSetting.direction}}" stepKey="selectDirection"/>
+        <click selector="{{AdminMainActionsSection.save}}" stepKey="saveDefaultSettings"/>
+        <waitForPageLoad stepKey="waitForPageLoadAfterSave"/>
+    </actionGroup>
+</actionGroups>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 2 for Magento 2 (System)
+ */-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+
+    <entity name="ISTestCartA1" type="is_test_cart">
+        <var key="customer_id" entityType="is_test_customer" entityKey="id"/>
+    </entity>
+    <entity name="ISTestCartA2" type="is_test_cart" extends="ISTestCartA1">
+        <var key="customer_id" entityType="is_test_customer" entityKey="id"/>
+    </entity>
+    <entity name="ISTestCartA3" type="is_test_cart" extends="ISTestCartA1">
+        <var key="customer_id" entityType="is_test_customer" entityKey="id"/>
+    </entity>
+
+    <entity name="ISTestCartA1WP" type="is_test_cart_item">
+        <var key="sku" entityType="is_test_product" entityKey="sku"/>
+        <var key="quote_id" entityType="is_test_cart" entityKey="return"/>
+        <data key="qty">2</data>
+    </entity>
+    <entity name="ISTestCartA2WP" type="is_test_cart_item" extends="ISTestCartA1WP">
+        <data key="qty">3</data>
+    </entity>
+    <entity name="ISTestCartA3WP" type="is_test_cart_item" extends="ISTestCartA1WP">
+        <data key="qty">1</data>
+    </entity>
+
+    <entity name="ISTestCartA1WPShippingInfo" type="is_test_cart_ship_info">
+        <var key="quote_id" entityType="is_test_cart_item" entityKey="return"/>
+        <requiredEntity type="shipping_address">ShippingAddressArray</requiredEntity>
+        <requiredEntity type="billing_address">BillingAddressArray</requiredEntity>
+        <data key="shipping_method_code">flatrate</data>
+        <data key="shipping_carrier_code">flatrate</data>
+    </entity>
+
+    <entity name="ShippingAddressArray" type="shipping_address">
+        <data key="firstname">Test</data>
+        <data key="lastname">Customer1</data>
+        <array key="street">
+            <item>123 Test Street Address</item>
+        </array>
+        <data key="city">Test City</data>
+        <data key="country_id">US</data>
+        <data key="region_code">TX</data>
+        <data key="region">Texas</data>
+        <data key="region_id">1</data>
+        <data key="postcode">12345</data>
+        <data key="telephone">123 456 789</data>
+    </entity>
+    <entity name="BillingAddressArray" type="billing_address" extends="ShippingAddressArray">
+    </entity>
+
+    <entity name="ISPlaceTestCartA1WPOrder" type="is_test_cart_item">
+        <data key="method">checkmo</data>
+    </entity>
+    <entity name="ISPlaceTestCartA2WPOrder" type="is_test_cart_item" extends="ISPlaceTestCartA1WPOrder">
+    </entity>
+    <entity name="ISPlaceTestCartA3WPOrder" type="is_test_cart_item" extends="ISPlaceTestCartA1WPOrder">
+    </entity>
+
+</entities>

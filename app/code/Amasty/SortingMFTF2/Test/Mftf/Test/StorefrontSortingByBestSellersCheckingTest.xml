@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 2 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByBestSellersCheckingTest" extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Best Sellers checking"/>
+            <description
+                    value="Check that Sort by Best Sellers works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-4"/>
+            <group value="impsort"/>
+            <group value="impsortsmoke"/>
+            <group value="sortbybestsell"/>
+        </annotations>
+
+        <before>
+            <remove keyForRemoval="createSimpleProductA5"/>
+            <remove keyForRemoval="createSimpleProductA6"/>
+            <remove keyForRemoval="createSimpleProductA7"/>
+            <remove keyForRemoval="createSimpleProductA8"/>
+            <remove keyForRemoval="createSimpleProductA9"/>
+            <remove keyForRemoval="createSimpleProductB1"/>
+            <createData entity="ISTestCustomerA1" stepKey="createTestCustomerA1"/>
+            <createData entity="ISTestCartA1" stepKey="createTestCartA1">
+                <requiredEntity createDataKey="createTestCustomerA1"/>
+            </createData>
+            <createData entity="ISTestCartA1WP" stepKey="createTestCartA1WP">
+                <requiredEntity createDataKey="createTestCustomerA1"/>
+                <requiredEntity createDataKey="createSimpleProductA1"/>
+                <requiredEntity createDataKey="createTestCartA1"/>
+            </createData>
+            <createData entity="ISTestCartA1WPShippingInfo"
+                        stepKey="createTestCartA1WPShippingInfo1">
+                <requiredEntity createDataKey="createTestCartA1WP"/>
+            </createData>
+            <updateData createDataKey="createTestCartA1WP"
+                        entity="ISPlaceTestCartA1WPOrder"
+                        stepKey="placeTestCartA1WPOrder1"/>
+            <createData entity="ISTestCartA2" stepKey="createTestCartA2">
+                <requiredEntity createDataKey="createTestCustomerA1"/>
+            </createData>
+            <createData entity="ISTestCartA2WP" stepKey="createTestCartA2WP">
+                <requiredEntity createDataKey="createTestCustomerA1"/>
+                <requiredEntity createDataKey="createSimpleProductA2"/>
+                <requiredEntity createDataKey="createTestCartA2"/>
+            </createData>
+            <createData entity="ISTestCartA1WPShippingInfo"
+                        stepKey="createTestCartA1WPShippingInfo2">
+                <requiredEntity createDataKey="createTestCartA2WP"/>
+            </createData>
+            <updateData createDataKey="createTestCartA2WP"
+                        entity="ISPlaceTestCartA2WPOrder"
+                        stepKey="placeTestCartA2WPOrder"/>
+            <createData entity="ISTestCartA3" stepKey="createTestCartA3">
+                <requiredEntity createDataKey="createTestCustomerA1"/>
+            </createData>
+            <createData entity="ISTestCartA3WP" stepKey="createTestCartA3WP">
+                <requiredEntity createDataKey="createTestCustomerA1"/>
+                <requiredEntity createDataKey="createSimpleProductA3"/>
+                <requiredEntity createDataKey="createTestCartA3"/>
+            </createData>
+            <createData entity="ISTestCartA1WPShippingInfo"
+                        stepKey="createTestCartA1WPShippingInfo3">
+                <requiredEntity createDataKey="createTestCartA3WP"/>
+            </createData>
+            <updateData createDataKey="createTestCartA3WP"
+                        entity="ISPlaceTestCartA3WPOrder"
+                        stepKey="placeTestCartA3WPOrder"/>
+            <magentoCLI command="indexer:reindex" stepKey="reindex10"/>
+        </before>
+
+        <after>
+            <deleteData stepKey="deleteTestCustomerA1" createDataKey="createTestCustomerA1" before="logout"/>
+            <remove keyForRemoval="deleteSimpleProductA5"/>
+            <remove keyForRemoval="deleteSimpleProductA6"/>
+            <remove keyForRemoval="deleteSimpleProductA7"/>
+            <remove keyForRemoval="deleteSimpleProductA8"/>
+            <remove keyForRemoval="deleteSimpleProductA9"/>
+            <remove keyForRemoval="deleteSimpleProductB1"/>
+        </after>
+
+        <!-- Navigate to Category Page and sort page by Best Sellers. Check the result/-->
+
+        <selectOption userInput="Best Sellers"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption1"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A2','Product A1','Product A3')}}"
+                stepKey="seeProductsSequence1"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}"
+               stepKey="setAscDescConfiguration1"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A4','Product A3','Product A1')}}"
+                stepKey="seeProductsSequence2"/>
+
+    </test>
+</tests>

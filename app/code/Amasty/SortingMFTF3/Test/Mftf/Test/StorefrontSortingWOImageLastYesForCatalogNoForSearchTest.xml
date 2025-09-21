@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingWOImageLastYesForCatalogNoForSearchTest"
+          extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Position checking"/>
+            <description
+                value="Check that Sort Without Image Last works correctly on Category Page And Search Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-16"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+            <group value="impsortdev"/>
+        </annotations>
+
+        <before>
+            <createData entity="ApiProductAttributeMediaGalleryEntryTestImage" stepKey="createProductImage">
+                <requiredEntity createDataKey="createSimpleProductA1"/>
+            </createData>
+            <createData entity="ApiProductAttributeMediaGalleryEntryTestImage" stepKey="createProductImageTwo">
+                <requiredEntity createDataKey="createSimpleProductA2"/>
+            </createData>
+            <createData entity="ApiProductAttributeMediaGalleryEntryTestImage" stepKey="createProductImageThree">
+                <requiredEntity createDataKey="createSimpleProductA3"/>
+            </createData>
+            <createData entity="ApiProductAttributeMediaGalleryEntryTestImage" stepKey="createProductImageFour">
+                <requiredEntity createDataKey="createSimpleProductA5"/>
+            </createData>
+            <createData entity="ApiProductAttributeMediaGalleryEntryTestImage" stepKey="createProductImageFive">
+                <requiredEntity createDataKey="createSimpleProductA6"/>
+            </createData>
+            <createData entity="ApiProductAttributeMediaGalleryEntryTestImage" stepKey="createProductImageSix">
+                <requiredEntity createDataKey="createSimpleProductA8"/>
+            </createData>
+            <createData entity="ApiProductAttributeMediaGalleryEntryTestImage" stepKey="createProductImageSeven">
+                <requiredEntity createDataKey="createSimpleProductA9"/>
+            </createData>
+            <createData entity="ApiProductAttributeMediaGalleryEntryTestImage" stepKey="createProductImageEight">
+                <requiredEntity createDataKey="createSimpleProductB1"/>
+            </createData>
+            <magentoCLI command="config:set amsorting/general/no_image_last 2" stepKey="configShowImageLast"/>
+            <magentoCLI command="indexer:reindex" arguments="inventory" stepKey="reindex"/>
+            <magentoCLI command="cache:clean" arguments="config" stepKey="cleanCache"/>
+        </before>
+
+        <after>
+            <magentoCLI command="config:set amsorting/general/no_image_last 0" stepKey="configShowImageLastDefault"/>
+        </after>
+
+        <!-- Navigate to Category Page and sort page by Position. Check the result/-->
+
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceLast('Product A2','Product A4','Product A7')}}"
+            stepKey="seeProductsSequence"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionAsc}}"
+               stepKey="setAscDescConfiguration"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceLast('Product A5','Product A7','Product A4')}}"
+            stepKey="seeProductsSequenceTwo"/>
+        <!-- Navigate to Search Result Page and sort page by Relevance. Check the result/-->
+        <amOnPage url="{{StorefrontCatalogSearchPage.url}}?q=redtst" stepKey="navigateToSRP"/>
+        <selectOption userInput="Relevance"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOptionOnSRP"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequence('Product A3','Product A4','Product A6')}}"
+            stepKey="seeProductsSequenceOnSRP"/>
+        <dontSeeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceLast('Product A9','Product A4','Product A7')}}"
+            stepKey="dontSeeProductsWithoutImageLastOnSRP"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}"
+               stepKey="setAscDescConfigurationOnSRP"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequence('Product A9','Product A8','Product B1')}}"
+            stepKey="seeProductsSequenceTwoOnSRP"/>
+        <dontSeeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceLast('Product A3','Product A7','Product A4')}}"
+            stepKey="dontSeeProductsWithoutImageLastTwoOnSRP"/>
+    </test>
+</tests>

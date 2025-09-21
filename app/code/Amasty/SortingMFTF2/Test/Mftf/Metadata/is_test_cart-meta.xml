@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 2 for Magento 2 (System)
+ */-->
+<operations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataOperation.xsd">
+
+    <operation name="ISCreateTestCartA1" dataType="is_test_cart" type="create" auth="adminOauth" url="/V1/carts/mine"
+               method="POST">
+        <contentType>application/json</contentType>
+        <field key="customer_id">string</field>
+    </operation>
+
+    <operation name="ISCreateTestCartA1WP" dataType="is_test_cart_item" type="create" auth="adminOauth"
+               url="/V1/carts/{quote_id}/items"
+               method="POST">
+        <contentType>application/json</contentType>
+        <object key="cartItem" dataType="is_test_cart_item">
+            <field key="quote_id">string</field>
+            <field key="sku">string</field>
+            <field key="qty">integer</field>
+        </object>
+    </operation>
+
+    <operation name="ISCreateTestCartA1WPShippingInfo" dataType="is_test_cart_ship_info" type="create" auth="adminOauth"
+               url="/V1/carts/{quote_id}/shipping-information"
+               method="POST">
+        <contentType>application/json</contentType>
+        <object key="addressInformation" dataType="is_test_cart_ship_info">
+            <object key="shipping_address" dataType="shipping_address">
+                <field key="city">string</field>
+                <field key="region">string</field>
+                <field key="region_code">string</field>
+                <field key="region_id">integer</field>
+                <field key="country_id">string</field>
+                <array key="street">
+                    <value>string</value>
+                </array>
+                <field key="postcode">string</field>
+                <field key="firstname">string</field>
+                <field key="lastname">string</field>
+                <field key="email">string</field>
+                <field key="telephone">string</field>
+            </object>
+            <object key="billing_address" dataType="billing_address">
+                <field key="city">string</field>
+                <field key="region">string</field>
+                <field key="region_code">string</field>
+                <field key="region_id">integer</field>
+                <field key="country_id">string</field>
+                <array key="street">
+                    <value>string</value>
+                </array>
+                <field key="postcode">string</field>
+                <field key="firstname">string</field>
+                <field key="lastname">string</field>
+                <field key="email">string</field>
+                <field key="telephone">string</field>
+            </object>
+            <field key="shipping_method_code">string</field>
+            <field key="shipping_carrier_code">string</field>
+        </object>
+    </operation>
+
+    <operation name="ISPlaceTestCartOrder" dataType="is_test_cart_item" type="update" auth="adminOauth"
+               url="/V1/carts/{quote_id}/order" method="PUT">
+        <contentType>application/json</contentType>
+        <object key="paymentMethod" dataType="is_test_cart_item">
+            <field key="method">string</field>
+        </object>
+    </operation>
+
+</operations>

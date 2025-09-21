@@ -1,0 +1,301 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="amsorting" translate="label" type="text" sortOrder="91319" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Improved Sorting</label>
+            <tab>amasty</tab>
+            <resource>Amasty_Sorting::config</resource>
+            <group id="amasty_information" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Information</label>
+                <frontend_model>Amasty\Sorting\Block\Adminhtml\System\Config\Information</frontend_model>
+            </group>
+
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="disable_methods" translate="label comment" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Disable Sorting By</label>
+                    <source_model>Amasty\Sorting\Model\Source\AllSortingAttributes</source_model>
+                    <frontend_model>Amasty\Sorting\Block\Adminhtml\System\Config\DisableSorting</frontend_model>
+                    <can_be_empty>1</can_be_empty>
+                    <comment><![CDATA[Press CTRL+mouse to select multiple values. Bestsellers, Most Viewed &amp; Wishlists use Index. Click <a href="category_edit_url" target="_blank">here</a> to configure category specific sorting options, select category and open the 'Display Settings'.]]></comment>
+                </field>
+                <field id="sort_order" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Sorting Order</label>
+                    <frontend_model>Amasty\Sorting\Block\Adminhtml\Position</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+                <field id="desc_attributes" translate="label" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Attributes Descending by Default</label>
+                    <can_be_empty>1</can_be_empty>
+                    <source_model>Amasty\Sorting\Model\Source\ListSort</source_model>
+                    <comment>Please select the attributes to have descending sorting for them by default. Not selected attributes will have ascending sorting. Press CTRL+mouse to select multiple values.</comment>
+                </field>
+                <field id="no_image_last" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Products without Images Last</label>
+                    <source_model>Amasty\Sorting\Model\Source\Image</source_model>
+                    <comment>If it is not important, select `No` to optimize server resources usage.</comment>
+                </field>
+                <field id="out_of_stock_last" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show `Out of Stock` Products Last</label>
+                    <source_model>Amasty\Sorting\Model\Source\Stock</source_model>
+                    <comment>If it is not important, select `No` to optimize server resources usage.</comment>
+                </field>
+                <field id="out_of_stock_qty" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use qty to determine if the product is `Out of Stock`</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Products with the qty &lt; 1 will be shown last regardless of the stock label.</comment>
+                    <depends>
+                        <field id="out_of_stock_last" negative="1">0</field>
+                    </depends>
+                </field>
+                <field id="debug" translate="label comment" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable debug mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <group id="default_sorting" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Sorting by Default</label>
+                <frontend_model>Amasty\Sorting\Block\Adminhtml\System\Config\SortingNotice</frontend_model>
+                <field id="search_heading" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Sorting on Search Pages</label>
+                    <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model>
+                </field>
+                <field id="search_1" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>First Sort by</label>
+                    <source_model>Amasty\Sorting\Model\Source\SearchSort</source_model>
+                </field>
+                <field id="search_2" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Then by</label>
+                    <source_model>Amasty\Sorting\Model\Source\SearchSortAfter</source_model>
+                </field>
+                <field id="search_3" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Then by</label>
+                    <source_model>Amasty\Sorting\Model\Source\SearchSortAfter</source_model>
+                </field>
+                <field id="category_heading" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Sorting on Category Pages</label>
+                    <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model>
+                </field>
+                <field id="category_1" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>First Sort by</label>
+                    <comment>Synced with Configuration -> Catalog -> Catalog -> Storefront -> Product Listing Sort by</comment>
+                    <source_model>Magento\Catalog\Model\Config\Source\ListSort</source_model>
+                </field>
+                <field id="category_2" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Then by</label>
+                    <source_model>Amasty\Sorting\Model\Source\CategorySortAfter</source_model>
+                </field>
+                <field id="category_3" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Then by</label>
+                    <source_model>Amasty\Sorting\Model\Source\CategorySortAfter</source_model>
+                </field>
+            </group>
+
+            <group id="new" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Newest</label>
+                <field id="label" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Label</label>
+                    <comment>Rename sorting option to match your own vision.</comment>
+                    <backend_model>Amasty\Sorting\Model\Config\Backend\SimpleText</backend_model>
+                </field>
+                <field id="new_attr" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Attribute Code for the Newest Sorting</label>
+                    <source_model>Amasty\Sorting\Model\Source\ProductAttribute</source_model>
+                    <comment>Leave empty to use product creation date. If you indicate a custom attribute, make sure `Used in Product Listing` for the attribute is set to `Yes`.</comment>
+                </field>
+            </group>
+
+            <group id="bestsellers" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Bestsellers</label>
+                <field id="label" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Label</label>
+                    <comment>Rename sorting option to match your own vision.</comment>
+                    <backend_model>Amasty\Sorting\Model\Config\Backend\SimpleText</backend_model>
+                </field>
+                <field id="best_period" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <frontend_class>validate-digits</frontend_class>
+                    <backend_model>Amasty\Sorting\Model\Indexer\Bestsellers\System\Config\BestsellersInvalidate</backend_model>
+                    <label>Bestsellers Period (days)</label>
+                    <comment>Leave empty for life-time statistics.</comment>
+                </field>
+                <field id="best_attr" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Bestsellers Attribute</label>
+                    <source_model>Amasty\Sorting\Model\Source\ProductAttribute</source_model>
+                    <comment>Use to artificially move some products up in the real best sellers list. Leave empty to show real data.</comment>
+                </field>
+                <field id="exclude" translate="label comment" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Exclude Orders Status</label>
+                    <source_model>Amasty\Sorting\Model\Source\State</source_model>
+                    <backend_model>Amasty\Sorting\Model\Indexer\Bestsellers\System\Config\BestsellersInvalidate</backend_model>
+                    <can_be_empty>1</can_be_empty>
+                    <comment>Products from orders with selected states will not be used in the Bestsellers.</comment>
+                </field>
+            </group>
+
+            <group id="revenue" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Revenue</label>
+                <field id="label" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Label</label>
+                    <comment>Rename sorting option to match your own vision.</comment>
+                    <backend_model>Amasty\Sorting\Model\Config\Backend\SimpleText</backend_model>
+                </field>
+                <field id="period" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <frontend_class>validate-digits</frontend_class>
+                    <backend_model>Amasty\Sorting\Model\Indexer\Revenue\System\Config\RevenueInvalidate</backend_model>
+                    <label>Revenue Period (days)</label>
+                    <comment>Leave empty for life-time statistics.</comment>
+                </field>
+                <field id="attr" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Revenue Attribute</label>
+                    <source_model>Amasty\Sorting\Model\Source\ProductAttribute</source_model>
+                    <comment>Use to artificially move some products up in the real revenue list. Leave empty to show real data.</comment>
+                </field>
+                <field id="exclude" translate="label comment" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Exclude Orders Status</label>
+                    <source_model>Amasty\Sorting\Model\Source\State</source_model>
+                    <backend_model>Amasty\Sorting\Model\Indexer\Revenue\System\Config\RevenueInvalidate</backend_model>
+                    <can_be_empty>1</can_be_empty>
+                    <comment>Products from orders with selected states will not be used in Revenue sorting.</comment>
+                </field>
+            </group>
+
+            <group id="most_viewed" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Most viewed</label>
+                <field id="label" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Label</label>
+                    <comment>Rename sorting option to match your own vision.</comment>
+                    <backend_model>Amasty\Sorting\Model\Config\Backend\SimpleText</backend_model>
+                </field>
+                <field id="viewed_period" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Most Viewed Period (days)</label>
+                    <frontend_class>validate-digits</frontend_class>
+                    <backend_model>Amasty\Sorting\Model\Indexer\MostViewed\System\Config\MostViewedInvalidate</backend_model>
+                    <comment>Leave empty for life-time statistics.</comment>
+                </field>
+                <field id="viewed_attr" translate="label comment" type="select" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Most Viewed Attribute</label>
+                    <source_model>Amasty\Sorting\Model\Source\ProductAttribute</source_model>
+                    <comment>Use to artificially move some products up in the real most viewed list. Leave empty to show real data.</comment>
+                </field>
+            </group>
+
+            <group id="saving" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Biggest Saving</label>
+                <field id="label" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Label</label>
+                    <comment>Rename sorting option to match your own vision.</comment>
+                    <backend_model>Amasty\Sorting\Model\Config\Backend\SimpleText</backend_model>
+                </field>
+                <field id="saving" translate="label comment" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use Percentage for Biggest Saving Sorting</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <group id="wished" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Now in Wishlists</label>
+                <field id="label" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Label</label>
+                    <comment>Rename sorting option to match your own vision.</comment>
+                    <backend_model>Amasty\Sorting\Model\Config\Backend\SimpleText</backend_model>
+                </field>
+                <field id="wished_period" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Added to wishlist Period (days)</label>
+                    <frontend_class>validate-digits</frontend_class>
+                    <backend_model>Amasty\Sorting\Model\Indexer\Wished\System\Config\WishedInvalidate</backend_model>
+                    <comment>Leave empty for life-time statistics.</comment>
+                </field>
+            </group>
+
+            <group id="rating_summary" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Top Rated</label>
+                <field id="label" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Label</label>
+                    <comment>Rename sorting option to match your own vision.</comment>
+                    <backend_model>Amasty\Sorting\Model\Config\Backend\SimpleText</backend_model>
+                </field>
+                <field id="yotpo" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use Yotpo Reviews instead of Magento Reviews</label>
+                    <if_module_enabled>Yotpo_Yotpo</if_module_enabled>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <group id="reviews_count" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Reviews Count</label>
+                <field id="label" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Label</label>
+                    <comment>Rename sorting option to match your own vision.</comment>
+                    <backend_model>Amasty\Sorting\Model\Config\Backend\SimpleText</backend_model>
+                </field>
+            </group>
+
+            <group id="price_desc" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Price: high to low</label>
+                <field id="label" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Label</label>
+                    <comment>Rename sorting option to match your own vision.</comment>
+                    <backend_model>Amasty\Sorting\Model\Config\Backend\SimpleText</backend_model>
+                </field>
+            </group>
+
+            <group id="price_asc" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Price: low to high</label>
+                <field id="label" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Label</label>
+                    <comment>Rename sorting option to match your own vision.</comment>
+                    <backend_model>Amasty\Sorting\Model\Config\Backend\SimpleText</backend_model>
+                </field>
+            </group>
+
+            <group id="advanced" translate="label" type="text" sortOrder="120"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Advanced</label>
+
+                <field id="global" translate="label" type="text" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Global Sorting</label>
+                    <comment><![CDATA[WARNING: adding attribute code to this field will sort products on catalog pages
+                        (including search results) based on this attribute first regardless
+                        of the selected sorting method.<br/>
+                        In order to utilize Amasty Improved Sorting options, please use the following values:<br/>
+                        bestsellers - Best Sellers<br/>
+                        rating_summary - Top Rated<br/>
+                        most_viewed - Most Viewed<br/>
+                        saving - Biggest Saving<br/>
+                        reviews_count - Reviews Count<br/>
+                        wished - Now in Wishlists<br/>
+                        new - New Arrivals]]></comment>
+                    <backend_model>Amasty\Sorting\Model\Config\Backend\GlobalSorting</backend_model>
+                </field>
+                <field id="global_direction" translate="label" type="select" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Global Sorting Direction</label>
+                    <source_model>Amasty\Sorting\Model\Source\SortOrder</source_model>
+                </field>
+            </group>
+
+            <group id="cron" translate="label" type="text" sortOrder="130"
+                   showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Cron Settings</label>
+                <field id="frequency" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Frequency</label>
+                    <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
+                    <backend_model>Amasty\Sorting\Model\Config\Backend\CronExpr</backend_model>
+                </field>
+                <field id="time" translate="label" type="time" sortOrder="11" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Start Time</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

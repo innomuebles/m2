@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Position checking"/>
+            <description
+                    value="Check that Sort by Position works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-1"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+            <group value="sortbyposition"/>
+        </annotations>
+
+        <before>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <createData entity="_defaultCategory" stepKey="createTestCategory1"/>
+            <createData entity="ISTestSimpleProductA1" stepKey="createSimpleProductA1">
+                <requiredEntity createDataKey="createTestCategory1"/>
+            </createData>
+            <createData entity="ISTestSimpleProductA2" stepKey="createSimpleProductA2">
+                <requiredEntity createDataKey="createTestCategory1"/>
+            </createData>
+            <createData entity="ISTestSimpleProductA3" stepKey="createSimpleProductA3">
+                <requiredEntity createDataKey="createTestCategory1"/>
+            </createData>
+            <createData entity="ISTestSimpleProductA4" stepKey="createSimpleProductA4">
+                <requiredEntity createDataKey="createTestCategory1"/>
+            </createData>
+            <createData entity="ISTestSimpleProductA5" stepKey="createSimpleProductA5">
+                <requiredEntity createDataKey="createTestCategory1"/>
+            </createData>
+            <createData entity="ISTestSimpleProductA6" stepKey="createSimpleProductA6">
+                <requiredEntity createDataKey="createTestCategory1"/>
+            </createData>
+            <createData entity="ISTestSimpleProductA7" stepKey="createSimpleProductA7">
+                <requiredEntity createDataKey="createTestCategory1"/>
+            </createData>
+            <createData entity="ISTestSimpleProductA8" stepKey="createSimpleProductA8">
+                <requiredEntity createDataKey="createTestCategory1"/>
+            </createData>
+            <createData entity="ISTestSimpleProductA9" stepKey="createSimpleProductA9">
+                <requiredEntity createDataKey="createTestCategory1"/>
+            </createData>
+            <createData entity="ISTestSimpleProductB1" stepKey="createSimpleProductB1">
+                <requiredEntity createDataKey="createTestCategory1"/>
+            </createData>
+        </before>
+
+        <after>
+            <deleteData stepKey="deleteTestCategory1" createDataKey="createTestCategory1"/>
+            <deleteData stepKey="deleteSimpleProductA1" createDataKey="createSimpleProductA1"/>
+            <deleteData stepKey="deleteSimpleProductA2" createDataKey="createSimpleProductA2"/>
+            <deleteData stepKey="deleteSimpleProductA3" createDataKey="createSimpleProductA3"/>
+            <deleteData stepKey="deleteSimpleProductA4" createDataKey="createSimpleProductA4"/>
+            <deleteData stepKey="deleteSimpleProductA5" createDataKey="createSimpleProductA5"/>
+            <deleteData stepKey="deleteSimpleProductA6" createDataKey="createSimpleProductA6"/>
+            <deleteData stepKey="deleteSimpleProductA7" createDataKey="createSimpleProductA7"/>
+            <deleteData stepKey="deleteSimpleProductA8" createDataKey="createSimpleProductA8"/>
+            <deleteData stepKey="deleteSimpleProductA9" createDataKey="createSimpleProductA9"/>
+            <deleteData stepKey="deleteSimpleProductB1" createDataKey="createSimpleProductB1"/>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+        <!-- Navigate to Category Page and sort page by Position. Check the result/-->
+
+        <amOnPage url="$createTestCategory1.custom_attributes[url_key]$.html" stepKey="navigateToRequiredPage"/>
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+        <selectOption userInput="Position"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A4','Product A7','Product A5')}}"
+                stepKey="seeProductsSequence"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionAsc}}"
+               stepKey="setAscDescConfiguration"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A2','Product A6','Product B1')}}"
+                stepKey="seeProductsSequenceTwo"/>
+
+    </test>
+</tests>

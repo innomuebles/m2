@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByTopRatedCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Top Rated checking"/>
+            <description
+                    value="Check that Sort by Top Rated works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-8"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+            <group value="sortbytoprat"/>
+        </annotations>
+
+        <before>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <createData entity="_defaultCategory" stepKey="createTestCategory1"/>
+            <createData entity="ISTestSimpleProductA1" stepKey="createSimpleProductA1">
+                <requiredEntity createDataKey="createTestCategory1"/>
+            </createData>
+            <createData entity="ISTestSimpleProductA2" stepKey="createSimpleProductA2">
+                <requiredEntity createDataKey="createTestCategory1"/>
+            </createData>
+            <createData entity="ISTestSimpleProductA3" stepKey="createSimpleProductA3">
+                <requiredEntity createDataKey="createTestCategory1"/>
+            </createData>
+        </before>
+
+        <after>
+            <deleteData stepKey="deleteTestCategory1" createDataKey="createTestCategory1"/>
+            <deleteData stepKey="deleteSimpleProductA1" createDataKey="createSimpleProductA1"/>
+            <deleteData stepKey="deleteSimpleProductA2" createDataKey="createSimpleProductA2"/>
+            <deleteData stepKey="deleteSimpleProductA3" createDataKey="createSimpleProductA3"/>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+        <actionGroup ref="StorefrontProductReviewCreationActionGroup" stepKey="createFirstProductReviews">
+            <argument name="productUrl" value="$$createSimpleProductA1.custom_attributes[url_key]$$"/>
+            <argument name="ratingName" value="Rating"/>
+            <argument name="stars" value="{{number.three}}"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddProductReviewActionGroup" stepKey="fillFirstReviewInfo">
+            <argument name="review" value="firstSimpleProductReview"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontProductReviewCreationActionGroup" stepKey="createSecondProductReviews">
+            <argument name="productUrl" value="$$createSimpleProductA2.custom_attributes[url_key]$$"/>
+            <argument name="ratingName" value="Rating"/>
+            <argument name="stars" value="{{number.one}}"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddProductReviewActionGroup" stepKey="fillSecondReviewInfo">
+            <argument name="review" value="secondSimpleProductReview"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontProductReviewCreationActionGroup" stepKey="createThirdProductReviews">
+            <argument name="productUrl" value="$$createSimpleProductA3.custom_attributes[url_key]$$"/>
+            <argument name="ratingName" value="Rating"/>
+            <argument name="stars" value="{{number.two}}"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontAddProductReviewActionGroup" stepKey="fillThirdReviewInfo">
+            <argument name="review" value="simpleProductReview"/>
+        </actionGroup>
+        <amOnPage url="{{AdminReviewsPage.url}}" stepKey="navigateToReviewGridInAdmin"/>
+        <actionGroup ref="AdminProductReviewEnablingActionGroup" stepKey="approveFirstProduct">
+            <argument name="review" value="firstSimpleProductReview.nickname"/>
+        </actionGroup>
+        <actionGroup ref="AdminProductReviewEnablingActionGroup" stepKey="approveSecondProduct">
+            <argument name="review" value="secondSimpleProductReview.nickname"/>
+        </actionGroup>
+        <actionGroup ref="AdminProductReviewEnablingActionGroup" stepKey="approveThirdProduct">
+            <argument name="review" value="simpleProductReview.nickname"/>
+        </actionGroup>
+        <!-- Navigate to Category Page and sort page by Top Rated. Check the result/-->
+        <amOnPage url="$createTestCategory1.custom_attributes[url_key]$.html" stepKey="navigateToRequiredPage"/>
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+        <selectOption userInput="Top Rated" selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption"/>
+        <seeElement selector="{{StorefrontPageElementsSection.ProductsSequence('Product A1','Product A3','Product A2')}}"
+                    stepKey="seeProductsSequence"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}" stepKey="setAscDescConfiguration"/>
+        <seeElement selector="{{StorefrontPageElementsSection.ProductsSequence('Product A2','Product A3','Product A1')}}"
+                stepKey="seeProductsSequenceTwo"/>
+    </test>
+</tests>

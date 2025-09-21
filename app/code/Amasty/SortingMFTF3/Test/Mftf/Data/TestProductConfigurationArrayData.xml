@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+
+    <entity name="ISTestSimpleProductA1" type="product">
+        <data key="name">Test Simple Product A1</data>
+        <data key="sku" unique="suffix">Sku</data>
+        <data key="type_id">simple</data>
+        <data key="attribute_set_id">4</data>
+        <data key="visibility">4</data>
+        <data key="price">55</data>
+        <requiredEntity type="product_extension_attribute">StockStatusAndPosition</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductDescription</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductShortDescription</requiredEntity>
+    </entity>
+    <entity name="ISTestSimpleProductA2" type="product" extends="ISTestSimpleProductA1">
+        <data key="name">Test Simple Product A2</data>
+        <data key="price">15</data>
+        <requiredEntity type="product_extension_attribute">StockStatusAndPosition2</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductDescription2</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductShortDescription2</requiredEntity>
+    </entity>
+    <entity name="ISTestSimpleProductA3" type="product" extends="ISTestSimpleProductA1">
+        <data key="name">Test Simple Product A3</data>
+        <data key="price">67</data>
+        <requiredEntity type="product_extension_attribute">StockStatusAndPosition3</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductDescription3</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductShortDescription3</requiredEntity>
+    </entity>
+    <entity name="ISTestSimpleProductA4" type="product" extends="ISTestSimpleProductA1">
+        <data key="name">Test Simple Product A4</data>
+        <data key="price">32</data>
+        <requiredEntity type="product_extension_attribute">StockStatusAndPosition4</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductDescription4</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductShortDescription4</requiredEntity>
+    </entity>
+    <entity name="ISTestSimpleProductA5" type="product" extends="ISTestSimpleProductA1">
+        <data key="name">Test Simple Product A5</data>
+        <data key="price">80</data>
+        <requiredEntity type="product_extension_attribute">StockStatusAndPosition5</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductDescription5</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductShortDescription5</requiredEntity>
+    </entity>
+    <entity name="ISTestSimpleProductA6" type="product" extends="ISTestSimpleProductA1">
+        <data key="name">Test Simple Product A6</data>
+        <data key="price">66</data>
+        <requiredEntity type="product_extension_attribute">StockStatusAndPosition6</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductDescription6</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductShortDescription6</requiredEntity>
+    </entity>
+    <entity name="ISTestSimpleProductA7" type="product" extends="ISTestSimpleProductA1">
+        <data key="name">Test Simple Product A7</data>
+        <data key="price">14</data>
+        <requiredEntity type="product_extension_attribute">StockStatusAndPosition7</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductDescription7</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductShortDescription7</requiredEntity>
+    </entity>
+    <entity name="ISTestSimpleProductA8" type="product" extends="ISTestSimpleProductA1">
+        <data key="name">Test Simple Product A8</data>
+        <data key="price">99</data>
+        <requiredEntity type="product_extension_attribute">StockStatusAndPosition8</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductDescription8</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductShortDescription8</requiredEntity>
+    </entity>
+    <entity name="ISTestSimpleProductA9" type="product" extends="ISTestSimpleProductA1">
+        <data key="name">Test Simple Product A9</data>
+        <data key="price">27</data>
+        <requiredEntity type="product_extension_attribute">StockStatusAndPosition9</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductDescription9</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductShortDescription9</requiredEntity>
+    </entity>
+    <entity name="ISTestSimpleProductB1" type="product" extends="ISTestSimpleProductA1">
+        <data key="name">Test Simple Product B1</data>
+        <data key="price">85</data>
+        <requiredEntity type="product_extension_attribute">StockStatusAndPosition10</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductDescription10</requiredEntity>
+        <requiredEntity type="custom_attribute">ProductShortDescription10</requiredEntity>
+    </entity>
+    <entity name="ISTestSimpleProductStock1" type="product" extends="ISTestSimpleProductA1">
+        <data key="name" unique="suffix">Test Simple Product Stock1</data>
+        <requiredEntity type="product_extension_attribute">Stock1</requiredEntity>
+    </entity>
+    <entity name="ISTestSimpleProductStock25" type="product" extends="ISTestSimpleProductA1">
+        <data key="name" unique="suffix">Test Simple Product Stock25</data>
+        <requiredEntity type="product_extension_attribute">Stock25</requiredEntity>
+    </entity>
+    <entity name="ISTestSimpleProductStock777" type="product" extends="ISTestSimpleProductA1">
+        <data key="name" unique="suffix">Test Simple Product Stock777</data>
+        <requiredEntity type="product_extension_attribute">Stock777</requiredEntity>
+    </entity>
+    <entity name="ISTestSimpleProductStock1111" type="product" extends="ISTestSimpleProductA1">
+        <data key="name" unique="suffix">Test Simple Product Stock1111</data>
+        <requiredEntity type="product_extension_attribute">Stock1111</requiredEntity>
+    </entity>
+
+    <entity name="StockStatusAndPosition" type="product_extension_attribute">
+        <requiredEntity type="stock_item">Qty_100</requiredEntity>
+        <requiredEntity type="category_links">Prod_Pos</requiredEntity>
+    </entity>
+    <entity name="StockStatusAndPosition2" type="product_extension_attribute" extends="StockStatusAndPosition">
+        <requiredEntity type="category_links">Prod_Pos2</requiredEntity>
+    </entity>
+    <entity name="StockStatusAndPosition3" type="product_extension_attribute" extends="StockStatusAndPosition">
+        <requiredEntity type="category_links">Prod_Pos3</requiredEntity>
+    </entity>
+    <entity name="StockStatusAndPosition4" type="product_extension_attribute" extends="StockStatusAndPosition">
+        <requiredEntity type="category_links">Prod_Pos4</requiredEntity>
+    </entity>
+    <entity name="StockStatusAndPosition5" type="product_extension_attribute" extends="StockStatusAndPosition">
+        <requiredEntity type="category_links">Prod_Pos5</requiredEntity>
+    </entity>
+    <entity name="StockStatusAndPosition6" type="product_extension_attribute" extends="StockStatusAndPosition">
+        <requiredEntity type="category_links">Prod_Pos6</requiredEntity>
+    </entity>
+    <entity name="StockStatusAndPosition7" type="product_extension_attribute" extends="StockStatusAndPosition">
+        <requiredEntity type="category_links">Prod_Pos7</requiredEntity>
+    </entity>
+    <entity name="StockStatusAndPosition8" type="product_extension_attribute" extends="StockStatusAndPosition">
+        <requiredEntity type="category_links">Prod_Pos8</requiredEntity>
+    </entity>
+    <entity name="StockStatusAndPosition9" type="product_extension_attribute" extends="StockStatusAndPosition">
+        <requiredEntity type="category_links">Prod_Pos9</requiredEntity>
+    </entity>
+    <entity name="StockStatusAndPosition10" type="product_extension_attribute" extends="StockStatusAndPosition">
+        <requiredEntity type="category_links">Prod_Pos10</requiredEntity>
+    </entity>
+
+    <entity name="Stock1" type="product_extension_attribute">
+        <requiredEntity type="stock_item">Qty_1</requiredEntity>
+        <requiredEntity type="category_links">Prod_Pos</requiredEntity>
+    </entity>
+    <entity name="Stock25" type="product_extension_attribute">
+        <requiredEntity type="stock_item">Qty_25</requiredEntity>
+        <requiredEntity type="category_links">Prod_Pos2</requiredEntity>
+    </entity>
+    <entity name="Stock777" type="product_extension_attribute">
+        <requiredEntity type="stock_item">Qty_777</requiredEntity>
+        <requiredEntity type="category_links">Prod_Pos3</requiredEntity>
+    </entity>
+    <entity name="Stock1111" type="product_extension_attribute">
+        <requiredEntity type="stock_item">Qty_1111</requiredEntity>
+        <requiredEntity type="category_links">Prod_Pos4</requiredEntity>
+    </entity>
+
+    <entity name="Qty_100" type="stock_item">
+        <data key="qty">100</data>
+        <data key="is_in_stock">true</data>
+    </entity>
+    <entity name="Qty_1111" type="stock_item">
+        <data key="qty">1111</data>
+        <data key="is_in_stock">true</data>
+    </entity>
+
+    <entity name="Prod_Pos" type="category_links">
+        <data key="position">4</data>
+        <var key="category_id" entityType="category" entityKey="id"/>
+    </entity>
+    <entity name="Prod_Pos2" type="category_links" extends="Prod_Pos">
+        <data key="position">10</data>
+    </entity>
+    <entity name="Prod_Pos3" type="category_links" extends="Prod_Pos">
+        <data key="position">7</data>
+    </entity>
+    <entity name="Prod_Pos4" type="category_links" extends="Prod_Pos">
+        <data key="position">1</data>
+    </entity>
+    <entity name="Prod_Pos5" type="category_links" extends="Prod_Pos">
+        <data key="position">3</data>
+    </entity>
+    <entity name="Prod_Pos6" type="category_links" extends="Prod_Pos">
+        <data key="position">9</data>
+    </entity>
+    <entity name="Prod_Pos7" type="category_links" extends="Prod_Pos">
+        <data key="position">2</data>
+    </entity>
+    <entity name="Prod_Pos8" type="category_links" extends="Prod_Pos">
+        <data key="position">6</data>
+    </entity>
+    <entity name="Prod_Pos9" type="category_links" extends="Prod_Pos">
+        <data key="position">5</data>
+    </entity>
+    <entity name="Prod_Pos10" type="category_links" extends="Prod_Pos">
+        <data key="position">8</data>
+    </entity>
+
+    <entity name="ProductDescription" type="custom_attribute">
+        <data key="attribute_code">description</data>
+        <data key="value">Test Product Description: redtst redtst redtst</data>
+    </entity>
+    <entity name="ProductDescription2" type="custom_attribute" extends="ProductDescription">
+        <data key="value">Test Product Description: redtst</data>
+    </entity>
+    <entity name="ProductDescription3" type="custom_attribute" extends="ProductDescription">
+        <data key="value">Test Product Description: redtst redtst redtst redtst redtst redtst redtst</data>
+    </entity>
+    <entity name="ProductDescription4" type="custom_attribute" extends="ProductDescription">
+        <data key="value">Test Product Description: redtst redtst redtst redtst redtst</data>
+    </entity>
+    <entity name="ProductDescription5" type="custom_attribute" extends="ProductDescription">
+        <data key="value">Test Product Description: redtst redtst</data>
+    </entity>
+    <entity name="ProductDescription6" type="custom_attribute" extends="ProductDescription">
+        <data key="value">Test Product Description: redtst redtst redtst redtst</data>
+    </entity>
+    <entity name="ProductDescription7" type="custom_attribute" extends="ProductDescription">
+        <data key="value">Test Product Description: redtst redtst</data>
+    </entity>
+    <entity name="ProductDescription8" type="custom_attribute" extends="ProductDescription">
+        <data key="value">Test Product Description: redtst</data>
+    </entity>
+    <entity name="ProductDescription9" type="custom_attribute" extends="ProductDescription">
+        <data key="value">Test Product Description</data>
+    </entity>
+    <entity name="ProductDescription10" type="custom_attribute" extends="ProductDescription">
+        <data key="value">Test Product Description: redtst</data>
+    </entity>
+
+    <entity name="ProductShortDescription" type="custom_attribute">
+        <data key="attribute_code">short_description</data>
+        <data key="value">Test Product Short Description: redtst redtst redtst redtst</data>
+    </entity>
+    <entity name="ProductShortDescription2" type="custom_attribute" extends="ProductShortDescription">
+        <data key="value">Test Product Short Description: redtst redtst redtst</data>
+    </entity>
+    <entity name="ProductShortDescription3" type="custom_attribute" extends="ProductShortDescription">
+        <data key="value">Test Product Short Description: redtst</data>
+    </entity>
+    <entity name="ProductShortDescription4" type="custom_attribute" extends="ProductShortDescription">
+        <data key="value">Test Product Short Description: redtst redtst redtst redtst redtst</data>
+    </entity>
+    <entity name="ProductShortDescription5" type="custom_attribute" extends="ProductShortDescription">
+        <data key="value">Test Product Short Description: redtst redtst redtst redtst redtst redtst redtst</data>
+    </entity>
+    <entity name="ProductShortDescription6" type="custom_attribute" extends="ProductShortDescription">
+        <data key="value">Test Product Short Description: redtst redtst</data>
+    </entity>
+    <entity name="ProductShortDescription7" type="custom_attribute" extends="ProductShortDescription">
+        <data key="value">Test Product Short Description: redtst redtst redtst</data>
+    </entity>
+    <entity name="ProductShortDescription8" type="custom_attribute" extends="ProductShortDescription">
+        <data key="value">Test Product Short Description: redtst</data>
+    </entity>
+    <entity name="ProductShortDescription9" type="custom_attribute" extends="ProductShortDescription">
+        <data key="value">Test Product Short Description: redtst</data>
+    </entity>
+    <entity name="ProductShortDescription10" type="custom_attribute" extends="ProductShortDescription">
+        <data key="value">Test Product Short Description: redtst redtst</data>
+    </entity>
+
+    <entity name="ISUpdateSpecPriceTestSimpleProductA1" type="productType">
+        <requiredEntity type="custom_attribute">ProductSpecialPrice</requiredEntity>
+    </entity>
+    <entity name="ISUpdateSpecPriceTestSimpleProductA2" type="productType">
+        <requiredEntity type="custom_attribute">ProductSpecialPrice2</requiredEntity>
+    </entity>
+    <entity name="ISUpdateSpecPriceTestSimpleProductA3" type="productType">
+        <requiredEntity type="custom_attribute">ProductSpecialPrice3</requiredEntity>
+    </entity>
+    <entity name="ISUpdateSpecPriceTestSimpleProductA4" type="productType">
+        <requiredEntity type="custom_attribute">ProductSpecialPrice4</requiredEntity>
+    </entity>
+    <entity name="ISUpdateSpecPriceTestSimpleProductA5" type="productType">
+        <requiredEntity type="custom_attribute">ProductSpecialPrice5</requiredEntity>
+    </entity>
+    <entity name="ISUpdateSpecPriceTestSimpleProductA6" type="productType">
+        <requiredEntity type="custom_attribute">ProductSpecialPrice6</requiredEntity>
+    </entity>
+    <entity name="ISUpdateSpecPriceTestSimpleProductA7" type="productType">
+        <requiredEntity type="custom_attribute">ProductSpecialPrice7</requiredEntity>
+    </entity>
+    <entity name="ISUpdateSpecPriceTestSimpleProductA8" type="productType">
+        <requiredEntity type="custom_attribute">ProductSpecialPrice8</requiredEntity>
+    </entity>
+    <entity name="ISUpdateSpecPriceTestSimpleProductA9" type="productType">
+        <requiredEntity type="custom_attribute">ProductSpecialPrice9</requiredEntity>
+    </entity>
+    <entity name="ISUpdateSpecPriceTestSimpleProductB1" type="productType">
+        <requiredEntity type="custom_attribute">ProductSpecialPrice10</requiredEntity>
+    </entity>
+
+    <entity name="ProductSpecialPrice" type="custom_attribute">
+        <data key="attribute_code">special_price</data>
+        <data key="value">6</data>
+    </entity>
+    <entity name="ProductSpecialPrice2" type="custom_attribute" extends="ProductSpecialPrice">
+        <data key="value">3</data>
+    </entity>
+    <entity name="ProductSpecialPrice3" type="custom_attribute" extends="ProductSpecialPrice">
+        <data key="value">5</data>
+    </entity>
+    <entity name="ProductSpecialPrice4" type="custom_attribute" extends="ProductSpecialPrice">
+        <data key="value">7</data>
+    </entity>
+    <entity name="ProductSpecialPrice5" type="custom_attribute" extends="ProductSpecialPrice">
+        <data key="value">2</data>
+    </entity>
+    <entity name="ProductSpecialPrice6" type="custom_attribute" extends="ProductSpecialPrice">
+        <data key="value">10</data>
+    </entity>
+    <entity name="ProductSpecialPrice7" type="custom_attribute" extends="ProductSpecialPrice">
+        <data key="value">1</data>
+    </entity>
+    <entity name="ProductSpecialPrice8" type="custom_attribute" extends="ProductSpecialPrice">
+        <data key="value">9</data>
+    </entity>
+    <entity name="ProductSpecialPrice9" type="custom_attribute" extends="ProductSpecialPrice">
+        <data key="value">4</data>
+    </entity>
+    <entity name="ProductSpecialPrice10" type="custom_attribute" extends="ProductSpecialPrice">
+        <data key="value">8</data>
+    </entity>
+
+    <entity name="ProductUrl" type="custom_attribute">
+        <data key="attribute_code">url_key</data>
+        <data key="value">test-simple-product-a1</data>
+    </entity>
+    <entity name="ProductUrl2" type="custom_attribute" extends="ProductUrl">
+        <data key="value">test-simple-product-a2</data>
+    </entity>
+    <entity name="ProductUrl3" type="custom_attribute" extends="ProductUrl">
+        <data key="value">test-simple-product-a3</data>
+    </entity>
+    <entity name="ProductUrl4" type="custom_attribute" extends="ProductUrl">
+        <data key="value">test-simple-product-a4</data>
+    </entity>
+    <entity name="ProductUrl5" type="custom_attribute" extends="ProductUrl">
+        <data key="value">test-simple-product-a5</data>
+    </entity>
+    <entity name="ProductUrl6" type="custom_attribute" extends="ProductUrl">
+        <data key="value">test-simple-product-a6</data>
+    </entity>
+    <entity name="ProductUrl7" type="custom_attribute" extends="ProductUrl">
+        <data key="value">test-simple-product-a7</data>
+    </entity>
+    <entity name="ProductUrl8" type="custom_attribute" extends="ProductUrl">
+        <data key="value">test-simple-product-a8</data>
+    </entity>
+    <entity name="ProductUrl9" type="custom_attribute" extends="ProductUrl">
+        <data key="value">test-simple-product-a9</data>
+    </entity>
+    <entity name="ProductUrl10" type="custom_attribute" extends="ProductUrl">
+        <data key="value">test-simple-product-b1</data>
+    </entity>
+
+    <entity name="UpdateOutOfStockProduct" type="product">
+        <data key="quantity">0</data>
+        <requiredEntity type="product_extension_attribute">EavStock0</requiredEntity>
+    </entity>
+
+</entities>

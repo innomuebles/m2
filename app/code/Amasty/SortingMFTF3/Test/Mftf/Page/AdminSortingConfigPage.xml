@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/PageObject.xsd">
+
+    <page name="AdminSortingConfigPage" url="/admin/system_config/edit/section/amsorting/" area="admin"
+          module="Magento_Sorting">
+        <section name="AdminConfigurationsSortingSection"/>
+    </page>
+</pages>

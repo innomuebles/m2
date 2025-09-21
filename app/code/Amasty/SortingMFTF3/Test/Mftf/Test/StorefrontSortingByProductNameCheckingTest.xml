@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByProductNameCheckingTest" extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Product Name checking"/>
+            <description
+                    value="Check that Sort by Product Name works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-2"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+            <group value="sortbyprodname"/>
+        </annotations>
+
+        <!-- Navigate to Category Page and sort page by Product Name. Check the result/-->
+
+        <selectOption userInput="Product Name"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product A1','Product A2','Product A3')}}"
+                stepKey="seeProductsSequence"/>
+        <seeElement
+                selector="{{StorefrontPageElementsSection.ProductsSequence('Product B1','Product A9','Product A8')}}"
+                stepKey="seeProductsSequenceTwo"/>
+
+    </test>
+</tests>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+
+    <actionGroup name="StorefrontProductReviewCreationActionGroup" extends="StorefrontSetProductRatingStarsActionGroup">
+        <arguments>
+            <argument name="productUrl" type="string"/>
+        </arguments>
+        <amOnPage url="{{StorefrontProductPage.url(productUrl)}}" before="waitForStarElement" stepKey="openProductPage"/>
+        <waitForPageLoad after="openProductPage" stepKey="waitForProductPageLoaded"/>
+        <click selector="{{StorefrontProductReviewsSection.reviewsTab}}" after="waitForProductPageLoaded" stepKey="openReviewTab"/>
+    </actionGroup>
+</actionGroups>

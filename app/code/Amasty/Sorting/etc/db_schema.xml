@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting for Magento 2
+ */-->
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="amasty_sorting_bestsellers" resource="default" engine="innodb" comment="Amasty Sorting Bestsellers">
+        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Product ID"/>
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false" identity="false" comment="Store Id"/>
+        <column xsi:type="decimal" name="qty_ordered" scale="4" precision="12" unsigned="false" nullable="false" default="0" comment="Bestsellers"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="product_id"/>
+            <column name="store_id"/>
+        </constraint>
+    </table>
+
+    <table name="amasty_sorting_revenue" resource="default" engine="innodb" comment="Amasty Sorting Revenue">
+        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Product ID"/>
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false" identity="false" comment="Store Id"/>
+        <column xsi:type="decimal" name="revenue" scale="4" precision="12" unsigned="false" nullable="false" default="0" comment="Revenue"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="product_id"/>
+            <column name="store_id"/>
+        </constraint>
+    </table>
+
+    <table name="amasty_sorting_most_viewed" resource="default" engine="innodb" comment="Amasty Sorting Most Viewed">
+        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Product ID"/>
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false" identity="false" comment="Store Id"/>
+        <column xsi:type="int" name="views_num" padding="10" unsigned="true" nullable="false" identity="false" comment="Most Viewed"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="product_id"/>
+            <column name="store_id"/>
+        </constraint>
+
+        <index referenceId="AMASTY_SORTING_MOST_VIEWED_PRODUCT_ID_STORE_ID_VIEWS_NUM" indexType="btree">
+            <column name="product_id"/>
+            <column name="store_id"/>
+            <column name="views_num"/>
+        </index>
+    </table>
+
+    <table name="amasty_sorting_wished" resource="default" engine="innodb" comment="Amasty Sorting Wished">
+        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Product ID"/>
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false" identity="false" comment="Store Id"/>
+        <column xsi:type="int" name="wished" padding="10" unsigned="true" nullable="false" identity="false" comment="Wished"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="product_id"/>
+            <column name="store_id"/>
+        </constraint>
+    </table>
+
+    <table name="amasty_sorting_reviews_link" resource="default" engine="innodb" comment="Amasty Sorting Reviews Link">
+        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Product ID"/>
+        <column xsi:type="bigint" name="review_id" padding="20" unsigned="true" nullable="false" identity="false" comment="Review ID"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="product_id"/>
+            <column name="review_id"/>
+        </constraint>
+
+        <constraint xsi:type="foreign"
+                    referenceId="AMASTY_SORTING_REVIEWS_LINK_REVIEW_ID_REVIEW_REVIEW_ID"
+                    table="amasty_sorting_reviews_link"
+                    column="review_id"
+                    referenceTable="review"
+                    referenceColumn="review_id"
+                    onDelete="CASCADE"
+        />
+        <constraint xsi:type="foreign"
+                    referenceId="AMASTY_SORTING_REVIEWS_LINK_PRDCT_ID_CTLG_PRDCT_ENTTY_ENTTY_ID"
+                    table="amasty_sorting_reviews_link"
+                    column="product_id"
+                    referenceTable="catalog_product_entity"
+                    referenceColumn="entity_id"
+                    onDelete="CASCADE"
+        />
+    </table>
+</schema>

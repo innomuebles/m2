@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByGlobalSortingBestsellersTest" extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by Global Sorting checking"/>
+            <description
+                value="Check that Sort by Product Name with Global Sorting works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-20"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+        </annotations>
+
+        <before>
+            <createData entity="Simple_US_Customer" stepKey="createCustomer"/>
+            <actionGroup ref="AdminSetAdvancedSortingConfigActionGroup" stepKey="setSettings"/>
+            <!-- Create Order -->
+            <actionGroup ref="NavigateToNewOrderPageExistingCustomerActionGroup" stepKey="navigateToNewOrderPage">
+                <argument name="customer" value="$createCustomer$"/>
+            </actionGroup>
+            <actionGroup ref="AddSimpleProductToOrderActionGroup" stepKey="addFirstProduct">
+                <argument name="product" value="$createSimpleProductA5$"/>
+                <argument name="productQty" value="2"/>
+            </actionGroup>
+            <actionGroup ref="AddSimpleProductToOrderActionGroup" stepKey="addSecondProduct">
+                <argument name="product" value="$createSimpleProductA4$"/>
+                <argument name="productQty" value="3"/>
+            </actionGroup>
+            <actionGroup ref="AddSimpleProductToOrderActionGroup" stepKey="addThirdProduct">
+                <argument name="product" value="$createSimpleProductA7$"/>
+                <argument name="productQty" value="2"/>
+            </actionGroup>
+            <actionGroup ref="FillOrderCustomerInformationActionGroup" stepKey="fillCustomerInfo">
+                <argument name="customer" value="$createCustomer$"/>
+                <argument name="address" value="US_Address_TX"/>
+            </actionGroup>
+            <actionGroup ref="OrderSelectFlatRateShippingActionGroup" stepKey="selectFlatRate"/>
+            <click selector="{{OrdersGridSection.submitOrder}}" stepKey="submitOrder"/>
+            <waitForPageLoad stepKey="waitForSubmitOrderPage"/>
+            <see stepKey="seeSuccessMessageForOrder" userInput="You created the order."/>
+            <magentoCLI command="indexer:reindex" arguments="amasty_sorting_bestseller" stepKey="reindex"/>
+        </before>
+
+        <after>
+            <deleteData createDataKey="createCustomer" stepKey="deleteCustomer"/>
+            <actionGroup ref="AdminSetAdvancedSortingConfigActionGroup" before="logout" stepKey="setDefaultSettings">
+                <argument name="adminSetting" value="defaultGlobalSorting"/>
+            </actionGroup>
+        </after>
+
+        <!-- Navigate to Category Page and sort page by Product Name. Check the result.-->
+
+        <selectOption userInput="Product Name"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceFirst('Product A4','Product A5','Product A7')}}"
+            stepKey="seeProductsSequence"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceFirst('Product A4','Product A7','Product A5')}}"
+            stepKey="seeProductsSequenceTwo"/>
+    </test>
+</tests>

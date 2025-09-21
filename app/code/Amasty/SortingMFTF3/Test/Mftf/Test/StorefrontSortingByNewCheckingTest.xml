@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting MFTF 3 for Magento 2 (System)
+ */-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+
+    <test name="StorefrontSortingByNewCheckingTest" extends="StorefrontSortingByPositionCheckingTest">
+
+        <annotations>
+            <features value="Amasty Improved Sorting"/>
+            <stories value="Sort by correct work checking"/>
+            <title value="Sort by New checking"/>
+            <description
+                value="Check that Sort by New works correctly on Category Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="IMPSORT-14"/>
+            <group value="ImpSort"/>
+            <group value="ImpSort_CPTS"/>
+            <group value="sortbynew"/>
+            <group value="impsortdev"/>
+        </annotations>
+
+        <before>
+            <!--wait actions are necessary to separate products by creation time-->
+            <wait time="1" after="createSimpleProductA1" stepKey="waitAfterCreateProductOne"/>
+            <wait time="1" after="createSimpleProductA2" stepKey="waitAfterCreateProductTwo"/>
+            <wait time="1" after="createSimpleProductA3" stepKey="waitAfterCreateProductThree"/>
+            <wait time="1" after="createSimpleProductA4" stepKey="waitAfterCreateProductFour"/>
+            <wait time="1" after="createSimpleProductA5" stepKey="waitAfterCreateProductFive"/>
+            <wait time="1" after="createSimpleProductA6" stepKey="waitAfterCreateProductSix"/>
+            <wait time="1" after="createSimpleProductA7" stepKey="waitAfterCreateProductSeven"/>
+            <wait time="1" after="createSimpleProductA8" stepKey="waitAfterCreateProductEight"/>
+            <wait time="1" after="createSimpleProductA9" stepKey="waitAfterCreateProductNine"/>
+        </before>
+
+        <!-- Navigate to Category Page and sort page by New. Check the result/-->
+
+        <selectOption userInput="New"
+                      selector="{{StorefrontCategoryTopToolbarSection.sortByDropdown}}"
+                      stepKey="selectSortByOption"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceFirst('Product B1','Product A9','Product A8')}}"
+            stepKey="seeProductsSequence"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceLast('Product A3','Product A2','Product A1')}}"
+            after="seeProductsSequence" stepKey="seeLastProductsSequence"/>
+        <click selector="{{StorefrontCategoryTopToolbarSection.sortDirectionDesc}}"
+               stepKey="setAscDescConfiguration"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceFirst('Product A1','Product A2','Product A3')}}"
+            stepKey="seeProductsSequenceTwo"/>
+        <seeElement
+            selector="{{StorefrontPageElementsSection.ProductsSequenceLast('Product A8','Product A9','Product B1')}}"
+            stepKey="seeLastProductsSequenceTwo"/>
+    </test>
+</tests>

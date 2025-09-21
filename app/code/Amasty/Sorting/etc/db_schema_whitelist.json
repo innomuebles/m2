@@ -1,0 +1,46 @@
+{
+  "amasty_sorting_bestsellers": {
+    "column": {
+      "product_id": true,
+      "store_id": true,
+      "qty_ordered": true
+    },
+    "constraint": {
+      "PRIMARY": true
+    }
+  },
+  "amasty_sorting_most_viewed": {
+    "column": {
+      "product_id": true,
+      "store_id": true,
+      "views_num": true
+    },
+    "constraint": {
+      "PRIMARY": true
+    },
+    "index": {
+      "AMASTY_SORTING_MOST_VIEWED_PRODUCT_ID_STORE_ID_VIEWS_NUM": true
+    }
+  },
+  "amasty_sorting_wished": {
+    "column": {
+      "product_id": true,
+      "store_id": true,
+      "wished": true
+    },
+    "constraint": {
+      "PRIMARY": true
+    }
+  },
+  "amasty_sorting_reviews_link": {
+    "column": {
+      "product_id": true,
+      "review_id": true
+    },
+    "constraint": {
+      "PRIMARY": true,
+      "AMASTY_SORTING_REVIEWS_LINK_REVIEW_ID_REVIEW_REVIEW_ID": true,
+      "AMASTY_SORTING_REVIEWS_LINK_PRDCT_ID_CTLG_PRDCT_ENTTY_ENTTY_ID": true
+    }
+  }
+}

@@ -1,0 +1,43 @@
+//
+//  Amasty Improved Sorting Styles
+//  ___________________________________________
+
+//
+//  Common
+//  -------------------------------------------
+
+& when (@media-common = true) {
+    #amsorting-sort-order {
+        & {
+            margin-top: 2.2rem;
+        }
+
+        tr {
+            td,
+            th {
+                & {
+                    background: #efefef;
+                    border-bottom: 1px solid #fff;
+                }
+
+                .draggable {
+                    color: #adadad;
+                }
+            }
+
+            td:hover {
+                cursor: move;
+            }
+
+            td.item-position {
+                max-width: 87px;
+                padding: 1rem;
+            }
+
+            td:before {
+                content: '\e63d';
+                font-family: 'Admin Icons';
+            }
+        }
+    }
+}
