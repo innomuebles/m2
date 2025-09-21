@@ -69,6 +69,10 @@
 # 2024-01-31 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # "Implement the security update APSB22-12": https://github.com/innomuebles/m2/issues/26
 !/vendor/magento/framework/Filter/DirectiveProcessor/VarDirective.php
+# 2025-09-21 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+# 1) "Adapt the website to Windows-based servers": https://github.com/innomuebles/m2/issues/45
+# 2) "How to fix catalog images in Magento ≥ 2.3.5 in Windows?" https://mage2.pro/t/6210
+!/vendor/magento/framework/Image/Adapter/Gd2.php
 # 2024-01-31 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # 1) "Add the modified Magento files to the source control": https://github.com/innomuebles/m2/issues/25
 # 2) https://github.com/innomuebles/m2/blob/2024-01-31/vendor/magento/framework/Locale/Format.php#L144-L150
