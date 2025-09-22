@@ -246,8 +246,13 @@ class Bestselling extends AbstractIndexMethod
 
     /**
      * @inheritdoc
+	 * 2025-09-22 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+	 * 1) «Declaration of Amasty\Sorting\Model\ResourceModel\Method\Bestselling::getIndexedValues($storeId)
+	 * must be compatible with Amasty\Sorting\Model\ResourceModel\Method\AbstractMethod::getIndexedValues(int $storeId, ?array $entityIds = Array)»:
+	 * https://github.com/innomuebles/m2/issues/47
+	 * @see \Amasty\Sorting\Model\ResourceModel\Method\AbstractMethod::getIndexedValues()
      */
-    public function getIndexedValues($storeId)
+    public function getIndexedValues(int $storeId, ?array $entityIds = [])
     {
         $select = $this->getConnection()->select()->from(
             $this->getMainTable(),
