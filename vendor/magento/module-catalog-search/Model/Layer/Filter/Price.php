@@ -185,7 +185,17 @@ class Price extends AbstractFilter
         $toPrice = empty($toPrice) ? $toPrice : $toPrice * $this->getCurrencyRate();
 
         $formattedFromPrice = $this->priceCurrency->format($fromPrice);
-        if ($isLast) {
+		# 2025-09-23 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+		# 1) «A non-numeric value encountered
+		# in vendor/magento/module-catalog-search/Model/Layer/Filter/Price.php on line 194»:
+		# https://github.com/innomuebles/m2/issues/28
+		# 2) "How to fix «A non-numeric value encountered
+		# in vendor/magento/module-catalog-search/Model/Layer/Filter/Price.php on line 194»
+		# in Magento < 2.4.4-p1?": https://mage2.pro/t/6514
+		# 3.1) https://github.com/magento/magento2/blob/2.4.3/app/code/Magento/CatalogSearch/Model/Layer/Filter/Price.php#L188-L188
+		# 3.2) https://github.com/magento/magento2/blob/2.4.4-p1/app/code/Magento/CatalogSearch/Model/Layer/Filter/Price.php#L188-L188
+		# 4) https://github.com/magento/magento2/commit/3e9c3c7e
+        if ($isLast || $toPrice === '') {
             return __('%1 and above', $formattedFromPrice);
         } elseif ($fromPrice == $toPrice && $this->dataProvider->getOnePriceIntervalValue()) {
             return $formattedFromPrice;
