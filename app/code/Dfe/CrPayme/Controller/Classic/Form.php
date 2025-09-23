@@ -113,7 +113,7 @@ class Form extends \Magento\Framework\App\Action\Action {
 
 			$connection->query($sql);
 
-			$resultPage = $this->resultPageFactory->create(true, ['template' => 'Alignet_Paymecheckout::emptyroot.phtml']);
+			$resultPage = $this->resultPageFactory->create(true, ['template' => 'Dfe_CrPayme::emptyroot.phtml']);
 			$resultPage->addHandle($resultPage->getDefaultLayoutHandle());
 
 
