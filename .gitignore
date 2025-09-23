@@ -111,6 +111,14 @@
 # 3.3) "The `Swissup_Pagespeed` module breaks URLs of categories' images in Windows":
 # https://github.com/mydreamday-fi/site/issues/17
 !/vendor/magento/module-catalog/Model/View/Asset/Image.php
+# 2025-09-23 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+# 1) «A non-numeric value encountered in vendor/magento/module-catalog-search/Model/Layer/Filter/Price.php
+# on line 194»: https://github.com/innomuebles/m2/issues/28
+# 2) "How to fix «A non-numeric value encountered
+# in vendor/magento/module-catalog-search/Model/Layer/Filter/Price.php on line 194» in Magento < 2.4.4-p1?":
+# https://mage2.pro/t/6514
+# 3) https://github.com/magento/magento2/commit/3e9c3c7e
+!/vendor/magento/module-catalog-search/Model/Layer/Filter/Price.php
 # 2021-05-14 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # 1) «Broken reference: the 'view.addto.compare' tries to reorder itself towards 'view.addto.wishlist',
 # but their parents are different: 'product.info.addto' and 'product.info.addtocart' respectively»:
