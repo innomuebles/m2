@@ -2,7 +2,7 @@
 # 2025-09-23 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # "Refactor the `Alignet_Paymecheckout` module": https://github.com/innomuebles/m2/issues/10
 use Magento\Framework\Component\ComponentRegistrar as R;
-R::register(R::MODULE, 'Alignet_Paymecheckout', __DIR__);
+R::register(R::MODULE, 'Dfe_CrPayme', __DIR__);
 # 2017-11-13
 # Today I have added the subdirectories support inside the `lib` folders,
 # because some lib/*.php files became too big, and I want to split them.
