@@ -20,12 +20,12 @@ class End extends \Magento\Framework\App\Action\Action
     protected $checkoutSession;
 
     /**
-     * @var \Alignet\Payme\Model\Session
+     * @var \Dfe\CrPayme\Model\Session
      */
     protected $session;
 
     /**
-     * @var \Alignet\Payme\Model\ClientFactory
+     * @var \Dfe\CrPayme\Model\ClientFactory
      */
     protected $clientFactory;
 
@@ -35,7 +35,7 @@ class End extends \Magento\Framework\App\Action\Action
     protected $context;
 
     /**
-     * @var \Alignet\Payme\Model\Order
+     * @var \Dfe\CrPayme\Model\Order
      */
     protected $orderHelper;
 
@@ -120,7 +120,7 @@ class End extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * @return \Alignet\Payme\Model\Client\OrderInterface
+     * @return \Dfe\CrPayme\Model\Client\OrderInterface
      */
     protected function getClientOrderHelper()
     {

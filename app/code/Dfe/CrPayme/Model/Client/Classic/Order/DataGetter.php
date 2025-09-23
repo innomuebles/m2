@@ -4,12 +4,12 @@ use Dfe\CrPayme\Plugin\Magento\Framework\Session\SidResolver as PSidResolver;
 # 2020-12-09
 final class DataGetter {
 	 /**
-	 * @var \Alignet\Payme\Model\Order\ExtOrderId
+	 * @var \Dfe\CrPayme\Model\Order\ExtOrderId
 	 */
 	protected $extOrderIdHelper;
 
 	/**
-	 * @var \Alignet\Payme\Model\Client\Classic\Config
+	 * @var \Dfe\CrPayme\Model\Client\Classic\Config
 	 */
 	protected $configHelper;
 
@@ -19,40 +19,40 @@ final class DataGetter {
 	protected $dateTime;
 
 	/**
-	 * @var \Alignet\Payme\Model\Session
+	 * @var \Dfe\CrPayme\Model\Session
 	 */
 	protected $session;
 
 
 
 	/**
-	 * @var \Alignet\Payme\Model\Session
+	 * @var \Dfe\CrPayme\Model\Session
 	 */
 	protected $idEntCommerce;
 
 
 	/**
-	 * @var \Alignet\Payme\Model\Session
+	 * @var \Dfe\CrPayme\Model\Session
 	 */
 	protected $keywallet;
 
 
 
 	/**
-	 * @var \Alignet\Payme\Model\Session
+	 * @var \Dfe\CrPayme\Model\Session
 	 */
 	protected $idCommerce;
 
 
 
 	/**
-	 * @var \Alignet\Payme\Model\Session
+	 * @var \Dfe\CrPayme\Model\Session
 	 */
 	protected $key;
 
 
 	/**
-	 * @var \Alignet\Payme\Model\Session
+	 * @var \Dfe\CrPayme\Model\Session
 	 */
 	protected $wsdl;
 
