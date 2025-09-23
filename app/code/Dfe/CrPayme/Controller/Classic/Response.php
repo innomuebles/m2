@@ -1,13 +1,10 @@
 <?php
 namespace Dfe\CrPayme\Controller\Classic;
 use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Customer\Model\Customer as C;
-use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
 use Magento\Payment\Model\MethodInterface as IM;
-use Magento\Quote\Model\Quote as Q;
 use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Payment as OP;
 # 2020-12-09, 2025-09-23 Dmitrii Fediuk https://upwork.com/fl/mage2pro
