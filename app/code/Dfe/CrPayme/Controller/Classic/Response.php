@@ -237,7 +237,6 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			}
 			$oid = (int)df_request_o()->getPost('purchaseOperationNumber'); /** @var int $oid */
 			$o = df_order($oid); /** @var O $o */
-			//$q = df_quote($o->getQuoteId()); /** @var Q $q */
 			$cid = (int)$o->getCustomerId(); /** @var int $cid */
 			if ($cid) {
 				df_customer_session()->setCustomerDataAsLoggedIn(df_customer_rep()->getById($cid));
@@ -250,12 +249,10 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$ss->setLastOrderId($o->getId());
 			$ss->setLastOrderStatus($o->getStatus());
 			if ('00' === $authorizationResult) {
-				df_log_l($this, 'df_redirect_to_success');
 				df_redirect_to_success();
 			}
 			else {
 				$ss->restoreQuote();
-				df_log_l($this, 'df_redirect_to_payment');
 				df_redirect_to_payment();
 			}
 		}
