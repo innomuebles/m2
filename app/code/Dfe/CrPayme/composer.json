@@ -19,6 +19,12 @@
     }
   },
   "authors": [
+	{
+		"name": "Dmitrii Fediuk",
+		"email": "admin@mage2.pro",
+		"homepage": "https://upwork.com/fl/mage2pro",
+		"role": "Developer"
+	},
     {
       "name": "Alignet",
       "homepage": "http://www.pay-me.com/"
