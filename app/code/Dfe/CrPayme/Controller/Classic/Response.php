@@ -70,8 +70,7 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			   $o = df_order($orderId); /** @var $O o */
 			}
 			else {
-			   echo  $res['answerMessage'];
-			   die();
+				df_error($res['answerMessage']);
 			}
 			$iso_code = $res['purchaseCurrencyCode'] ;
 			switch ($iso_code) {
