@@ -18,7 +18,7 @@
     "require": {
         "hybridauth/hybridauth": "^3.7",
         "klaviyo/magento2-extension": "^4.4",
-        "mage2pro/core": "^8.0",
+        "mage2pro/core": "*",
         "magento/product-community-edition": "2.4.3",
         "mageplaza/magento-2-spanish-language-pack": "dev-master",
         "mageplaza/module-core": "^1.5"
