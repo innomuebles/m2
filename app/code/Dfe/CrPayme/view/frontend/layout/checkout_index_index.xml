@@ -23,7 +23,7 @@
                                                             <item name="children" xsi:type="array">
                                                             <!-- merge payment method renders here -->
                                                                 <item name="paymecheckout-paymecheckout" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Alignet_Paymecheckout/js/view/payment/paymecheckout</item>
+                                                                    <item name="component" xsi:type="string">Dfe_CrPayme/js/view/payment/paymecheckout</item>
                                                                     <item name="methods" xsi:type="array">
 																		 <item name="paymecheckout" xsi:type="array">
                                                                             <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
