@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @copyright Copyright (c) 2017 Alignet. (https://www.pay-me.com)
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <paymecheckout>
+                <active>1</active>
+                <title>Tarjeta Crédito/Débito</title>
+
+                <order_status_new>pending</order_status_new>
+                <order_status_holded>holded</order_status_holded>
+                <order_status_processing>processing</order_status_processing>
+
+                <model>Dfe\CrPayme\Model\Paymecheckout</model>
+                <allowspecific>0</allowspecific>
+
+            </paymecheckout>
+        </payment>
+    </default>
+</config>

@@ -1,0 +1,65 @@
+<?php
+use Dfe\CrPayme\Block\Adminhtml\Order\View\Orderdetail as B; /** @var B $block */
+$b = $block; /** @var B $b */
+?>
+<section class="admin__page-section order-view-billing-shipping">
+	<div class="admin__page-section-title">
+		<span class="title">PAY-ME CHECKOUT</span>
+	</div>
+	<div class="admin__page-section-content">
+		<div class="admin__page-section-item order-payment-method">
+			<div class="admin__page-section-item-title">
+				<span class="title">Request Pay-me</span>
+			</div>
+			<div class="admin__page-section-item-content">
+				<pre style="background-color: #f1f1f1">
+					<?php
+					$data = $b->getResponse();
+					# 2020-12-08 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+					# «Undefined offset: 0
+					# in app/code/Alignet/Paymecheckout/view/Adminhtml/templates/order/view/orderdetail.phtml on line 19»:
+					# https://github.com/innomuebles/m2/issues/8
+					if (!isset($data[1][0])) {
+						print_r($data[1]);
+					}
+					else {
+						foreach ($data[1][0] as $key => $value) {
+							if ($key == "id_log") {
+								echo "-<br>";
+							}
+							else {
+								echo " ".$key." = ".$value."<br>";
+							}
+						}
+					}
+					?>
+				</pre>
+			</div>
+		</div>
+		<div class="admin__page-section-item ">
+			<div class="admin__page-section-item-title">
+				<span class="title">Response Pay-me</span>
+			</div>
+			<div class="admin__page-section-item-content">
+				<pre style="background-color: #f1f1f1">
+					<?php
+						$data = $b->getResponse();
+						if (!isset($data[0][0])) {
+							echo str_replace("array", "",json_encode($data[0]));
+						}
+						else {
+							foreach ($data[0][0] as $key => $value) {
+								if ($key=="id_log") {
+									echo "-<br>";
+								}
+								else {
+									echo " ".$key." = ".$value."<br>";
+								}
+							}
+						}
+					?>
+				</pre>
+			</div>
+		</div>
+	</div>
+</section>

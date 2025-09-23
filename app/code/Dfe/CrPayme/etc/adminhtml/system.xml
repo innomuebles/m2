@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @copyright Copyright (c) 2017 Alignet. (https://www.pay-me.com)
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="payme_gateway" translate="label" type="text" sortOrder="201" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Pay-me Checkout</label>
+                <comment><![CDATA[Vende en línea con la pasarela de pagos Pay-me. Ofrece una buena experiencia de compra a tus clientes, acepta diferentes medios de pagos y haz que tu negocio crezca.]]></comment>
+                <group id="main_parameters" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label> CONFIGURACIÓN GENERAL</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="payme_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Activar Plugin?</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                     <field id="payme_debug" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Activar Debug?</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                       <field id="payme_environment" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Ambiente</label>
+                        <source_model>Dfe\CrPayme\Model\System\Config\Source\Options\Ambiente</source_model>
+                    </field>
+                    <field id="payme_esquema" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Esquema de Integración</label>
+                        <source_model>Dfe\CrPayme\Model\System\Config\Source\Options\Esquema</source_model>
+                    </field>
+                    <field id="payme_modal_type" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Diseño de Modal</label>
+                        <source_model>Dfe\CrPayme\Model\System\Config\Source\Options\Action</source_model>
+                        <depends>
+                            <field id="*/*/main_parameters/payme_esquema">1</field>
+                        </depends>
+                    </field>
+                      <field id="callbackurl" translate="label" type="link" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Url de Respuesta</label>
+                        <validate>validate-no-empty</validate>
+                       <!-- <frontend_model>Dfe\CrPayme\Block\System\Config\Form\Field\Disable</frontend_model> -->
+                    </field>
+
+                </group>
+                <group id="pos_parameters_soles" translate="label" type="text" sortOrder="2"  showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>CONFIGURACIÓN - MONEDA LOCAL</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="payme_adquir_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>ID Adquirente</label>
+                        <!-- <validate>validate-no-empty</validate> -->
+                    </field>
+                    <field id="payme_comerce_id" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>ID Comercio</label>
+                        <!-- <validate>validate-no-empty</validate> -->
+                    </field>
+                    <field id="payme_vpos_id" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Clave V-POS2</label>
+                        <!-- <validate>validate-no-empty</validate> -->
+                    </field>
+                    <field id="payme_wallet_id" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>ID Wallet</label>
+                    </field>
+                    <field id="payme_wallet_secret" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Clave Wallet</label>
+                    </field>
+                </group>
+                <group id="pos_parameters_dolares" translate="label" type="text" sortOrder="3"  showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>CONFIGURACIÓN - MONEDA DÓLARES</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="payme_adquir_id_dls" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>ID Adquirente</label>
+                    </field>
+                    <field id="payme_comerce_id_dls" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>ID Comercio</label>
+                    </field>
+                    <field id="payme_vpos_id_dls" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Clave V-POS2</label>
+                    </field>
+                    <field id="payme_wallet_id_dls" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>ID Wallet</label>
+                    </field>
+                    <field id="payme_wallet_secret_dls" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Clave Wallet</label>
+                    </field>
+                </group>
+            </group>
+
+          
+
+        </section>
+    </system>
+</config>
