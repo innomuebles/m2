@@ -7,7 +7,7 @@
  * @category    Payme
  * @package     Payme
  * @copyright   2019
- * @author      Alignet
+ *
  */
 
 namespace Dfe\CrPayme\Model\System\Config\Source\Options;
