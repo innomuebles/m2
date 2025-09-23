@@ -30,6 +30,4 @@
 			<argument name="storage" xsi:type="object">Alignet\Paymecheckout\Model\Session\Storage</argument>
 		</arguments>
 	</type>
-
-
 </config>
