@@ -1,6 +1,5 @@
 <?php
 namespace Dfe\CrPayme\Model\Client\Classic\Order;
-use Dfe\CrPayme\Plugin\Magento\Framework\Session\SidResolver as PSidResolver;
 # 2020-12-09
 final class DataGetter {
 	 /**
@@ -168,8 +167,6 @@ final class DataGetter {
 			'userCodePayme' => $this->userCodePayme($comerce),
 			'descriptionProducts' => 'Productos varios',
 			'programmingLanguage' => 'ALG-MG-v3.0.3',
-			# 2020-12-09 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
-			PSidResolver::P_SESSION => session_id(),
 			'reserved2' => '',
 			'reserved3' => '',
 			'reserved4' => '',

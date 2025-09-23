@@ -1,9 +1,13 @@
 <?php
 namespace Dfe\CrPayme\Controller\Classic;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Model\Customer as C;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
 use Magento\Payment\Model\MethodInterface as IM;
+use Magento\Quote\Model\Quote as Q;
 use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Payment as OP;
 # 2020-12-09, 2025-09-23 Dmitrii Fediuk https://upwork.com/fl/mage2pro
@@ -231,7 +235,29 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 				$o->addStatusToHistory($o->getStatus(), 'El pedido ha sido procesado Correctamente');
 				$o->save();
 			}
-			'00' === $authorizationResult ? df_redirect_to_success() : df_redirect_to_payment();
+			$oid = (int)df_request_o()->getPost('purchaseOperationNumber'); /** @var int $oid */
+			$o = df_order($oid); /** @var O $o */
+			//$q = df_quote($o->getQuoteId()); /** @var Q $q */
+			$cid = (int)$o->getCustomerId(); /** @var int $cid */
+			if ($cid) {
+				df_customer_session()->setCustomerDataAsLoggedIn(df_customer_rep()->getById($cid));
+				df_customer_session()->regenerateId();
+			}
+			$ss = df_checkout_session(); /** @var CheckoutSession $ss */
+			$ss->setLastQuoteId($o->getQuoteId());
+			$ss->setLastSuccessQuoteId($o->getQuoteId());
+			$ss->setLastRealOrderId($o->getIncrementId());
+			$ss->setLastOrderId($o->getId());
+			$ss->setLastOrderStatus($o->getStatus());
+			if ('00' === $authorizationResult) {
+				df_log_l($this, 'df_redirect_to_success');
+				df_redirect_to_success();
+			}
+			else {
+				$ss->restoreQuote();
+				df_log_l($this, 'df_redirect_to_payment');
+				df_redirect_to_payment();
+			}
 		}
 		catch (\Exception $e) {
 			df_log($e);

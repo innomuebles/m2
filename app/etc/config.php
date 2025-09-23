@@ -415,6 +415,8 @@ return [
         'MageBig_SyntaxCms' => 1,
         'MageBig_WidgetPlus' => 1,
         'MageBig_WysiwygFiles' => 1,
+        'MagePal_Core' => 1,
+        'MagePal_GmailSmtpApp' => 1,
         'Magecomp_Chatgptaicontent' => 1,
         'Magefan_AdminUserGuide' => 1,
         'Magefan_Community' => 1,
