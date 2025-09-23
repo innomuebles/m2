@@ -1,13 +1,8 @@
 <?php
-/**
- * @copyright Copyright (c)  2019 Alignet  (https://www.pay-me.com)
- */
-
 namespace Alignet\Paymecheckout\Model;
-
+# 2025-09-23 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+# "Refactor the `Alignet_Paymecheckout` module": https://github.com/innomuebles/m2/issues/10
 /**
- * Transaction model
- *
  * @method int getLastOrderId()
  * @method Session setLastOrderId(int)
  * @method array getOrderCreateData()
