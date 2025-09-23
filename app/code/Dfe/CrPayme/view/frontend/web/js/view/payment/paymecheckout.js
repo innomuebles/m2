@@ -17,7 +17,7 @@ define(
         rendererList.push(
             {
                 type: 'paymecheckout',
-                component: 'Alignet_Paymecheckout/js/view/payment/method-renderer/paymecheckout-method'
+                component: 'Dfe_CrPayme/js/view/payment/method-renderer/paymecheckout-method'
             }
         );
         /** Add view logic here if needed */

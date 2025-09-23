@@ -18,7 +18,7 @@ define(
         return Component.extend({
             defaults: {
                 redirectAfterPlaceOrder: false,
-                template: 'Alignet_Paymecheckout/payment/paymecheckout'
+                template: 'Dfe_CrPayme/payment/paymecheckout'
             },
 
             getData: function() {

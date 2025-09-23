@@ -4,7 +4,7 @@
 		<referenceBlock name="order_additional_info">
 			<block
 				class="Dfe\CrPayme\Block\Adminhtml\Order\View\Orderdetail"
-				template="Alignet_Paymecheckout::order/view/orderdetail.phtml"
+				template="Dfe_CrPayme::order/view/orderdetail.phtml"
 			/>
 		</referenceBlock>
 	</body>

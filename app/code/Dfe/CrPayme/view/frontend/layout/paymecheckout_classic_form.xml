@@ -8,7 +8,7 @@
     <body>
     	<referenceContainer name="header.panel" remove="false" />
         <referenceContainer name="root">
-            <block class="Magento\Framework\View\Element\Template" name="paymecheckout.classic.form" template="Alignet_Paymecheckout::classic/form.phtml" cacheable="false"/>
+            <block class="Magento\Framework\View\Element\Template" name="paymecheckout.classic.form" template="Dfe_CrPayme::classic/form.phtml" cacheable="false"/>
         </referenceContainer>
     </body>
 </page>

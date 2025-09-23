@@ -7,7 +7,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="Magento\Framework\View\Element\Template" name="paymecheckout.payment.end" template="Alignet_Paymecheckout::payment/end.phtml" />
+            <block class="Magento\Framework\View\Element\Template" name="paymecheckout.payment.end" template="Dfe_CrPayme::payment/end.phtml" />
         </referenceContainer>
     </body>
 </page>
