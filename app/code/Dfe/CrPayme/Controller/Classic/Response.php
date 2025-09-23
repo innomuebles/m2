@@ -46,9 +46,8 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 	}
 
 	/**
-	 * @return \Magento\Framework\Controller\Result\Redirect|\Magento\Framework\View\Result\Page
 	 */
-	function execute() {
+	function execute():void {
 		try {
 			$res = $this->getRequest()->getPostValue(); /** @var array(string => mixed) $res */
 			df_log_l($this, $res, dfa($res, 'purchaseOperationNumber'));
