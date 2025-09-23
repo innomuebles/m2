@@ -1,5 +1,5 @@
 {
-  "name": "Alignet/magento2-paymecheckout",
+  "name": "mage2pro/cr-payme",
   "description": "Paymecheckout integration for Magento 2",
   "require": {
     "php": ">=7.0.0",
@@ -15,7 +15,7 @@
       "registration.php"
     ],
     "psr-4": {
-      "Alignet\\Paymecheckout\\": ""
+      "Dfe\\CrPayme\\": ""
     }
   },
   "authors": [
