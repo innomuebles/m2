@@ -235,6 +235,7 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 		}
 		catch (\Exception $e) {
 			df_log($e);
+			throw $e;
 		}
 	}
 
