@@ -4,7 +4,11 @@
 define([
     'jquery',
     'Magento_Catalog/js/price-utils',
-    'jquery/ui-modules/widgets/slider'
+	// 2025-09-23 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+	// «Unable to resolve the source file for
+	// 'frontend/MageBig/martfury_layout04/es_CR/jquery/ui-modules/widgets/slider.js'»:
+	// https://github.com/innomuebles/m2/issues/31
+    'jquery/ui-modules/slider'
 ], function ($, priceUtil) {
     "use strict";
 
