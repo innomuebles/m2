@@ -232,7 +232,7 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 				$o->addStatusToHistory($o->getStatus(), 'El pedido ha sido procesado Correctamente');
 				$o->save();
 			}
-			return '00' === $authorizationResult ? df_redirect_to_success() : df_redirect_to_payment();
+			'00' === $authorizationResult ? df_redirect_to_success() : df_redirect_to_payment();
 		}
 		catch (\Exception $e) {
 			df_log($e);
