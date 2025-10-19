@@ -35,7 +35,6 @@ class Form extends \Magento\Framework\App\Action\Action {
 		 * @var $resultPage \Magento\Framework\View\Result\Page
 		 */
 		$orderCreateData = $this->session->getOrderCreateData();
-		$gatewayUrl = $this->session->getGatewayUrl();
 		$paymeEntorno = $this->session->getPaymeEntorno();
 		$paymeEsquema = $this->session->getPaymeEsquema();
 		$WsDomain = $this->session->getWsDomain();
@@ -109,7 +108,9 @@ class Form extends \Magento\Framework\App\Action\Action {
 			$resultPage = $this->resultPageFactory->create(true, ['template' => 'Dfe_CrPayme::emptyroot.phtml']);
 			$resultPage->addHandle($resultPage->getDefaultLayoutHandle());
 			$resultPage->getLayout()->getBlock('paymecheckout.classic.form')->setOrderCreateData($orderCreateData);
-			$resultPage->getLayout()->getBlock('paymecheckout.classic.form')->setGatewayUrl($gatewayUrl);
+			$resultPage->getLayout()->getBlock('paymecheckout.classic.form')->setGatewayUrl(
+				$this->session->getGatewayUrl()
+			);
 			$resultPage->getLayout()->getBlock('paymecheckout.classic.form')->setPaymeEntorno($paymeEntorno);
 			$resultPage->getLayout()->getBlock('paymecheckout.classic.form')->setPaymeEsquema($paymeEsquema);
 			$resultPage->getLayout()->getBlock('paymecheckout.classic.form')->setWsDomain($WsDomain);
