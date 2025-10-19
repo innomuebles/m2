@@ -384,7 +384,7 @@ return [
         'Df_Wishlist' => 1,
         'Df_Xml' => 1,
         'Df_Zf' => 1,
-        'Dfe_CrPayme' => 1,
+        'Dfe_Alignet' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
