@@ -1,12 +1,12 @@
 <link
-	href="<?php echo $this->getWsDomain(); ?>/VPOS2/css/modalcomercio.css"
+	href="<?= $this->getWsDomain(); ?>/VPOS2/css/modalcomercio.css"
 	id="alignet-modal-css"
 	media="all"
 	rel="stylesheet"
 	type="text/css"
 />
 <script
-	src="<?php echo $this->getWsDomain(); ?>/VPOS2/js/modalcomercio.js"
+	src="<?= $this->getWsDomain(); ?>/VPOS2/js/modalcomercio.js"
 	type="text/javascript"
 />
 
@@ -24,9 +24,9 @@ else
 
 
     <?php foreach ($this->getOrderCreateData() as $name => $value): ?>
-    <input type="hidden" name="<?php echo $name; ?>" value="<?php echo $value; ?>" />
+    <input type="hidden" name="<?= $name; ?>" value="<?= $value; ?>" />
     <?php endforeach; ?>
-    <input type="button" id="btnmodal" style="display:none" onclick="<?php echo $this->getGatewayUrl(); ?>" value="Comprar">
+    <input type="button" id="btnmodal" style="display:none" onclick="<?= $this->getGatewayUrl(); ?>" value="Comprar">
 </form>
 <script language="JavaScript" type="text/javascript">
 <?php 
