@@ -35,13 +35,13 @@ $response = $this->getPostdata();
  <div class="row">
 	<div class="col-sm-8 col-sm-offset-2">
 		<div class="col-sm-12">
-			<h2 class="title <?php echo $response['titleColor'];?> text-center">
-				<i class="fa fa-check-circle" aria-hidden="true"></i> <?php echo $response['answerMessage']; ?>
+			<h2 class="title <?= $response['titleColor'];?> text-center">
+				<i class="fa fa-check-circle" aria-hidden="true"></i> <?= $response['answerMessage']; ?>
 			</h2>
 		</div>
 		
 			<p class="text-center">
-				<?php echo $response['msgNumeroOP']; ?>
+				<?= $response['msgNumeroOP']; ?>
 			</p>
 			<hr>
 						
@@ -49,8 +49,8 @@ $response = $this->getPostdata();
 				<section class="address-delivery col-sm-4 col-sm-offset-1">
 					<h4 class="subtitle"><i class="icon icon-cc-visa" aria-hidden="true"></i><b> Respuesta de Pay-me</b></h4>
 					<ul>
-						<li><b>Marca: </b><?php echo $response['brand']; ?></li>													<li><b>Tarjeta: </b><?php echo $response['paymentReferenceCode']; ?> </li> 
-																			<li><b> Respuesta: </b> <?php echo $response['responseMSG'];?> </li>
+						<li><b>Marca: </b><?= $response['brand']; ?></li>													<li><b>Tarjeta: </b><?= $response['paymentReferenceCode']; ?> </li> 
+																			<li><b> Respuesta: </b> <?= $response['responseMSG'];?> </li>
 											</ul>
 				</section>
 				<section class="payment-datails col-sm-4 col-sm-offset-1">
@@ -58,10 +58,10 @@ $response = $this->getPostdata();
 					<ul>
 						<li class="total">
 							Número de operación:
-							<span class="pull-right">  <?php echo $response['purchaseOperationNumber'] ?> </span>
+							<span class="pull-right">  <?= $response['purchaseOperationNumber'] ?> </span>
 						</li>
 						<li class="total">
-							Importe Total: <span class="pull-right"> <?php echo $response['purchaseCurrencyCode'].'  '.number_format((int)($response['purchaseAmount']/100),2); ?></span>
+							Importe Total: <span class="pull-right"> <?= $response['purchaseCurrencyCode'].'  '.number_format((int)($response['purchaseAmount']/100),2); ?></span>
 						</li>
 					</ul>
 				</section>
@@ -70,7 +70,7 @@ $response = $this->getPostdata();
 			<div class="row">
 				<section class="details col-sm-12">
 					<br>
-					<p><?php echo $response['msgFecha']; ?>
+					<p><?= $response['msgFecha']; ?>
 					</p>
 					<br>
 				</section>
@@ -85,7 +85,7 @@ $response = $this->getPostdata();
 			</thead>
 			<tbody>
 								<tr>
-					<td> <?php echo $response['descriptionProducts']; ?> </td>
+					<td> <?= $response['descriptionProducts']; ?> </td>
 				</tr>
 							</tbody>
 		</table>
