@@ -1,3 +1,5 @@
+<!-- 2025-10-19 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+"Refactor the `Alignet_Paymecheckout` module": https://github.com/innomuebles/m2/issues/10 -->
 <link
 	href='<?= $this->getWsDomain(); ?>/VPOS2/css/modalcomercio.css'
 	id='alignet-modal-css'
@@ -9,20 +11,13 @@
 	src='<?= $this->getWsDomain(); ?>/VPOS2/js/modalcomercio.js'
 	type='text/javascript'
 />
-
-<?php
-
-if ($this->getPaymeEsquema() == 1) {
-	echo '<form action="#" method="POST" name="f1" id="f1" class="alignet-form-vpos2">';
-}
-else
-{
-	echo '<form action="'.$this->getGatewayUrl().'" method="POST" name="f1" id="f1" class="alignet-form-vpos2">';
-}
-?>
-
-
-
+<form 
+	action='<?= 1 == $this->getPaymeEsquema() ? '#' : $this->getGatewayUrl() ?>'
+	class='alignet-form-vpos2'
+	id='f1' 
+	method='POST' 
+	name='f1' 
+>
     <?php foreach ($this->getOrderCreateData() as $name => $value): ?>
     <input type="hidden" name="<?= $name; ?>" value="<?= $value; ?>" />
     <?php endforeach; ?>
