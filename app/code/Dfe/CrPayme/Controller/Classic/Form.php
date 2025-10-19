@@ -39,10 +39,6 @@ class Form extends \Magento\Framework\App\Action\Action {
 		$paymeEntorno = $this->session->getPaymeEntorno();
 		$paymeEsquema = $this->session->getPaymeEsquema();
 		$WsDomain = $this->session->getWsDomain();
-
-
-
-
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 		$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
 		$connection = $resource->getConnection();
