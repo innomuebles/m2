@@ -71,6 +71,15 @@ class Upload extends Action implements HttpPostActionInterface
     public function execute()
     {
         try {
+			# 2025-12-02 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+			# 1) "Disable `Magento\Customer\Controller\Address\File\Upload`":
+			# https://github.com/innomuebles/m2/issues/59
+			# 2) https://archive.is/8qJIA#selection-561.88-561.134
+			# 3) "Close the «SessionReaper» vulnerability": https://github.com/innomuebles/m2/issues/56
+			df_error(
+				'`Magento\Customer\Controller\Address\File\Upload` is intentionally disabled: %s'
+				,'https://github.com/innomuebles/m2/issues/59'
+			);
             $requestedFiles = $this->getRequest()->getFiles('custom_attributes');
             if (empty($requestedFiles)) {
                 $result = $this->processError(__('No files for upload.'));
