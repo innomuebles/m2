@@ -136,6 +136,11 @@
 # but their parents are different: 'skip_gallery_before.wrapper' and 'product.info.media' respectively»:
 # https://github.com/innomuebles/m2/issues/19
 !/vendor/magento/module-catalog/view/frontend/layout/catalog_product_view.xml
+# 2025-12-02 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+# 1) "Disable `Magento\Customer\Controller\Address\File\Upload`": https://github.com/innomuebles/m2/issues/59
+# 2) https://archive.is/8qJIA#selection-561.88-561.134
+# 3) "Close the «SessionReaper» vulnerability": https://github.com/innomuebles/m2/issues/56
+!/vendor/magento/module-customer/Controller/Address/File/Upload.php
 # 2024-01-31 Dmitrii Fediuk https://upwork.com/fl/mage2pro
 # "Implement the security update APSB22-12": https://github.com/innomuebles/m2/issues/26
 !/vendor/magento/module-email/Model/Template/Filter.php
