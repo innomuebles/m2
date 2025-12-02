@@ -227,6 +227,18 @@ class ServiceInputProcessor implements ServicePayloadConverterInterface
         foreach ($parameters as $parameter) {
             if (isset($data[$parameter->getName()])) {
                 $parameterType = $this->typeProcessor->getParamType($parameter);
+				# 2025-12-02 Dmitrii Fediuk https://upwork.com/fl/mage2pro
+				# 1.1) "Apply `VULN-32437_2.4.X.patch`": https://github.com/innomuebles/m2/issues/58
+				# 1.2) "Close the `CVE-2025-54236` vulnerability": https://github.com/innomuebles/m2/issues/57
+				# 1.3) "Close the «SessionReaper» vulnerability": https://github.com/innomuebles/m2/issues/56
+				# 2.1) https://github.com/magento/magento2/blob/2.4.9-alpha3/lib/internal/Magento/Framework/Webapi/ServiceInputProcessor.php#L249-L254
+				# 2.2)  https://github.com/magento/magento2/commit/8075ae19
+                // Allow only simple types or Api Data Objects
+                if (!($this->typeProcessor->isTypeSimple($parameterType)
+                    || preg_match('~\\\\?\w+\\\\\w+\\\\Api\\\\Data\\\\~', $parameterType) === 1
+                )) {
+                    continue;
+                }
 
                 try {
                     $res[$parameter->getName()] = $this->convertValue($data[$parameter->getName()], $parameterType);
