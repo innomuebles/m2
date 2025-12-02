@@ -76,6 +76,10 @@ class Upload extends Action implements HttpPostActionInterface
 			# https://github.com/innomuebles/m2/issues/59
 			# 2) https://archive.is/8qJIA#selection-561.88-561.134
 			# 3) "Close the «SessionReaper» vulnerability": https://github.com/innomuebles/m2/issues/56
+			# 4) «This is an unauthenticated endpoint
+			# that appears to handle user file uploads from the `custom_attributes` field,
+			# and doesn’t require any authentication.»
+			# https://slcyber.io/research-center/why-nested-deserialization-is-still-harmful-magento-rce-cve-2025-54236
 			df_error(
 				'`Magento\Customer\Controller\Address\File\Upload` is intentionally disabled: %s'
 				,'https://github.com/innomuebles/m2/issues/59'
