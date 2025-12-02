@@ -18,7 +18,7 @@
     "require": {
         "hybridauth/hybridauth": "^3.7",
         "klaviyo/magento2-extension": "^4.4",
-        "mage2pro/core": "*",
+        "mage2pro/alignet": "*",
         "magento/product-community-edition": "2.4.3",
         "magepal/magento2-gmailsmtpapp": "*",
         "mageplaza/magento-2-spanish-language-pack": "dev-master",
