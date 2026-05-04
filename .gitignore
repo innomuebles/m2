@@ -92,7 +92,7 @@
 # in Magento 2.4-develop in Windows?" https://mage2.pro/t/6178
 !/vendor/magento/framework/Interception/PluginListGenerator.php
 # 2024-01-31 Dmitrii Fediuk https://upwork.com/fl/mage2pro
-# 1) "Add the modified Magento files to the source control": https://github.com/innomuebles/m2/issues/25
+# 1) "Add the modified core Magento files to source control": https://github.com/innomuebles/m2/issues/25
 # 2) https://github.com/innomuebles/m2/blob/2024-01-31/vendor/magento/framework/Locale/Format.php#L144-L150
 !/vendor/magento/framework/Locale/Format.php
 # 2020-12-01, 2025-09-21 Dmitrii Fediuk https://upwork.com/fl/mage2pro
@@ -151,7 +151,7 @@
 # "Implement the security update APSB22-12": https://github.com/innomuebles/m2/issues/26
 !/vendor/magento/module-email/Model/Template/Filter.php
 # 2024-01-31 Dmitrii Fediuk https://upwork.com/fl/mage2pro
-# 1) "Add the modified Magento files to the source control": https://github.com/innomuebles/m2/issues/25
+# 1) "Add the modified core Magento files to source control": https://github.com/innomuebles/m2/issues/25
 # 2.1) https://github.com/innomuebles/m2/blob/2024-01-31/vendor/magento/zendframework1/library/Zend/Locale/Data/es_CR.xml#L16-L17
 # 2.2) https://github.com/innomuebles/m2/blob/2024-01-31/vendor/magento/zendframework1/library/Zend/Locale/Data/es_CR.xml#L19-L25
 !/vendor/magento/zendframework1/library/Zend/Locale/Data/es_CR.xml
